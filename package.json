@@ -1,0 +1,32 @@
+{
+  "name": "cose-js",
+  "version": "1.0.0",
+  "description": "JavaScript COSE implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erdtman/COSE-JS.git"
+  },
+  "keywords": [
+    "COSE",
+    "Signing",
+    "MAC",
+    "Encrypt",
+    "CWT",
+    "IoT"
+  ],
+  "author": "Samuel Erdtman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erdtman/COSE-JS/issues"
+  },
+  "homepage": "https://github.com/erdtman/COSE-JS#readme",
+  "dependencies": {
+    "cbor": "^1.0.4",
+    "node-aes-cmac": "^0.1.1",
+    "q": "^1.4.1"
+  }
+}
