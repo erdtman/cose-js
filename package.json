@@ -4,7 +4,7 @@
   "description": "JavaScript COSE implementation",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js --harmony"
+    "test": "ava test"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,8 @@
     "node-webcrypto-ossl": "^1.0.2",
     "q": "^1.4.1",
     "webcrypto": "^0.1.0"
+  },
+  "devDependencies": {
+    "ava": "^0.16.0"
   }
 }
