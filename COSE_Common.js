@@ -3,7 +3,7 @@
 'use strict';
 
 
-let header_parameters = {
+const header_parameters = {
   "alg": 1,
   "crit": 2,
   "content_type": 3,
@@ -14,7 +14,7 @@ let header_parameters = {
 };
 
 exports.translate_headers = function(header) {
-  let result = new Map();
+  const result = new Map();
   for(var param in header) {
      if(!header_parameters[param]) {
        throw new Error("Unknown parameter, " + param);
