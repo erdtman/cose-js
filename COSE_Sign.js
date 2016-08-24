@@ -4,7 +4,7 @@
 
 let cbor = require('cbor');
 let Q = require('q');
-let node_webcrypto_ossl = require('node-webcrypto-ossl').default;
+let node_webcrypto_ossl = require('node-webcrypto-ossl');
 let crypto = new node_webcrypto_ossl();
 
 let header_parameters = require('./COSE_Common.js').header_parameters;

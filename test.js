@@ -4,7 +4,8 @@
 
 let cbor = require('cbor');
 
-let node_webcrypto_ossl = require('node-webcrypto-ossl').default;
+let node_webcrypto_ossl = require('node-webcrypto-ossl');
+console.log(node_webcrypto_ossl)
 let crypto = new node_webcrypto_ossl();
 let cose = require('./index.js');
 
