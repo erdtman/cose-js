@@ -4,7 +4,8 @@
 
 const cbor = require('cbor');
 const crypto = require('crypto');
-const Q = require('q');
+const Promise = require('any-promise');
+
 const header_parameters = require('./COSE_Common.js').header_parameters;
 let translate_headers = require('./COSE_Common.js').translate_headers;
 const alg_tags = {
@@ -17,26 +18,23 @@ const alg_tags = {
 // TODO content type map?
 
 function doMac(context, hProtected, external_aad, payload, alg, key) {
-  const deferred = Q.defer();
+  return new Promise((res, rej) => {
+    const MAC_structure = [
+            context, //"MAC0", // context
+            hProtected, // protected
+            external_aad, // bstr,
+            payload]; //bstr
 
-  const MAC_structure = [
-          context, //"MAC0", // context
-          hProtected, // protected
-          external_aad, // bstr,
-          payload]; //bstr
+    const ToBeMaced = cbor.encode(MAC_structure)
 
-  const ToBeMaced = cbor.encode(MAC_structure)
-
-  const hmac = crypto.createHmac(alg, key);// TODO make algorithm dynamic
-  hmac.end(ToBeMaced, function () {
-    const tag = hmac.read();
-    deferred.resolve(tag);
+    const hmac = crypto.createHmac(alg, key);// TODO make algorithm dynamic
+    hmac.end(ToBeMaced, function () {
+      res(hmac.read());
+    });
   });
-  return deferred.promise;
 }
 
 exports.create = function(prot_in, unprotected, payload, key, external_aad) {
-  const deferred = Q.defer();
   external_aad = external_aad || null; // TODO default to zero length binary string
   const hProtected = translate_headers(prot_in)
 
@@ -44,47 +42,36 @@ exports.create = function(prot_in, unprotected, payload, key, external_aad) {
       hProtected.set(header_parameters.alg, alg_tags[prot_in.alg]);
   } else {
       // TODO return better error
-      return deferred.reject(new Error("Alg is mandatory and must have a known value"));
+      return rej(new Error("Alg is mandatory and must have a known value"));
   }
   // TODO handle empty map -> convert to zero length bstr
   // TODO check crit headers
-  doMac("MAC0", hProtected, external_aad, payload, "sha256", key).then(function(tag) {
-    const encoded = cbor.encode([hProtected, unprotected, payload, tag]);
-
-    deferred.resolve(encoded);
-  }).fail(function(error) {
-    deferred.reject(error);
+  return doMac("MAC0", hProtected, external_aad, payload, "sha256", key)
+  .then((tag) => {
+    return cbor.encode([hProtected, unprotected, payload, tag]);
   });
-
-  return deferred.promise;
 }
 
 exports.read = function(data, key, external_aad) {
-  const deferred = Q.defer();
   external_aad = external_aad || null;
 
-  cbor.decodeFirst(data, function(error, obj) {
-    if(error) {
-      return deferred.reject(new Error("Failed to CBOR decode input"));
-    }
-
+  return cbor.decodeFirst(data)
+  .then((obj) => {
     const hProtected = obj[0];
     const unprotected = obj[1];
     const payload = obj[2];
     const tag = obj[3];
 
     // TODO validate protected header
-    doMac("MAC0", hProtected, external_aad, payload, "sha256", key).then(function(calc_tag) {
+    return doMac("MAC0", hProtected, external_aad, payload, "sha256", key)
+    .then((calc_tag) => {
       const encoded = cbor.encode([hProtected, unprotected, payload, tag]);
 
       if (tag.toString("hex") !== calc_tag.toString("hex")) {
-        return deferred.reject(new Error("Tag mismatch"));
+        throw new Error("Tag mismatch");
       }
 
-      deferred.resolve(payload);
-    }).fail(function(error) {
-      deferred.reject(error);
+      return payload;
     });
   });
-  return deferred.promise;
 }
