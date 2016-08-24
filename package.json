@@ -27,6 +27,8 @@
   "dependencies": {
     "cbor": "^1.0.4",
     "node-aes-cmac": "^0.1.1",
-    "q": "^1.4.1"
+    "node-webcrypto-ossl": "^1.0.2",
+    "q": "^1.4.1",
+    "webcrypto": "^0.1.0"
   }
 }
