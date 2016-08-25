@@ -3,7 +3,6 @@
 'use strict';
 
 const cbor = require('cbor');
-const Q = require('q');
 const node_webcrypto_ossl = require('node-webcrypto-ossl');
 const crypto = new node_webcrypto_ossl();
 
@@ -31,38 +30,32 @@ function toBuffer(ab) {
 
 
 exports.create = function(Headers, payload, key, external_aad) {
-  const deferred = Q.defer();
   const protHeader = translate_headers(Headers.prot);
   const cborProtHeader = cbor.encode(protHeader); // TODO handle empty header?
   const Sig_structure = [
-       "Signature1",
-       cborProtHeader,
-       external_aad,
-       payload
-   ];
+      "Signature1",
+      cborProtHeader,
+      external_aad,
+      payload
+  ];
 
-   const ToBeSigned = toArrayBuffer(cbor.encode(Sig_structure));
+  const ToBeSigned = toArrayBuffer(cbor.encode(Sig_structure));
 
-   // TODO read alg and act on it
-   console.log(ToBeSigned.byteLength);
-   crypto.subtle.sign({
-     name: "ECDSA",
-     hash: {name: "SHA-256"}},
-     key.privateKey,
-     ToBeSigned).then(function(signature) {
-       console.log(signature.byteLength);
-       const COSE_Sign1 = cbor.encode([
+  // TODO read alg and act on it
+  return crypto.subtle.sign({
+      name: "ECDSA",
+      hash: {name: "SHA-256"}
+    },
+    key.privateKey,
+    ToBeSigned)
+  .then((signature) => {
+      return cbor.encode([
           cborProtHeader,
           Headers.unprot,
           payload,
           toBuffer(signature)
-       ]);
-       deferred.resolve(COSE_Sign1);
-     }).catch(function(err){
-       console.log(err);
-       deferred.reject(err);
-     });
-  return deferred.promise;
+      ]);
+    });
 }
 
 /*
