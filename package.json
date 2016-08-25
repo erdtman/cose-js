@@ -4,7 +4,10 @@
   "description": "JavaScript COSE implementation",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js --harmony"
+    "test": "ava test",
+    "coverage": "nyc npm test",
+    "coveragehtml": "nyc report -r html",
+    "precoveragehtml": "npm run coverage"
   },
   "repository": {
     "type": "git",
@@ -25,10 +28,14 @@
   },
   "homepage": "https://github.com/erdtman/COSE-JS#readme",
   "dependencies": {
-    "cbor": "^1.0.4",
+    "cbor": "^1.0.5",
     "node-aes-cmac": "^0.1.1",
     "node-webcrypto-ossl": "^1.0.2",
     "q": "^1.4.1",
     "webcrypto": "^0.1.0"
+  },
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "nyc": "^8.1.0"
   }
 }
