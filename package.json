@@ -4,6 +4,7 @@
   "description": "JavaScript COSE implementation",
   "main": "lib/index.js",
   "scripts": {
+    "pretest": "semistandard",
     "test": "ava test",
     "coverage": "nyc npm test",
     "coveragehtml": "nyc report -r html",
@@ -23,10 +24,12 @@
     "IoT"
   ],
   "author": "Samuel Erdtman",
-  "contributors": [{
-    "name": "Joe Hildebrand",
-    "email": "joe-github@cursive.net"
-  }],
+  "contributors": [
+    {
+      "name": "Joe Hildebrand",
+      "email": "joe-github@cursive.net"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/erdtman/COSE-JS/issues"
@@ -40,10 +43,11 @@
     "webcrypto": "^0.1.0"
   },
   "devDependencies": {
-    "ava": "^0.16.0",
-    "nyc": "^8.1.0"
+    "ava": "*",
+    "nyc": "*",
+    "semistandard": "*"
   },
-  "engines" : {
-    "node" : ">=6.0"
+  "engines": {
+    "node": ">=6.0"
   }
 }

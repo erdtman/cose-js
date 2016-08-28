@@ -1,8 +1,8 @@
 const cbor = require('cbor');
 const cose = require('../');
 const test = require('ava');
-const node_webcrypto_ossl = require('node-webcrypto-ossl');
-const crypto = new node_webcrypto_ossl();
+const WebCrypto = require('node-webcrypto-ossl');
+const crypto = new WebCrypto();
 
 test('basic sign', (t) => {
   var data = new Uint8Array(4);
@@ -11,27 +11,26 @@ test('basic sign', (t) => {
   data[2] = 44;
 
   return crypto.subtle.generateKey({
-      name: "ECDSA",
-      namedCurve: "P-256"
-    },
-    false, //whether the key is extractable (i.e. can be used in exportKey)
-    ["sign", "verify"] //can be any combination of "sign" and "verify"
-  )
+    name: 'ECDSA',
+    namedCurve: 'P-256'
+  },
+  false, // whether the key is extractable (i.e. can be used in exportKey)
+  ['sign', 'verify']) // can be any combination of "sign" and "verify"
   .then((key) => {
-    //returns a keypair object
+    // returns a keypair object
     t.truthy(key);
     const publicKey = key.publicKey;
     t.truthy(publicKey);
-    var payload = cbor.encode({"hello": "world"});
+    var payload = cbor.encode({'hello': 'world'});
     return cose.sign.create({
-        prot: {
-          "content_type": 5,
-          "alg": 4
-        },
-        unprot:{}
+      prot: {
+        'content_type': 5,
+        'alg': 4
       },
-      payload,
-      key);
+      unprot: {}
+    },
+    payload,
+    key);
   })
   .then((signed) => {
     t.truthy(signed);
