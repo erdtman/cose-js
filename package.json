@@ -1,8 +1,8 @@
 {
   "name": "cose-js",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "JavaScript COSE implementation",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "ava test",
     "coverage": "nyc npm test",
@@ -23,6 +23,10 @@
     "IoT"
   ],
   "author": "Samuel Erdtman",
+  "contributors": [{
+    "name": "Joe Hildebrand",
+    "email": "joe-github@cursive.net"
+  }],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/erdtman/COSE-JS/issues"

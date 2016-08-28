@@ -23,7 +23,7 @@ test('basic sign', (t) => {
     const publicKey = key.publicKey;
     t.truthy(publicKey);
     var payload = cbor.encode({"hello": "world"});
-    return cose.COSE_Sign.create({
+    return cose.sign.create({
         prot: {
           "content_type": 5,
           "alg": 4
