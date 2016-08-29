@@ -30,11 +30,11 @@
       "email": "joe-github@cursive.net"
     }
   ],
-  "license": "MIT",
+  "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/erdtman/COSE-JS/issues"
+    "url": "https://github.com/erdtman/cose-js/issues"
   },
-  "homepage": "https://github.com/erdtman/COSE-JS#readme",
+  "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
     "any-promise": "^1.3.0",
     "cbor": "^1.0.6",
