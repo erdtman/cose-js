@@ -3,11 +3,11 @@ const cose = require('../');
 const test = require('ava');
 
 var hProtected = {
-  "alg": "SHA-256",
-  "content_type": 5,
+  'alg': 'SHA-256',
+  'content_type': 5
 };
-var key = "secret"
-var payload = {"hello": "world"};
+var key = 'secret';
+var payload = {'hello': 'world'};
 var hUnprotected = {};
 
 test('basic mac', t => {
