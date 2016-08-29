@@ -42,5 +42,8 @@
   "devDependencies": {
     "ava": "^0.16.0",
     "nyc": "^8.1.0"
+  },
+  "engines" : {
+    "node" : ">=6.0"
   }
 }
