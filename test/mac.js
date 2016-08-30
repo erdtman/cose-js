@@ -12,9 +12,9 @@ var hUnprotected = {};
 
 test('basic mac', t => {
   return cose.mac.create(hProtected,
-                              hUnprotected,
-                              cbor.encode(payload),
-                              key)
+                         hUnprotected,
+                         cbor.encode(payload),
+                         key)
   .then((buf) => {
     t.true(Buffer.isBuffer(buf));
     t.true(buf.length > 0);
@@ -28,4 +28,12 @@ test('basic mac', t => {
   .then((obj) => {
     t.deepEqual(obj, payload);
   });
+});
+
+test('errors', t => {
+  t.throws(() => {
+    cose.mac.create({});
+  });
+  t.throws(() => cose.mac.create({'alg': 'fizzle blorp'}));
+  t.throws(cose.mac.read(cbor.encode('foo'), key));
 });
