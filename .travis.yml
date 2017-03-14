@@ -14,6 +14,7 @@ git:
   submodules: false
 before_install:
 - git submodule update --init --recursive
+- ls -R test
 install:
 - npm install
 - npm install coveralls
