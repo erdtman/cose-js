@@ -10,6 +10,10 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
+git:
+  submodules: false
+before_install:
+- git submodule update --init --recursive
 install:
 - npm install
 - npm install coveralls
