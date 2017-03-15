@@ -1,12 +1,20 @@
 const cbor = require('cbor');
 const cose = require('../');
 const test = require('ava');
+const fs = require('fs');
 const utils = require('../test-helpers/failures.js');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
-const files = ['Examples/mac0-tests/mac-pass-01.json',
-  'Examples/mac0-tests/mac-pass-02.json',
-  'Examples/mac0-tests/mac-pass-03.json'];
+let files;
+if (fs.existsSync('Examples')) {
+  files = ['Examples/mac0-tests/mac-pass-01.json',
+    'Examples/mac0-tests/mac-pass-02.json',
+    'Examples/mac0-tests/mac-pass-03.json'];
+} else {
+  files = ['test/Examples/mac0-tests/mac-pass-01.json',
+    'test/Examples/mac0-tests/mac-pass-02.json',
+    'test/Examples/mac0-tests/mac-pass-03.json'];
+}
 
 files.forEach(function (file) {
   const example = jsonfile.readFileSync(file);
