@@ -10,7 +10,7 @@ test('translate headers', (t) => {
   h = cose.common.TranslateHeaders({alg: 'SHA-256', crit: 2});
   t.is(h.constructor.name, 'Map');
   t.is(h.size, 2);
-  t.is(h.get(cose.common.HeaderParameters.alg), 'SHA-256');
+  t.is(h.get(cose.common.HeaderParameters.alg), 5);
   t.is(h.get(cose.common.HeaderParameters.crit), 2);
 });
 
