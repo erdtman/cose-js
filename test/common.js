@@ -21,24 +21,24 @@ test('invalid', (t) => {
 });
 
 test('xor1', (t) => {
-  const a = new Buffer('00ff0f', 'hex');
-  const b = new Buffer('f0f0', 'hex');
+  const a = Buffer.from('00ff0f', 'hex');
+  const b = Buffer.from('f0f0', 'hex');
   const actual = cose.common.xor(a, b);
   const expected = '000fff';
   t.is(actual.toString('hex'), expected);
 });
 
 test('xor2', (t) => {
-  const a = new Buffer('f0f0', 'hex');
-  const b = new Buffer('00ff0f', 'hex');
+  const a = Buffer.from('f0f0', 'hex');
+  const b = Buffer.from('00ff0f', 'hex');
   const actual = cose.common.xor(a, b);
   const expected = '000fff';
   t.is(actual.toString('hex'), expected);
 });
 
 test('xor3', (t) => {
-  const a = new Buffer('f0f0f0', 'hex');
-  const b = new Buffer('00ff0f', 'hex');
+  const a = Buffer.from('f0f0f0', 'hex');
+  const b = Buffer.from('00ff0f', 'hex');
   const actual = cose.common.xor(a, b);
   const expected = 'f00fff';
   t.is(actual.toString('hex'), expected);
