@@ -1,61 +1,142 @@
-const cbor = require('cbor');
+/* jshint esversion: 6 */
+/* jslint node: true */
+'use strict';
+
 const cose = require('../');
 const test = require('ava');
-const fs = require('fs');
-const utils = require('../test-helpers/failures.js');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
-let files;
-if (fs.existsSync('Examples')) {
-  files = ['Examples/mac0-tests/mac-pass-01.json',
-    'Examples/mac0-tests/mac-pass-02.json',
-    'Examples/mac0-tests/mac-pass-03.json'];
-} else {
-  files = ['test/Examples/mac0-tests/mac-pass-01.json',
-    'test/Examples/mac0-tests/mac-pass-02.json',
-    'test/Examples/mac0-tests/mac-pass-03.json'];
-}
+const cbor = require('cbor');
 
-files.forEach(function (file) {
-  const example = jsonfile.readFileSync(file);
-  let external = example.input.mac0.external;
-  external = external ? new Buffer(external, 'hex') : undefined;
+test('create mac-pass-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-01.json');
+  const p = undefined;
+  const u = example.input.mac0.unprotected;
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const plaintext = Buffer.from(example.input.plaintext);
 
-  test('CREATE: ' + example.title, t => {
-    return cose.mac.create({p: example.input.mac0.protected,
-      u: example.input.mac0.unprotected},
-      Buffer.from(example.input.plaintext),
-      [{'key': base64url.toBuffer(example.input.mac0.recipients[0].key.k)}],
-      external)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      for (let failure in example.input.failures) {
-        if (!utils[failure]) {
-          continue;
-        }
-        buf = utils[failure](buf, example.input.failures[failure]);
-      }
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-    });
-  });
+  return cose.mac.create(
+    {'p': p, 'u': u},
+    plaintext,
+    [{'key': key}])
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
 
-  test('READ: ' + example.title, t => {
-    return cose.mac.read(example.output.cbor,
-      base64url.toBuffer(example.input.mac0.recipients[0].key.k),
-      external)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+    const actual = cbor.decode(buf).value;
+    const expected = cbor.decode(example.output.cbor).value;
+
+    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+
+    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
   });
 });
 
-test('errors', t => {
-  t.throws(() => {
-    cose.mac.create({});
+test('create mac-pass-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-02.json');
+  const p = undefined;
+  const u = example.input.mac0.unprotected;
+  const external = Buffer.from(example.input.mac0.external, 'hex');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const plaintext = Buffer.from(example.input.plaintext);
+  const options = {'encodep': 'empty'};
+
+  return cose.mac.create(
+    {'p': p, 'u': u},
+    plaintext,
+    [{'key': key}],
+    external,
+    options)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+
+    const actual = cbor.decode(buf).value;
+    const expected = cbor.decode(example.output.cbor).value;
+
+    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+
+    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
   });
-  t.throws(() => cose.mac.create({'alg': 'fizzle blorp'}));
-  t.throws(cose.mac.read(cbor.encode('foo'), 'key'));
+});
+
+test('create mac-pass-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-03.json');
+  const p = undefined;
+  const u = example.input.mac0.unprotected;
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const plaintext = Buffer.from(example.input.plaintext);
+  const options = {'encodep': 'empty',
+    'excludetag': true};
+
+  return cose.mac.create(
+    {'p': p, 'u': u},
+    plaintext,
+    [{'key': key}],
+    null,
+    options)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+
+    const actual = cbor.decode(buf);
+    const expected = cbor.decode(example.output.cbor);
+
+    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+
+    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+  });
+});
+
+test('verify mac-pass-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-01.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), example.input.plaintext);
+  });
+});
+
+test('verify mac-pass-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-02.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const external = Buffer.from(example.input.mac0.external, 'hex');
+
+  return cose.mac.read(example.output.cbor,
+    key,
+    external)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), example.input.plaintext);
+  });
+});
+
+test('verify mac-pass-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-03.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), example.input.plaintext);
+  });
 });
