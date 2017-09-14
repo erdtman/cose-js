@@ -55,10 +55,8 @@ exports.create = function (headers, payload, recipents, externalAAD, options) {
   externalAAD = externalAAD || EMPTY_BUFFER;
   let u = headers.u || {};
   let p = headers.p || {};
-
   p = common.TranslateHeaders(p);
   u = common.TranslateHeaders(u);
-
   const alg = p.get(common.HeaderParameters.alg) || u.get(common.HeaderParameters.alg);
 
   if (!alg) {
@@ -68,7 +66,6 @@ exports.create = function (headers, payload, recipents, externalAAD, options) {
   if (recipents.length === 0) {
     throw new Error('There has to be at least one recipent');
   }
-
   p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
   if (recipents.length === 1) {
     // TODO check crit headers
@@ -115,17 +112,14 @@ exports.read = function (data, key, externalAAD) {
     }
 
     let [p, u, payload, tag] = obj;
-    p = (!p.length) ? EMPTY_BUFFER : cbor.decode(p);
     p = (!p.size) ? EMPTY_BUFFER : p;
     u = (!u.size) ? EMPTY_BUFFER : u;
 
     // TODO validate protected header
-    const alg = (p !== EMPTY_BUFFER) ? p.get(common.HeaderParameters.alg) : (u !== EMPTY_BUFFER) ? u.get(common.HeaderParameters.alg) : undefined;
-    p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
+    const alg = p.get(common.HeaderParameters.alg) || u.get(common.HeaderParameters.alg);
+
     return doMac('MAC0', p, externalAAD, payload, COSEAlgToNodeAlg[AlgFromTags[alg]], key)
     .then((calcTag) => {
-      calcTag = calcTag.slice(0, CutTo[alg]);
-
       if (tag.toString('hex') !== calcTag.toString('hex')) {
         throw new Error('Tag mismatch');
       }
