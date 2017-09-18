@@ -96,6 +96,8 @@ test('create aes-gcm-03', t => {
   });
 });
 
+// aes-gcm-04 is an error example and cannot be recreated
+
 test('create aes-gcm-05', t => {
   const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-05.json');
   const p = example.input.enveloped.protected;
@@ -173,6 +175,19 @@ test('decrypt aes-gcm-03', t => {
   });
 });
 
+test('decrypt aes-gcm-04', te => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-04.json');
+  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    te.true(false);
+  }).catch((error) => {
+    te.is(error.message, 'Unsupported state or unable to authenticate data');
+  });
+});
+
 test('decrypt aes-gcm-05', t => {
   const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-05.json');
   const plaintext = example.input.plaintext;
@@ -192,9 +207,137 @@ test('decrypt aes-gcm-05', t => {
   });
 });
 
-test('decrypt aes-gcm-04', te => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-04.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+test('create aes-gcm-enc-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-01.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipients = [{
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource,
+    'singleRecipient': true
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipients,
+    options)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+  });
+});
+
+test('create aes-gcm-enc-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-02.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipients = [{
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource,
+    'singleRecipient': true
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipients,
+    options)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+  });
+});
+
+test('create aes-gcm-enc-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-03.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipients = [{
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource,
+    'singleRecipient': true
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipients,
+    options)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+  });
+});
+
+// create aes-gcm-enc-04 is an error example and cannot be recreated
+
+test('decrypt aes-gcm-enc-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-01.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), plaintext);
+  });
+});
+
+test('decrypt aes-gcm-enc-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-02.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), plaintext);
+  });
+});
+
+test('decrypt aes-gcm-enc-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-03.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), plaintext);
+  });
+});
+
+test('decrypt aes-gcm-enc-04', te => {
+  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-04.json');
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
 
   return cose.encrypt.read(example.output.cbor,
     key)
