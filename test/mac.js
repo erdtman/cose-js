@@ -141,6 +141,92 @@ test('verify mac-pass-03', t => {
   });
 });
 
+test('create HMac-enc-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-01.json');
+  const p = example.input.mac0.protected;
+  const u = example.input.mac0.unprotected;
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  return cose.mac.create(
+    {'p': p, 'u': u},
+    plaintext,
+    [{'key': key}])
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+
+    const actual = cbor.decode(buf).value;
+    const expected = cbor.decode(example.output.cbor).value;
+
+    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+
+    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+  });
+});
+
+test('create HMac-enc-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-02.json');
+  const p = example.input.mac0.protected;
+  const u = example.input.mac0.unprotected;
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  return cose.mac.create(
+    {'p': p, 'u': u},
+    plaintext,
+    [{'key': key}])
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+
+    const actual = cbor.decode(buf).value;
+    const expected = cbor.decode(example.output.cbor).value;
+
+    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+
+    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+  });
+});
+
+test('create HMac-enc-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-03.json');
+  const p = example.input.mac0.protected;
+  const u = example.input.mac0.unprotected;
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  return cose.mac.create(
+    {'p': p, 'u': u},
+    plaintext,
+    [{'key': key}])
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+
+    const actual = cbor.decode(buf).value;
+    const expected = cbor.decode(example.output.cbor).value;
+
+    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+
+    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+  });
+});
+
+// TODO add create HMac-enc-04
+
 test('create HMac-enc-05', t => {
   const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-05.json');
   const p = example.input.mac0.protected;
@@ -168,6 +254,47 @@ test('create HMac-enc-05', t => {
     t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
   });
 });
+
+test('verify HMac-enc-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-01.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), example.input.plaintext);
+  });
+});
+
+test('verify HMac-enc-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-02.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), example.input.plaintext);
+  });
+});
+
+test('verify HMac-enc-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-03.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(Buffer.isBuffer(buf));
+    t.true(buf.length > 0);
+    t.is(buf.toString('utf8'), example.input.plaintext);
+  });
+});
+
+// TODO add verify HMac-enc-05
 
 test('verify HMac-enc-05', t => {
   const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-05.json');
