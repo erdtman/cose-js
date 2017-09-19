@@ -1,6 +1,6 @@
 {
   "name": "cose-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "JavaScript COSE implementation",
   "main": "lib/index.js",
   "scripts": {
