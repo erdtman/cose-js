@@ -141,6 +141,84 @@ test('verify mac-pass-03', t => {
   });
 });
 
+test('verify mac-fail-01', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-01.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(false);
+  }).catch((error) => {
+    t.is(error.message, 'Unexpected cbor tag, \'992\'');
+  });
+});
+
+test('verify mac-fail-02', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-02.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(false);
+  }).catch((error) => {
+    t.is(error.message, 'Tag mismatch');
+  });
+});
+
+test('verify mac-fail-03', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-03.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(false);
+  }).catch((error) => {
+    t.is(error.message, 'Unknown algorithm, -999');
+  });
+});
+
+test('verify mac-fail-04', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-04.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(false);
+  }).catch((error) => {
+    t.is(error.message, 'Unknown algorithm, Unknown');
+  });
+});
+
+test('verify mac-fail-06', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-06.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(false);
+  }).catch((error) => {
+    t.is(error.message, 'Tag mismatch');
+  });
+});
+
+test('verify mac-fail-07', t => {
+  const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-07.json');
+  const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+
+  return cose.mac.read(example.output.cbor,
+    key)
+  .then((buf) => {
+    t.true(false);
+  }).catch((error) => {
+    t.is(error.message, 'Tag mismatch');
+  });
+});
+
 test('create HMac-enc-01', t => {
   const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-01.json');
   const p = example.input.mac0.protected;
