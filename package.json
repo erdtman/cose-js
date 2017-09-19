@@ -42,10 +42,7 @@
     "any-promise": "^1.3.0",
     "base64url": "^2.0.0",
     "cbor": "^1.0.6",
-    "elliptic": "^6.4.0",
-    "node-aes-cmac": "^0.1.1",
-    "node-webcrypto-ossl": "^1.0.7",
-    "webcrypto": "^0.1.0"
+    "elliptic": "^6.4.0"
   },
   "devDependencies": {
     "ava": "*",
