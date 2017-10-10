@@ -18,7 +18,7 @@ test('create HMac-01', t => {
   return cose.mac.create(
     {'p': p, 'u': u},
     plaintext,
-    [{'key': key}])
+    {'key': key})
   .then((buf) => {
     t.true(Buffer.isBuffer(buf));
     t.true(buf.length > 0);
@@ -59,7 +59,7 @@ test('create mac-pass-01', t => {
   return cose.mac.create(
     {'p': p, 'u': u},
     plaintext,
-    [{'key': key}])
+    {'key': key})
   .then((buf) => {
     t.true(Buffer.isBuffer(buf));
     t.true(buf.length > 0);
@@ -89,7 +89,7 @@ test('create mac-pass-02', t => {
   return cose.mac.create(
     {'p': p, 'u': u},
     plaintext,
-    [{'key': key}],
+    {'key': key},
     external,
     options)
   .then((buf) => {
@@ -121,7 +121,7 @@ test('create mac-pass-03', t => {
   return cose.mac.create(
     {'p': p, 'u': u},
     plaintext,
-    [{'key': key}],
+    {'key': key},
     null,
     options)
   .then((buf) => {
