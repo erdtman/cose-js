@@ -7,8 +7,6 @@ const test = require('ava');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
 
-// TODO create ecdsa-01
-
 test('create ecdsa-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/ecdsa-01.json');
   const p = example.input.sign.protected;
