@@ -72,7 +72,6 @@ cose.sign.create(
 ```js
 const cose = require('../');
 
-
 const verifier = {
   'key': {
     'x': Buffer.from('143329cce7868e416927599cf65a34f3ce2ffda55a7eca69ed8919a394d42f0f', 'hex'),
@@ -117,6 +116,7 @@ return cose.encrypt.create(
 ```js
 const key = Buffer.from('231f4c4d4d3051fdc2ec0a3851d5b383', 'hex')
 const COSEMessage = Buffer.from('d8608443a10101a2044a6f75722d736563726574054c291a40271067ff57b1623c30581f23b663aaf9dfb91c5a39a175118ad7d72d416385b1b610e28b3b3fd824a397818340a040', 'hex');
+
 cose.encrypt.read(
   COSEMessage,
   key)
