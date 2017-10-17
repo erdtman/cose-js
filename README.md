@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/erdtman/cose-js.svg?branch=master)](https://travis-ci.org/erdtman/cose-js)
 [![Coverage Status](https://coveralls.io/repos/github/erdtman/cose-js/badge.svg?branch=master)](https://coveralls.io/github/erdtman/cose-js?branch=master)
 # cose-js
-JavaScript implementation of [COSE](https://tools.ietf.org/html/draft-ietf-cose-msg)
+JavaScript implementation of [COSE](https://tools.ietf.org/html/rfc8152), [RFC8152](https://tools.ietf.org/html/rfc8152)
 ## MAC
 ```js
 const cose = require('../');
