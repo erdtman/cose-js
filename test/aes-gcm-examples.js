@@ -213,20 +213,19 @@ test('create aes-gcm-enc-01', t => {
   const u = example.input.encrypted.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
-  const recipients = [{
+  const recipient = {
     'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
     'u': example.input.encrypted.recipients[0].unprotected
-  }];
+  };
 
   const options = {
-    'randomSource': randomSource,
-    'singleRecipient': true
+    'randomSource': randomSource
   };
 
   return cose.encrypt.create(
     {p: p, u: u},
     plaintext,
-    recipients,
+    recipient,
     options)
   .then((buf) => {
     t.true(Buffer.isBuffer(buf));
@@ -241,20 +240,19 @@ test('create aes-gcm-enc-02', t => {
   const u = example.input.encrypted.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
-  const recipients = [{
+  const recipient = {
     'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
     'u': example.input.encrypted.recipients[0].unprotected
-  }];
+  };
 
   const options = {
-    'randomSource': randomSource,
-    'singleRecipient': true
+    'randomSource': randomSource
   };
 
   return cose.encrypt.create(
     {p: p, u: u},
     plaintext,
-    recipients,
+    recipient,
     options)
   .then((buf) => {
     t.true(Buffer.isBuffer(buf));
@@ -269,20 +267,19 @@ test('create aes-gcm-enc-03', t => {
   const u = example.input.encrypted.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
-  const recipients = [{
+  const recipient = {
     'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
     'u': example.input.encrypted.recipients[0].unprotected
-  }];
+  };
 
   const options = {
-    'randomSource': randomSource,
-    'singleRecipient': true
+    'randomSource': randomSource
   };
 
   return cose.encrypt.create(
     {p: p, u: u},
     plaintext,
-    recipients,
+    recipient,
     options)
   .then((buf) => {
     t.true(Buffer.isBuffer(buf));
