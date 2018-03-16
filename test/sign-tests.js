@@ -12,7 +12,6 @@ test('create ecdsa-01', (t) => {
   const p = example.input.sign.protected;
   const u = example.input.sign.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
-
   const signers = [{
     'key': {
       'd': base64url.toBuffer(example.input.sign.signers[0].key.d)

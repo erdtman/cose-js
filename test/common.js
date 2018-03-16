@@ -14,6 +14,17 @@ test('translate headers', (t) => {
   t.is(h.get(cose.common.HeaderParameters.crit), 2);
 });
 
+/*
+test('translate headers', (t) => {
+  const result = cose.common.TranslateHeaders({
+    'ephemeral_key': Buffer.from('beef', 'hex'),
+    'partyUNonce': Buffer.from('dead', 'hex'),
+    'kid': Buffer.from('0b0b', 'hex'),
+  });
+  console.log(result);
+});
+*/
+
 test('invalid', (t) => {
   t.throws(() => {
     cose.common.TranslateHeaders({'fizzle stomp': 12});
