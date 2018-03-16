@@ -19,21 +19,21 @@ test('create HMac-01', t => {
     {'p': p, 'u': u},
     plaintext,
     {'key': key})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('verify HMac-01', t => {
@@ -42,11 +42,11 @@ test('verify HMac-01', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('create mac-pass-01', t => {
@@ -60,21 +60,21 @@ test('create mac-pass-01', t => {
     {'p': p, 'u': u},
     plaintext,
     {'key': key})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('create mac-pass-02', t => {
@@ -92,21 +92,21 @@ test('create mac-pass-02', t => {
     {'key': key},
     external,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('create mac-pass-03', t => {
@@ -124,21 +124,21 @@ test('create mac-pass-03', t => {
     {'key': key},
     null,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf);
-    const expected = cbor.decode(example.output.cbor);
+      const actual = cbor.decode(buf);
+      const expected = cbor.decode(example.output.cbor);
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('verify mac-pass-01', t => {
@@ -147,11 +147,11 @@ test('verify mac-pass-01', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify mac-pass-02', t => {
@@ -162,11 +162,11 @@ test('verify mac-pass-02', t => {
   return cose.mac.read(example.output.cbor,
     key,
     external)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify mac-pass-03', t => {
@@ -175,11 +175,11 @@ test('verify mac-pass-03', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify mac-fail-01', t => {
@@ -188,11 +188,11 @@ test('verify mac-fail-01', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Unexpected cbor tag, \'992\'');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Unexpected cbor tag, \'992\'');
+    });
 });
 
 test('verify mac-fail-02', t => {
@@ -201,11 +201,11 @@ test('verify mac-fail-02', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Tag mismatch');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Tag mismatch');
+    });
 });
 
 test('verify mac-fail-03', t => {
@@ -214,11 +214,11 @@ test('verify mac-fail-03', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Unknown algorithm, -999');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Unknown algorithm, -999');
+    });
 });
 
 test('verify mac-fail-04', t => {
@@ -227,11 +227,11 @@ test('verify mac-fail-04', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Unknown algorithm, Unknown');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Unknown algorithm, Unknown');
+    });
 });
 
 test('verify mac-fail-06', t => {
@@ -240,11 +240,11 @@ test('verify mac-fail-06', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Tag mismatch');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Tag mismatch');
+    });
 });
 
 test('verify mac-fail-07', t => {
@@ -253,9 +253,9 @@ test('verify mac-fail-07', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Tag mismatch');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Tag mismatch');
+    });
 });

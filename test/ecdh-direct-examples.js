@@ -46,13 +46,13 @@ test('create p256-hkdf-256-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p256-hkdf-256-02', t => {
@@ -83,13 +83,13 @@ test('create p256-hkdf-256-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p256-hkdf-512-01', t => {
@@ -120,13 +120,13 @@ test('create p256-hkdf-512-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p256-hkdf-512-02', t => {
@@ -163,13 +163,13 @@ test('create p256-hkdf-512-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p256-ss-hkdf-256-01', t => {
@@ -213,13 +213,13 @@ test('create p256-ss-hkdf-256-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p521-hkdf-256-01', t => {
@@ -256,13 +256,13 @@ test('create p521-hkdf-256-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p521-hkdf-256-02', t => {
@@ -299,13 +299,13 @@ test('create p521-hkdf-256-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p521-hkdf-256-01', t => {
@@ -342,13 +342,13 @@ test('create p521-hkdf-256-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });
 
 test('create p521-hkdf-256-02', t => {
@@ -385,11 +385,11 @@ test('create p521-hkdf-256-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    const actual = sortobject(cbor.decodeFirstSync(buf));
-    const expected = cbor.decodeFirstSync(example.output.cbor);
-    t.true(deepEqual(actual, expected));
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
 });

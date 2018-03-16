@@ -15,11 +15,11 @@ cose.sign.create(
   headers,
   plaintext,
   signer)
-.then((buf) => {
-  console.log('Signed message: ' + buf.toString('hex'));
-}).catch((error) => {
-  console.log(error);
-});
+  .then((buf) => {
+    console.log('Signed message: ' + buf.toString('hex'));
+  }).catch((error) => {
+    console.log(error);
+  });
 
 const verifier = {
   'key': {
@@ -32,8 +32,8 @@ const COSEMessage = Buffer.from('d28443a10126a10442313172496d706f7274616e74206d6
 cose.sign.verify(
   COSEMessage,
   verifier)
-.then((buf) => {
-  console.log('Verified message: ' + buf.toString('utf8'));
-}).catch((error) => {
-  console.log(error);
-});
+  .then((buf) => {
+    console.log('Verified message: ' + buf.toString('utf8'));
+  }).catch((error) => {
+    console.log(error);
+  });

@@ -39,11 +39,11 @@ test('create aes-ccm-enc-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-ccm-enc-02', t => {
@@ -66,11 +66,11 @@ test('create aes-ccm-enc-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-ccm-enc-03', t => {
@@ -93,11 +93,11 @@ test('create aes-ccm-enc-03', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-ccm-enc-04', t => {
@@ -120,11 +120,11 @@ test('create aes-ccm-enc-04', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 // Not testing aes-ccm-enc-05 key size is not suppoted by node-aes-ccm
@@ -138,11 +138,11 @@ test('decrypt aes-ccm-enc-01', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-ccm-enc-02', t => {
@@ -152,11 +152,11 @@ test('decrypt aes-ccm-enc-02', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-ccm-enc-03', t => {
@@ -166,11 +166,11 @@ test('decrypt aes-ccm-enc-03', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-ccm-enc-04', t => {
@@ -180,11 +180,11 @@ test('decrypt aes-ccm-enc-04', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 // Not testing aes-ccm-enc-05 key size is not suppoted by node-aes-ccm
@@ -212,11 +212,11 @@ test('create aes-ccm-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-ccm-02', t => {
@@ -239,11 +239,11 @@ test('create aes-ccm-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-ccm-03', t => {
@@ -266,11 +266,11 @@ test('create aes-ccm-03', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-ccm-04', t => {
@@ -293,11 +293,11 @@ test('create aes-ccm-04', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 // Not testing aes-ccm-05 key size is not suppoted by node-aes-ccm
@@ -312,11 +312,11 @@ test('decrypt aes-ccm-01', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-ccm-02', t => {
@@ -326,11 +326,11 @@ test('decrypt aes-ccm-02', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-ccm-03', t => {
@@ -340,11 +340,11 @@ test('decrypt aes-ccm-03', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-ccm-04', t => {
@@ -354,11 +354,11 @@ test('decrypt aes-ccm-04', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 // Not testing aes-ccm-05 key size is not suppoted by node-aes-ccm

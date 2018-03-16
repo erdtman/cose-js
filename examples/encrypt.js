@@ -25,8 +25,8 @@ const COSEMessage = Buffer.from('d8608443a10101a2044a6f75722d736563726574054c291
 cose.encrypt.read(
   COSEMessage,
   key)
-.then((buf) => {
-  console.log('Protected message: ' + buf.toString('utf8'));
-}).catch((error) => {
-  console.log(error);
-});
+  .then((buf) => {
+    console.log('Protected message: ' + buf.toString('utf8'));
+  }).catch((error) => {
+    console.log(error);
+  });

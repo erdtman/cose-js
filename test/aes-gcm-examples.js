@@ -35,11 +35,11 @@ test('create aes-gcm-01', t => {
     plaintext,
     recipients,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-gcm-02', t => {
@@ -62,11 +62,11 @@ test('create aes-gcm-02', t => {
     plaintext,
     recipients,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-gcm-03', t => {
@@ -89,11 +89,11 @@ test('create aes-gcm-03', t => {
     plaintext,
     recipients,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 // aes-gcm-04 is an error example and cannot be recreated
@@ -126,11 +126,11 @@ test('create aes-gcm-05', t => {
     plaintext,
     recipients,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('decrypt aes-gcm-01', t => {
@@ -140,11 +140,11 @@ test('decrypt aes-gcm-01', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-gcm-02', t => {
@@ -154,11 +154,11 @@ test('decrypt aes-gcm-02', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-gcm-03', t => {
@@ -168,11 +168,11 @@ test('decrypt aes-gcm-03', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-gcm-04', te => {
@@ -181,11 +181,11 @@ test('decrypt aes-gcm-04', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unsupported state or unable to authenticate data');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unsupported state or unable to authenticate data');
+    });
 });
 
 test('decrypt aes-gcm-05', t => {
@@ -200,11 +200,11 @@ test('decrypt aes-gcm-05', t => {
   return cose.encrypt.read(example.output.cbor,
     key,
     {'contextIv': contextIv})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('create aes-gcm-enc-01', t => {
@@ -227,11 +227,11 @@ test('create aes-gcm-enc-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-gcm-enc-02', t => {
@@ -254,11 +254,11 @@ test('create aes-gcm-enc-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create aes-gcm-enc-03', t => {
@@ -281,11 +281,11 @@ test('create aes-gcm-enc-03', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 // create aes-gcm-enc-04 is an error example and cannot be recreated
@@ -297,11 +297,11 @@ test('decrypt aes-gcm-enc-01', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-gcm-enc-02', t => {
@@ -311,11 +311,11 @@ test('decrypt aes-gcm-enc-02', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-gcm-enc-03', t => {
@@ -325,11 +325,11 @@ test('decrypt aes-gcm-enc-03', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt aes-gcm-enc-04', te => {
@@ -338,9 +338,9 @@ test('decrypt aes-gcm-enc-04', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unsupported state or unable to authenticate data');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unsupported state or unable to authenticate data');
+    });
 });

@@ -24,11 +24,11 @@ test('create sign-pass-01', (t) => {
     plaintext,
     signer
   )
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create sign-pass-02', (t) => {
@@ -49,11 +49,11 @@ test('create sign-pass-02', (t) => {
     plaintext,
     signer
   )
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create sign-pass-03', (t) => {
@@ -76,11 +76,11 @@ test('create sign-pass-03', (t) => {
       'excludetag': true
     }
   )
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('verify sign-pass-01', (t) => {
@@ -98,11 +98,11 @@ test('verify sign-pass-01', (t) => {
   return cose.sign.verify(
     signature,
     verifier)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify sign-pass-02', (t) => {
@@ -121,11 +121,11 @@ test('verify sign-pass-02', (t) => {
   return cose.sign.verify(
     signature,
     verifier)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify sign-pass-03', (t) => {
@@ -146,11 +146,11 @@ test('verify sign-pass-03', (t) => {
     {
       'defaultType': cose.sign.Sign1Tag
     })
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify sign-fail-01', (t) => {

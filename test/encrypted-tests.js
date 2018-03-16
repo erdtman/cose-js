@@ -35,11 +35,11 @@ test('create aes-gcm-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create enc-pass-01', t => {
@@ -62,11 +62,11 @@ test('create enc-pass-01', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create enc-pass-02', t => {
@@ -92,11 +92,11 @@ test('create enc-pass-02', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('create enc-pass-03', t => {
@@ -121,11 +121,11 @@ test('create enc-pass-03', t => {
     plaintext,
     recipient,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+    });
 });
 
 test('decrypt aes-gcm-01', t => {
@@ -135,11 +135,11 @@ test('decrypt aes-gcm-01', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt enc-pass-01', t => {
@@ -149,11 +149,11 @@ test('decrypt enc-pass-01', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt enc-pass-02', t => {
@@ -166,11 +166,11 @@ test('decrypt enc-pass-02', t => {
   return cose.encrypt.read(example.output.cbor,
     key,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt enc-pass-03', t => {
@@ -183,11 +183,11 @@ test('decrypt enc-pass-03', t => {
   return cose.encrypt.read(example.output.cbor,
     key,
     options)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
 });
 
 test('decrypt enc-fail-01', te => {
@@ -196,11 +196,11 @@ test('decrypt enc-fail-01', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unknown tag, 995');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unknown tag, 995');
+    });
 });
 
 test('decrypt enc-fail-02', te => {
@@ -209,11 +209,11 @@ test('decrypt enc-fail-02', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unsupported state or unable to authenticate data');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unsupported state or unable to authenticate data');
+    });
 });
 
 test('decrypt enc-fail-03', te => {
@@ -222,11 +222,11 @@ test('decrypt enc-fail-03', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unknown or unsupported algorithm -999');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unknown or unsupported algorithm -999');
+    });
 });
 
 test('decrypt enc-fail-04', te => {
@@ -235,11 +235,11 @@ test('decrypt enc-fail-04', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unknown or unsupported algorithm Unknown');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unknown or unsupported algorithm Unknown');
+    });
 });
 
 test('decrypt enc-fail-06', te => {
@@ -248,11 +248,11 @@ test('decrypt enc-fail-06', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unsupported state or unable to authenticate data');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unsupported state or unable to authenticate data');
+    });
 });
 
 test('decrypt enc-fail-07', te => {
@@ -261,9 +261,9 @@ test('decrypt enc-fail-07', te => {
 
   return cose.encrypt.read(example.output.cbor,
     key)
-  .then((buf) => {
-    te.true(false);
-  }).catch((error) => {
-    te.is(error.message, 'Unsupported state or unable to authenticate data');
-  });
+    .then((buf) => {
+      te.true(false);
+    }).catch((error) => {
+      te.is(error.message, 'Unsupported state or unable to authenticate data');
+    });
 });

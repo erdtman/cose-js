@@ -19,21 +19,21 @@ test('create HMac-enc-01', t => {
     {'p': p, 'u': u},
     plaintext,
     {'key': key})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('create HMac-enc-02', t => {
@@ -47,21 +47,21 @@ test('create HMac-enc-02', t => {
     {'p': p, 'u': u},
     plaintext,
     {'key': key})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('create HMac-enc-03', t => {
@@ -75,21 +75,21 @@ test('create HMac-enc-03', t => {
     {'p': p, 'u': u},
     plaintext,
     {'key': key})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 // HMac-enc-04 is a negative test and cannot be recreated
@@ -105,21 +105,21 @@ test('create HMac-enc-05', t => {
     {'p': p, 'u': u},
     plaintext,
     {'key': key})
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('verify HMac-enc-01', t => {
@@ -128,11 +128,11 @@ test('verify HMac-enc-01', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify HMac-enc-02', t => {
@@ -141,11 +141,11 @@ test('verify HMac-enc-02', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify HMac-enc-03', t => {
@@ -154,11 +154,11 @@ test('verify HMac-enc-03', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify HMac-enc-04', t => {
@@ -167,11 +167,11 @@ test('verify HMac-enc-04', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Tag mismatch');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Tag mismatch');
+    });
 });
 
 test('verify HMac-enc-05', t => {
@@ -180,11 +180,11 @@ test('verify HMac-enc-05', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('create HMac-01', t => {
@@ -200,21 +200,21 @@ test('create HMac-01', t => {
     [{'key': key,
       'p': undefined,
       'u': u}])
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('create HMac-02', t => {
@@ -230,21 +230,21 @@ test('create HMac-02', t => {
     [{'key': key,
       'p': undefined,
       'u': u}])
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('create HMac-03', t => {
@@ -260,21 +260,21 @@ test('create HMac-03', t => {
     [{'key': key,
       'p': undefined,
       'u': u}])
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 // HMac-04 is a negative test and cannot be recreated
@@ -292,21 +292,21 @@ test('create HMac-05', t => {
     [{'key': key,
       'p': undefined,
       'u': u}])
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
 
-    const actual = cbor.decode(buf).value;
-    const expected = cbor.decode(example.output.cbor).value;
+      const actual = cbor.decode(buf).value;
+      const expected = cbor.decode(example.output.cbor).value;
 
-    const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-    const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
+      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
+      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
 
-    t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-    t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-    t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-    t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
-  });
+      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
+      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
+      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
+      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+    });
 });
 
 test('verify HMac-01', t => {
@@ -315,11 +315,11 @@ test('verify HMac-01', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify HMac-02', t => {
@@ -328,11 +328,11 @@ test('verify HMac-02', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify HMac-03', t => {
@@ -341,11 +341,11 @@ test('verify HMac-03', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
 
 test('verify HMac-04', t => {
@@ -354,11 +354,11 @@ test('verify HMac-04', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(false);
-  }).catch((error) => {
-    t.is(error.message, 'Tag mismatch');
-  });
+    .then((buf) => {
+      t.true(false);
+    }).catch((error) => {
+      t.is(error.message, 'Tag mismatch');
+    });
 });
 
 test('verify HMac-05', t => {
@@ -367,9 +367,9 @@ test('verify HMac-05', t => {
 
   return cose.mac.read(example.output.cbor,
     key)
-  .then((buf) => {
-    t.true(Buffer.isBuffer(buf));
-    t.true(buf.length > 0);
-    t.is(buf.toString('utf8'), example.input.plaintext);
-  });
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), example.input.plaintext);
+    });
 });
