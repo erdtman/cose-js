@@ -7,7 +7,6 @@ const test = require('ava');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
 const cbor = require('cbor');
-const sortobject = require('deep-sort-object');
 const deepEqual = require('./util.js').deepEqual;
 
 function randomSource (bytes) {
@@ -49,7 +48,7 @@ test('create p256-hkdf-256-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
@@ -86,11 +85,13 @@ test('create p256-hkdf-256-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
 });
+
+// create p256-hkdf-256-03
 
 test('create p256-hkdf-512-01', t => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-512-01.json');
@@ -123,7 +124,7 @@ test('create p256-hkdf-512-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
@@ -166,11 +167,13 @@ test('create p256-hkdf-512-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
 });
+
+// create p256-hkdf-512-03
 
 test('create p256-ss-hkdf-256-01', t => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-ss-hkdf-256-01.json');
@@ -216,11 +219,21 @@ test('create p256-ss-hkdf-256-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
 });
+
+// create p256-ss-hkdf-256-02
+
+// create p256-ss-hkdf-256-03
+
+// create p256-ss-hkdf-512-01
+
+// create p256-ss-hkdf-512-02
+
+// create p256-ss-hkdf-512-03
 
 test('create p521-hkdf-256-01', t => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-256-01.json');
@@ -259,7 +272,7 @@ test('create p521-hkdf-256-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
@@ -302,13 +315,15 @@ test('create p521-hkdf-256-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
 });
 
-test('create p521-hkdf-256-01', t => {
+// create p521-hkdf-256-03
+
+test('create p521-hkdf-512-01', t => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-512-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -345,13 +360,13 @@ test('create p521-hkdf-256-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
 });
 
-test('create p521-hkdf-256-02', t => {
+test('create p521-hkdf-512-02', t => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-512-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -388,8 +403,22 @@ test('create p521-hkdf-256-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      const actual = sortobject(cbor.decodeFirstSync(buf));
+      const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
       t.true(deepEqual(actual, expected));
     });
 });
+
+// create p521-hkdf-512-03
+
+// create p521-ss-hkdf-256-01
+
+// create p521-ss-hkdf-256-02
+
+// create p521-ss-hkdf-256-03
+
+// create p521-ss-hkdf-512-01
+
+// create p521-ss-hkdf-512-02
+
+// create p521-ss-hkdf-512-03

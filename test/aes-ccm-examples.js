@@ -6,6 +6,8 @@ const cose = require('../');
 const test = require('ava');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
+const cbor = require('cbor');
+const deepEqual = require('./util.js').deepEqual;
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -42,7 +44,9 @@ test('create aes-ccm-enc-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -69,7 +73,9 @@ test('create aes-ccm-enc-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -96,7 +102,9 @@ test('create aes-ccm-enc-03', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -123,7 +131,9 @@ test('create aes-ccm-enc-04', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -242,7 +252,9 @@ test('create aes-ccm-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -269,7 +281,9 @@ test('create aes-ccm-03', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -296,7 +310,9 @@ test('create aes-ccm-04', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 

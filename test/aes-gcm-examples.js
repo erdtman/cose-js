@@ -6,6 +6,8 @@ const cose = require('../');
 const test = require('ava');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
+const cbor = require('cbor');
+const deepEqual = require('./util.js').deepEqual;
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -38,7 +40,9 @@ test('create aes-gcm-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -65,7 +69,9 @@ test('create aes-gcm-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -92,7 +98,9 @@ test('create aes-gcm-03', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -129,7 +137,9 @@ test('create aes-gcm-05', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -230,7 +240,9 @@ test('create aes-gcm-enc-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -257,7 +269,9 @@ test('create aes-gcm-enc-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -284,7 +298,9 @@ test('create aes-gcm-enc-03', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -332,15 +348,15 @@ test('decrypt aes-gcm-enc-03', t => {
     });
 });
 
-test('decrypt aes-gcm-enc-04', te => {
+test('decrypt aes-gcm-enc-04', t => {
   const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-04.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
 
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      te.true(false);
+      t.true(false);
     }).catch((error) => {
-      te.is(error.message, 'Unsupported state or unable to authenticate data');
+      t.is(error.message, 'Unsupported state or unable to authenticate data');
     });
 });
