@@ -137,9 +137,121 @@ test('create aes-ccm-enc-04', t => {
     });
 });
 
-// Not testing aes-ccm-enc-05 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-enc-06 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-enc-07 key size is not suppoted by node-aes-ccm
+test('create aes-ccm-enc-05', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-05.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = {
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  };
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
+
+test('create aes-ccm-enc-06', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-06.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = {
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  };
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
+
+test('create aes-ccm-enc-07', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-07.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = {
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  };
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
+
+test('create aes-ccm-enc-08', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-08.json');
+  const p = example.input.encrypted.protected;
+  const u = example.input.encrypted.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = {
+    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    'u': example.input.encrypted.recipients[0].unprotected
+  };
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
 
 test('decrypt aes-ccm-enc-01', t => {
   const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-01.json');
@@ -197,10 +309,61 @@ test('decrypt aes-ccm-enc-04', t => {
     });
 });
 
-// Not testing aes-ccm-enc-05 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-enc-06 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-enc-07 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-enc-08 key size is not suppoted by node-aes-ccm
+test('decrypt aes-ccm-enc-05', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-05.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
+
+test('decrypt aes-ccm-enc-06', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-06.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
+
+test('decrypt aes-ccm-enc-07', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-07.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
+
+test('decrypt aes-ccm-enc-08', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-enc-08.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
 
 test('create aes-ccm-01', t => {
   const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-01.json');
@@ -316,10 +479,121 @@ test('create aes-ccm-04', t => {
     });
 });
 
-// Not testing aes-ccm-05 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-06 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-07 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-08 key size is not suppoted by node-aes-ccm
+test('create aes-ccm-05', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-05.json');
+  const p = example.input.enveloped.protected;
+  const u = example.input.enveloped.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = [{
+    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    'u': example.input.enveloped.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
+
+test('create aes-ccm-06', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-06.json');
+  const p = example.input.enveloped.protected;
+  const u = example.input.enveloped.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = [{
+    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    'u': example.input.enveloped.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
+
+test('create aes-ccm-07', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-07.json');
+  const p = example.input.enveloped.protected;
+  const u = example.input.enveloped.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = [{
+    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    'u': example.input.enveloped.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
+
+test('create aes-ccm-08', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-08.json');
+  const p = example.input.enveloped.protected;
+  const u = example.input.enveloped.unprotected;
+  const plaintext = Buffer.from(example.input.plaintext);
+
+  const recipient = [{
+    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    'u': example.input.enveloped.recipients[0].unprotected
+  }];
+
+  const options = {
+    'randomSource': randomSource
+  };
+
+  return cose.encrypt.create(
+    {p: p, u: u},
+    plaintext,
+    recipient,
+    options)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
+    });
+});
 
 test('decrypt aes-ccm-01', t => {
   const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-01.json');
@@ -336,7 +610,7 @@ test('decrypt aes-ccm-01', t => {
 });
 
 test('decrypt aes-ccm-02', t => {
-  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-01.json');
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-02.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
 
@@ -350,7 +624,7 @@ test('decrypt aes-ccm-02', t => {
 });
 
 test('decrypt aes-ccm-03', t => {
-  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-01.json');
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-03.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
 
@@ -364,7 +638,7 @@ test('decrypt aes-ccm-03', t => {
 });
 
 test('decrypt aes-ccm-04', t => {
-  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-01.json');
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-04.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
 
@@ -377,7 +651,58 @@ test('decrypt aes-ccm-04', t => {
     });
 });
 
-// Not testing aes-ccm-05 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-06 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-07 key size is not suppoted by node-aes-ccm
-// Not testing aes-ccm-08 key size is not suppoted by node-aes-ccm
+test('decrypt aes-ccm-05', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-05.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
+
+test('decrypt aes-ccm-06', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-06.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
+
+test('decrypt aes-ccm-07', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-07.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
+
+test('decrypt aes-ccm-08', t => {
+  const example = jsonfile.readFileSync('test/Examples/aes-ccm-examples/aes-ccm-08.json');
+  const plaintext = example.input.plaintext;
+  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+
+  return cose.encrypt.read(example.output.cbor,
+    key)
+    .then((buf) => {
+      t.true(Buffer.isBuffer(buf));
+      t.true(buf.length > 0);
+      t.is(buf.toString('utf8'), plaintext);
+    });
+});
