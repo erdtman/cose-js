@@ -48,7 +48,6 @@ test('create mac-pass-01', t => {
   const u = example.input.mac0.unprotected;
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
-
   return cose.mac.create(
     {'p': p, 'u': u},
     plaintext,
@@ -56,17 +55,9 @@ test('create mac-pass-01', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-
-      const actual = cbor.decode(buf).value;
-      const expected = cbor.decode(example.output.cbor).value;
-
-      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
-
-      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -88,17 +79,9 @@ test('create mac-pass-02', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-
-      const actual = cbor.decode(buf).value;
-      const expected = cbor.decode(example.output.cbor).value;
-
-      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
-
-      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
@@ -108,8 +91,10 @@ test('create mac-pass-03', t => {
   const u = example.input.mac0.unprotected;
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
-  const options = {'encodep': 'empty',
-    'excludetag': true};
+  const options = {
+    'encodep': 'empty',
+    'excludetag': true
+  };
 
   return cose.mac.create(
     {'p': p, 'u': u},
@@ -120,17 +105,9 @@ test('create mac-pass-03', t => {
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
-
-      const actual = cbor.decode(buf);
-      const expected = cbor.decode(example.output.cbor);
-
-      const expectedP = (expected[0].length === 0) ? {} : cbor.decode(expected[0]);
-      const actualP = (actual[0].length === 0) ? {} : cbor.decode(actual[0]);
-
-      t.deepEqual(expectedP[0], actualP[0], 'protected header missmatch');
-      t.deepEqual(expected[1], actual[1], 'unprotected header missmatch');
-      t.is(expected[2].toString('hex'), actual[2].toString('hex'), 'payload missmatch');
-      t.is(expected[3].toString('hex'), actual[3].toString('hex'), 'tag header missmatch');
+      const actual = cbor.decodeFirstSync(buf);
+      const expected = cbor.decodeFirstSync(example.output.cbor);
+      t.true(deepEqual(actual, expected));
     });
 });
 
