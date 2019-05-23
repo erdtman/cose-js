@@ -33,7 +33,7 @@ test('create aes-gcm-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
@@ -62,7 +62,7 @@ test('create env-pass-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
@@ -92,7 +92,7 @@ test('create env-pass-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
@@ -123,7 +123,7 @@ test('create env-pass-03', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
