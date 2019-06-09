@@ -39,6 +39,7 @@
   },
   "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
+    "aes-cbc-mac": "^1.0.0",
     "aes-ccm": "^1.0.5",
     "cbor": "^3.0.3",
     "elliptic": "^6.4.0",
