@@ -46,13 +46,13 @@
     "node-hkdf-sync": "^1.0.0"
   },
   "devDependencies": {
-    "base64url": "^2.0.0",
     "ava": "*",
+    "base64url": "^3.0.1",
+    "jsonfile": "^2.4.0",
     "live-server": "*",
     "npm-run-all": "*",
     "nyc": "*",
     "semistandard": "*",
-    "jsonfile": "^2.4.0",
     "watch": "*"
   },
   "engines": {
