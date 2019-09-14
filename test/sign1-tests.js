@@ -22,7 +22,7 @@ test('create sign-pass-01', (t) => {
   };
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signer
   )
@@ -49,7 +49,7 @@ test('create sign-pass-02', (t) => {
   };
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signer
   )
@@ -75,7 +75,7 @@ test('create sign-pass-03', (t) => {
   };
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signer,
     {

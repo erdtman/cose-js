@@ -37,7 +37,7 @@ test('create aes-ccm-enc-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -66,7 +66,7 @@ test('create aes-ccm-enc-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -95,7 +95,7 @@ test('create aes-ccm-enc-03', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -124,7 +124,7 @@ test('create aes-ccm-enc-04', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -153,7 +153,7 @@ test('create aes-ccm-enc-05', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -182,7 +182,7 @@ test('create aes-ccm-enc-06', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -211,7 +211,7 @@ test('create aes-ccm-enc-07', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -240,7 +240,7 @@ test('create aes-ccm-enc-08', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -381,7 +381,7 @@ test('create aes-ccm-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -408,7 +408,7 @@ test('create aes-ccm-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -437,7 +437,7 @@ test('create aes-ccm-03', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -466,7 +466,7 @@ test('create aes-ccm-04', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -495,7 +495,7 @@ test('create aes-ccm-05', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -524,7 +524,7 @@ test('create aes-ccm-06', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -553,7 +553,7 @@ test('create aes-ccm-07', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -582,7 +582,7 @@ test('create aes-ccm-08', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)

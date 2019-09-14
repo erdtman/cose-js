@@ -23,7 +23,7 @@ test('create ecdsa-01', (t) => {
   }];
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signers
   )
@@ -74,7 +74,7 @@ test('create sign-pass-01', (t) => {
   }];
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signers
   )
@@ -103,10 +103,10 @@ test('create sign-pass-02', (t) => {
   }];
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signers,
-    {'encodep': 'empty'}
+    { 'encodep': 'empty' }
   )
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
@@ -132,7 +132,7 @@ test('create sign-pass-03', (t) => {
   }];
 
   return cose.sign.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     signers,
     {

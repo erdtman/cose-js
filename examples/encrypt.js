@@ -2,8 +2,8 @@ const cose = require('../');
 
 const plaintext = 'Secret message!';
 const headers = {
-  'p': {'alg': 'A128GCM'},
-  'u': {'kid': 'our-secret'}
+  'p': { 'alg': 'A128GCM' },
+  'u': { 'kid': 'our-secret' }
 };
 const recipient = {
   'key': Buffer.from('231f4c4d4d3051fdc2ec0a3851d5b383', 'hex')
