@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf coverage/ .nyc_output/",
     "pretest": "semistandard --fix",
-    "test": "pwd & ava ./test/*",
+    "test": "pwd & ava ./test/*.js",
     "coverage": "nyc npm test",
     "coveragehtml": "nyc report -r html",
     "precoveragehtml": "npm run coverage",
