@@ -17,9 +17,9 @@ test('create HMac-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
-    {'key': key})
+    { 'key': key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -49,9 +49,9 @@ test('create mac-pass-01', t => {
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
   return cose.mac.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
-    {'key': key})
+    { 'key': key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -68,12 +68,12 @@ test('create mac-pass-02', t => {
   const external = Buffer.from(example.input.mac0.external, 'hex');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
-  const options = {'encodep': 'empty'};
+  const options = { 'encodep': 'empty' };
 
   return cose.mac.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
-    {'key': key},
+    { 'key': key },
     external,
     options)
     .then((buf) => {
@@ -97,9 +97,9 @@ test('create mac-pass-03', t => {
   };
 
   return cose.mac.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
-    {'key': key},
+    { 'key': key },
     null,
     options)
     .then((buf) => {

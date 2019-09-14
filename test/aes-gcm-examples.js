@@ -33,7 +33,7 @@ test('create aes-gcm-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
@@ -62,7 +62,7 @@ test('create aes-gcm-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
@@ -91,7 +91,7 @@ test('create aes-gcm-03', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipients,
     options)
@@ -130,7 +130,7 @@ test('create aes-gcm-05', t => {
   };
 
   return cose.encrypt.create(
-    {'p': p, 'u': u},
+    { 'p': p, 'u': u },
     plaintext,
     recipients,
     options)
@@ -209,7 +209,7 @@ test('decrypt aes-gcm-05', t => {
 
   return cose.encrypt.read(example.output.cbor,
     key,
-    {'contextIv': contextIv})
+    { 'contextIv': contextIv })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -233,7 +233,7 @@ test('create aes-gcm-enc-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -262,7 +262,7 @@ test('create aes-gcm-enc-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -291,7 +291,7 @@ test('create aes-gcm-enc-03', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)

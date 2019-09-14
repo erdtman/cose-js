@@ -41,7 +41,7 @@ test('create p256-hkdf-256-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -78,7 +78,7 @@ test('create p256-hkdf-256-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -117,7 +117,7 @@ test('create p256-hkdf-512-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -160,7 +160,7 @@ test('create p256-hkdf-512-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -212,7 +212,7 @@ test('create p256-ss-hkdf-256-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -265,7 +265,7 @@ test('create p521-hkdf-256-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -308,7 +308,7 @@ test('create p521-hkdf-256-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -353,7 +353,7 @@ test('create p521-hkdf-512-01', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)
@@ -396,7 +396,7 @@ test('create p521-hkdf-512-02', t => {
   };
 
   return cose.encrypt.create(
-    {p: p, u: u},
+    { p: p, u: u },
     plaintext,
     recipient,
     options)

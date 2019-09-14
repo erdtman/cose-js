@@ -2,8 +2,8 @@ const cose = require('../');
 
 const plaintext = 'Important message!';
 const headers = {
-  'p': {'alg': 'ES256'},
-  'u': {'kid': '11'}
+  'p': { 'alg': 'ES256' },
+  'u': { 'kid': '11' }
 };
 const signer = {
   'key': {
