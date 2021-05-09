@@ -40,20 +40,19 @@
   "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
     "aes-cbc-mac": "^1.0.0",
-    "aes-ccm": "^1.0.0",
     "any-promise": "^1.3.0",
     "cbor": "^3.0.3",
     "elliptic": "^6.4.0",
     "node-hkdf-sync": "^1.0.0"
   },
   "devDependencies": {
-    "base64url": "^3.0.1",
     "ava": "*",
+    "base64url": "^3.0.1",
+    "jsonfile": "^2.4.0",
     "live-server": "*",
     "npm-run-all": "*",
     "nyc": "*",
     "semistandard": "*",
-    "jsonfile": "^2.4.0",
     "watch": "*"
   },
   "engines": {
