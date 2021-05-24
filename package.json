@@ -49,6 +49,7 @@
     "ava": "*",
     "base64url": "^3.0.1",
     "jsonfile": "^2.4.0",
+    "jwk-to-pem": "^2.0.5",
     "live-server": "*",
     "npm-run-all": "*",
     "nyc": "*",
