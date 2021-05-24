@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const cose = require('../lib');
 
-async function sample() {
+async function sample () {
   const plaintext = 'Important message!';
   const headers = {
     'p': { 'alg': 'RS256' },
