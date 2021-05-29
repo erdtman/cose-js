@@ -5,3 +5,4 @@ npm-debug.log
 coverage/
 tmp/
 .vscode/
+build/*

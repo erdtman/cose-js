@@ -1,19 +1,20 @@
 {
-  "name": "cose-js",
+  "name": "cosette",
   "version": "0.4.2",
-  "description": "JavaScript COSE implementation",
-  "main": "lib/index.js",
+  "description": "isomorphic Typescript COSE implementation",
+  "main": "build/index.js",
   "scripts": {
-    "clean": "rm -rf coverage/ .nyc_output/",
+    "clean": "rm -rf coverage/ .nyc_output/ build/*",
     "pretest": "semistandard --fix",
-    "test": "pwd & ava ./test/*.js",
+    "test": "npm run build && pwd && ava",
     "coverage": "nyc npm test",
     "coveragehtml": "nyc report -r html",
     "precoveragehtml": "npm run coverage",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "live": "live-server -q --port=4003 --ignorePattern='(js|css|png)$' coverage",
-    "watch": "watch 'npm run coveragehtml' test lib",
-    "dev": "npm-run-all -p --silent watch live"
+    "watch": "watch 'npm run coveragehtml' test build",
+    "dev": "npm-run-all -p --silent watch live",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,14 @@
   "bugs": {
     "url": "https://github.com/erdtman/cose-js/issues"
   },
+  "ava": {
+    "typescript": {
+      "rewritePaths": {
+        "src/": "build/"
+      },
+      "compile": "tsc"
+    }
+  },
   "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
     "aes-cbc-mac": "^1.0.0",
@@ -46,14 +55,19 @@
     "node-hkdf-sync": "^1.0.0"
   },
   "devDependencies": {
+    "@ava/typescript": "^1.1.1",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "ava": "*",
     "base64url": "^3.0.1",
     "jsonfile": "^2.4.0",
     "jwk-to-pem": "^2.0.5",
     "live-server": "*",
     "npm-run-all": "*",
-    "nyc": "*",
+    "nyc": "^15.1.0",
     "semistandard": "*",
+    "source-map-support": "^0.5.19",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2",
     "watch": "*"
   },
   "engines": {
