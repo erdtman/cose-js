@@ -42,8 +42,7 @@
     "typescript": {
       "rewritePaths": {
         "src/": "build/"
-      },
-      "compile": "tsc"
+      }
     }
   },
   "homepage": "https://github.com/erdtman/cose-js#readme",

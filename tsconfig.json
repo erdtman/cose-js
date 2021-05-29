@@ -2,10 +2,11 @@
     "compilerOptions": {
         "outDir": "./build",
         "allowJs": true,
-        "noImplicitAny": false,
-        "noEmitOnError": true,
         "removeComments": false,
         "sourceMap": true,
+        "module": "commonjs",    
+        "esModuleInterop": true,
+        "skipLibCheck": true,
         "target": "es6"
     },
     "include": [

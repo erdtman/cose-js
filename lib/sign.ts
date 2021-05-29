@@ -9,8 +9,8 @@ const common = require('./common');
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 const Tagged = cbor.Tagged;
 
-const SignTag = exports.SignTag = 98;
-const Sign1Tag = exports.Sign1Tag = 18;
+export const SignTag = 98;
+export const Sign1Tag = 18;
 
 const AlgFromTags = {};
 AlgFromTags[-7] = { 'sign': 'ES256', 'digest': 'SHA-256' };
@@ -29,7 +29,7 @@ const COSEAlgToNodeAlg = {
   'RS512': { 'sign': 'RSA-SHA512' }
 };
 
-function doSign (SigStructure, signer, alg) {
+function doSign(SigStructure, signer, alg) {
   return new Promise((resolve, reject) => {
     if (!AlgFromTags[alg]) {
       throw new Error('Unknown algorithm, ' + alg);
@@ -61,7 +61,7 @@ function doSign (SigStructure, signer, alg) {
   });
 }
 
-exports.create = function (headers, payload, signers, options) {
+export function create(headers, payload, signers, options) {
   options = options || {};
   let u = headers.u || {};
   let p = headers.p || {};
@@ -126,7 +126,7 @@ exports.create = function (headers, payload, signers, options) {
   }
 };
 
-function doVerify (SigStructure, verifier, alg, sig) {
+function doVerify(SigStructure, verifier, alg, sig) {
   return new Promise((resolve, reject) => {
     if (!AlgFromTags[alg]) {
       throw new Error('Unknown algorithm, ' + alg);
@@ -162,7 +162,7 @@ function doVerify (SigStructure, verifier, alg, sig) {
   });
 }
 
-function getSigner (signers, verifier) {
+function getSigner(signers, verifier) {
   for (let i = 0; i < signers.length; i++) {
     const kid = signers[i][1].get(common.HeaderParameters.kid); // TODO create constant for header locations
     if (kid.equals(Buffer.from(verifier.key.kid, 'utf8'))) {
@@ -171,7 +171,7 @@ function getSigner (signers, verifier) {
   }
 }
 
-function getCommonParameter (first, second, parameter) {
+function getCommonParameter(first, second, parameter) {
   let result;
   if (first.get) {
     result = first.get(parameter);
@@ -182,7 +182,7 @@ function getCommonParameter (first, second, parameter) {
   return result;
 }
 
-exports.verify = function (payload, verifier, options) {
+export function verify(payload, verifier, options) {
   options = options || {};
   return cbor.decodeFirst(payload)
     .then((obj) => {

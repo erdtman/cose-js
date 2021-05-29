@@ -4,14 +4,13 @@
 
 const cbor = require('cbor');
 const aesCbcMac = require('aes-cbc-mac');
-const crypto = require('crypto');
-const Promise = require('any-promise');
-const common = require('./common');
+const node_crypto = require('crypto');
+import * as common from './common';
 const Tagged = cbor.Tagged;
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 
-const MAC0Tag = exports.MAC0Tag = 17;
-const MACTag = exports.MACTag = 97;
+export const MAC0Tag = 17;
+export const MACTag = 97;
 
 const AlgFromTags = {
   4: 'SHA-256_64',
@@ -47,39 +46,44 @@ const context = {};
 context[MAC0Tag] = 'MAC0';
 context[MACTag] = 'MAC';
 
-function doMac (context, p, externalAAD, payload, alg, key) {
-  return new Promise((resolve, reject) => {
-    const MACstructure = [
-      context, // 'MAC0' or 'MAC1', // context
-      p, // protected
-      externalAAD, // bstr,
-      payload // bstr
-    ];
+export type MACstructure = [
+  'MAC0' | 'MAC1',
+  any,
+  string,//bstr
+  string//bstr
+];
 
-    const toBeMACed = cbor.encode(MACstructure);
-    if (alg === 'aes-cbc-mac-64') {
-      const mac = aesCbcMac.create(key, toBeMACed, 8);
-      resolve(mac);
-    } else if (alg === 'aes-cbc-mac-128') {
-      const mac = aesCbcMac.create(key, toBeMACed, 16);
-      resolve(mac);
-    } else {
-      const hmac = crypto.createHmac(alg, key);
+async function doMac(context: string, p: any, externalAAD: any, payload: any, alg: string, key: any): Promise<Buffer> {
+  const MACstructure = [
+    context, // 'MAC0' or 'MAC1', // context
+    p, // protected
+    externalAAD, // bstr,
+    payload // bstr
+  ];
+
+  const toBeMACed = cbor.encode(MACstructure);
+  if (alg === 'aes-cbc-mac-64') {
+    return aesCbcMac.create(key, toBeMACed, 8);
+  } else if (alg === 'aes-cbc-mac-128') {
+    return aesCbcMac.create(key, toBeMACed, 16);
+  } else {
+    const hmac = node_crypto.createHmac(alg, key);
+    return new Promise((resolve) => {
       hmac.end(toBeMACed, function () {
         resolve(hmac.read());
       });
-    }
-  });
+    })
+  }
 }
 
-exports.create = function (headers, payload, recipents, externalAAD, options) {
+export function create(headers: { u: {}; p: {}; }, payload: any, recipents: any, externalAAD: any, options: { encodep?: any; excludetag?: any; }) {
   options = options || {};
   externalAAD = externalAAD || EMPTY_BUFFER;
-  let u = headers.u || {};
-  let p = headers.p || {};
+  const original_u = headers.u || {};
+  const original_p = headers.p || {};
 
-  p = common.TranslateHeaders(p);
-  u = common.TranslateHeaders(u);
+  const p = common.TranslateHeaders(original_p);
+  const u = common.TranslateHeaders(original_u);
 
   const alg = p.get(common.HeaderParameters.alg) || u.get(common.HeaderParameters.alg);
 
@@ -93,9 +97,9 @@ exports.create = function (headers, payload, recipents, externalAAD, options) {
 
   const predictableP = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
   if (p.size === 0 && options.encodep === 'empty') {
-    p = EMPTY_BUFFER;
+    var p_buffer = EMPTY_BUFFER;
   } else {
-    p = cbor.encode(p);
+    var p_buffer = cbor.encode(p) as Buffer;
   }
   // TODO check crit headers
   if (Array.isArray(recipents)) {
@@ -113,7 +117,7 @@ exports.create = function (headers, payload, recipents, externalAAD, options) {
         tag = tag.slice(0, CutTo[alg]);
         const ru = common.TranslateHeaders(recipent.u);
         const rp = EMPTY_BUFFER;
-        const maced = [p, u, payload, tag, [[rp, ru, EMPTY_BUFFER]]];
+        const maced = [p_buffer, u, payload, tag, [[rp, ru, EMPTY_BUFFER]]];
         return cbor.encode(options.excludetag ? maced : new Tagged(MACTag, maced));
       });
   } else {
@@ -125,13 +129,13 @@ exports.create = function (headers, payload, recipents, externalAAD, options) {
       recipents.key)
       .then((tag) => {
         tag = tag.slice(0, CutTo[alg]);
-        const maced = [p, u, payload, tag];
+        const maced = [p_buffer, u, payload, tag];
         return cbor.encode(options.excludetag ? maced : new Tagged(MAC0Tag, maced));
       });
   }
 };
 
-exports.read = function (data, key, externalAAD, options) {
+export function read(data: any, key: any, externalAAD: any, options: { defaultType?: any; }) {
   options = options || {};
   externalAAD = externalAAD || EMPTY_BUFFER;
 
