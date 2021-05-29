@@ -4,9 +4,8 @@
 
 const cbor = require('cbor');
 const EC = require('elliptic').ec;
-const crypto = require('crypto');
+const node_crypto = require('crypto');
 const common = require('./common');
-const Promise = require('any-promise');
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 const Tagged = cbor.Tagged;
 
@@ -43,7 +42,7 @@ function doSign (SigStructure, signer, alg) {
 
     let sig;
     if (AlgFromTags[alg].sign.startsWith('ES')) {
-      const hash = crypto.createHash(COSEAlgToNodeAlg[AlgFromTags[alg].sign].digest);
+      const hash = node_crypto.createHash(COSEAlgToNodeAlg[AlgFromTags[alg].sign].digest);
       hash.update(ToBeSigned);
       ToBeSigned = hash.digest();
       const ec = new EC(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
@@ -52,7 +51,7 @@ function doSign (SigStructure, signer, alg) {
       const bitLength = Math.ceil(ec.curve._bitLength / 8);
       sig = Buffer.concat([signature.r.toArrayLike(Buffer, undefined, bitLength), signature.s.toArrayLike(Buffer, undefined, bitLength)]);
     } else {
-      const sign = crypto.createSign(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
+      const sign = node_crypto.createSign(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
       sign.update(ToBeSigned);
       sign.end();
       sig = sign.sign(signer.key);
@@ -138,7 +137,7 @@ function doVerify (SigStructure, verifier, alg, sig) {
     const ToBeSigned = cbor.encode(SigStructure);
 
     if (AlgFromTags[alg].sign.startsWith('ES')) {
-      const hash = crypto.createHash(COSEAlgToNodeAlg[AlgFromTags[alg].sign].digest);
+      const hash = node_crypto.createHash(COSEAlgToNodeAlg[AlgFromTags[alg].sign].digest);
       hash.update(ToBeSigned);
       const msgHash = hash.digest();
 
@@ -147,15 +146,15 @@ function doVerify (SigStructure, verifier, alg, sig) {
       const key = ec.keyFromPublic(pub);
       sig = { 'r': sig.slice(0, sig.length / 2), 's': sig.slice(sig.length / 2) };
       if (key.verify(msgHash, sig)) {
-        resolve();
+        resolve(undefined);
       } else {
         throw new Error('Signature missmatch');
       }
     } else {
-      const verify = crypto.createVerify(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
+      const verify = node_crypto.createVerify(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
       verify.update(ToBeSigned);
       if (verify.verify(verifier.key, sig)) {
-        resolve();
+        resolve(undefined);
       } else {
         throw new Error('Signature missmatch');
       }
