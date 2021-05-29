@@ -17,10 +17,12 @@ test('create HMac-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p },
+    { p: p },
     plaintext,
-    [{ 'key': key,
-      'u': u }])
+    [{
+      key: key,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -51,10 +53,12 @@ test('create mac-pass-01', t => {
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    [{ 'key': key,
-      'u': ru }])
+    [{
+      key: key,
+      u: ru
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -74,13 +78,15 @@ test('create mac-pass-02', t => {
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
   const options = {
-    'encodep': 'empty'
+    encodep: 'empty'
   };
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    [{ 'key': key,
-      'u': ru }],
+    [{
+      key: key,
+      u: ru
+    }],
     external, options)
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
@@ -99,14 +105,16 @@ test('create mac-pass-03', t => {
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
   const options = {
-    'encodep': 'empty',
-    'excludetag': true
+    encodep: 'empty',
+    excludetag: true
   };
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    [{ 'key': key,
-      'u': ru }], null, options)
+    [{
+      key: key,
+      u: ru
+    }], null, options)
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -147,7 +155,7 @@ test('verify mac-pass-02', t => {
 test('verify mac-pass-03', t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-pass-03.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
-  const options = { 'defaultType': cose.mac.MACTag };
+  const options = { defaultType: cose.mac.MACTag };
 
   return cose.mac.read(example.output.cbor,
     key,

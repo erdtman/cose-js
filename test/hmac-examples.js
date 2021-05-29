@@ -17,9 +17,9 @@ test('create HMac-enc-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -37,9 +37,9 @@ test('create HMac-enc-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -57,9 +57,9 @@ test('create HMac-enc-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -79,9 +79,9 @@ test('create HMac-enc-05', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -164,11 +164,13 @@ test('create HMac-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      p: undefined,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -186,11 +188,13 @@ test('create HMac-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      p: undefined,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -208,11 +212,13 @@ test('create HMac-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      p: undefined,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -232,11 +238,13 @@ test('create HMac-05', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      p: undefined,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);

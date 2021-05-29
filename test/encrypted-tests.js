@@ -24,12 +24,12 @@ test('create aes-gcm-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -53,12 +53,12 @@ test('create enc-pass-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -83,14 +83,14 @@ test('create enc-pass-02', t => {
   const external = Buffer.from(example.input.encrypted.external, 'hex');
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource,
-    'externalAAD': external,
-    'encodep': 'empty'
+    randomSource: randomSource,
+    externalAAD: external,
+    encodep: 'empty'
   };
 
   return cose.encrypt.create(
@@ -114,14 +114,14 @@ test('create enc-pass-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource,
-    'excludetag': true,
-    'encodep': 'empty'
+    randomSource: randomSource,
+    excludetag: true,
+    encodep: 'empty'
   };
 
   return cose.encrypt.create(
@@ -171,7 +171,7 @@ test('decrypt enc-pass-02', t => {
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const options = {
-    'externalAAD': Buffer.from(example.input.encrypted.external, 'hex')
+    externalAAD: Buffer.from(example.input.encrypted.external, 'hex')
   };
   return cose.encrypt.read(example.output.cbor,
     key,
@@ -188,7 +188,7 @@ test('decrypt enc-pass-03', t => {
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const options = {
-    'defaultType': cose.encrypt.Encrypt0Tag
+    defaultType: cose.encrypt.Encrypt0Tag
   };
   return cose.encrypt.read(example.output.cbor,
     key,
