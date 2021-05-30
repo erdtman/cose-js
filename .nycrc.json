@@ -16,7 +16,7 @@
         "html",
         "text"
     ],
-    "sourceMap": false,
+    "sourceMap": true,
     "instrument": true,
     "all": true
 }
