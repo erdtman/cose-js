@@ -152,7 +152,7 @@ async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig): Prom
     if (key.verify(msgHash, sig)) {
       return;
     } else {
-      throw new Error('Signature missmatch');
+      throw new Error('Signature mismatch');
     }
   } else {
     const verifierKey = verifier.key.key;
