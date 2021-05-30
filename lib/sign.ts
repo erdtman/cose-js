@@ -1,10 +1,8 @@
 import cbor from 'cbor';
-import elliptic from 'elliptic';
-import node_crypto from 'crypto';
+import webcrypto from 'isomorphic-webcrypto';
 import * as common from './common';
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 const Tagged = cbor.Tagged;
-const EC = elliptic.ec;
 
 export const SignTag = 98;
 export const Sign1Tag = 18;
@@ -20,45 +18,19 @@ const AlgFromTags: { [n: number]: { sign: CoseAlgorithmName; digest: string } } 
   "-259": { 'sign': 'RS512', 'digest': 'SHA-512' },
 };
 
-const COSEAlgToNodeAlg: { [alg in CoseAlgorithmName]: { sign: string, digest?: string } } = {
-  'ES256': { 'sign': 'p256', 'digest': 'sha256' },
-  'ES384': { 'sign': 'p384', 'digest': 'sha384' },
-  'ES512': { 'sign': 'p521', 'digest': 'sha512' },
+const COSEAlgToWebCryptoAlg: { [alg in CoseAlgorithmName]: { sign: string, digest?: string } } = {
+  'ES256': { 'sign': 'P-256', 'digest': 'SHA-256' },
+  'ES384': { 'sign': 'P-384', 'digest': 'SHA-384' },
+  'ES512': { 'sign': 'P-521', 'digest': 'SHA-512' },
   'RS256': { 'sign': 'RSA-SHA256' },
   'RS384': { 'sign': 'RSA-SHA384' },
   'RS512': { 'sign': 'RSA-SHA512' }
 };
 
-async function doSign(SigStructure: any[], signer, alg) {
-  return new Promise((resolve, reject) => {
-    if (!AlgFromTags[alg]) {
-      throw new Error('Unknown algorithm, ' + alg);
-    }
-    if (!COSEAlgToNodeAlg[AlgFromTags[alg].sign]) {
-      throw new Error('Unsupported algorithm, ' + AlgFromTags[alg].sign);
-    }
-
-    let ToBeSigned = cbor.encode(SigStructure);
-
-    let sig;
-    if (AlgFromTags[alg].sign.startsWith('ES')) {
-      const hash = node_crypto.createHash(COSEAlgToNodeAlg[AlgFromTags[alg].sign].digest);
-      hash.update(ToBeSigned);
-      ToBeSigned = hash.digest();
-      const ec = new EC(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
-      const key = ec.keyFromPrivate(signer.key.d);
-      const signature = key.sign(ToBeSigned);
-      const bitLength = Math.ceil(ec.curve._bitLength / 8);
-      sig = Buffer.concat([signature.r.toArrayLike(Buffer, undefined, bitLength), signature.s.toArrayLike(Buffer, undefined, bitLength)]);
-    } else {
-      const sign = node_crypto.createSign(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
-      sign.update(ToBeSigned);
-      sign.end();
-      sig = sign.sign(signer.key);
-    }
-
-    resolve(sig);
-  });
+async function doSign(SigStructure: any[], signer: Signer, alg): Promise<ArrayBuffer> {
+  const { digest: hash } = getAlgorithmParams(alg);
+  let ToBeSigned = cbor.encode(SigStructure);
+  return await webcrypto.subtle.sign({ name: "ECDSA", hash }, signer.key, ToBeSigned);
 }
 
 export interface CreateOptions {
@@ -66,15 +38,23 @@ export interface CreateOptions {
   excludetag?: boolean,
 }
 
-export function create(headers, payload, signers, options?: CreateOptions) {
-  options = options || {};
-  let u = headers.u || {};
-  let p = headers.p || {};
+export interface Signer {
+  externalAAD?: Buffer;
+  key: CryptoKey;
+  u?: {
+    kid: number | string
+  };
+  p?: { alg: string };
+}
 
-  p = common.TranslateHeaders(p);
-  u = common.TranslateHeaders(u);
-  let bodyP = p || {};
-  bodyP = (bodyP.size === 0) ? EMPTY_BUFFER : cbor.encode(bodyP);
+export type Signers = Signer | Signer[];
+
+export async function create(headers: common.HeaderPU, payload, signers: Signers, options?: CreateOptions) {
+  options = options || {};
+  const p = common.TranslateHeaders(headers.p || {});
+  const u = common.TranslateHeaders(headers.u || {});
+  const bodyP = (p.size === 0) ? EMPTY_BUFFER : cbor.encode(p);
+  const p_buffer = (p.size === 0 && options.encodep === 'empty') ? EMPTY_BUFFER : cbor.encode(p);
   if (Array.isArray(signers)) {
     if (signers.length === 0) {
       throw new Error('There has to be at least one signer');
@@ -85,13 +65,10 @@ export function create(headers, payload, signers, options?: CreateOptions) {
     // TODO handle multiple signers
     const signer = signers[0];
     const externalAAD = signer.externalAAD || EMPTY_BUFFER;
-    let signerP = signer.p || {};
-    let signerU = signer.u || {};
-
-    signerP = common.TranslateHeaders(signerP);
-    signerU = common.TranslateHeaders(signerU);
-    const alg = signerP.get(common.HeaderParameters.alg);
-    signerP = (signerP.size === 0) ? EMPTY_BUFFER : cbor.encode(signerP);
+    const signerPMap = common.TranslateHeaders(signer.p || {});
+    const signerU = common.TranslateHeaders(signer.u || {});
+    const alg = signerPMap.get(common.HeaderParameters.alg);
+    const signerP = (signerPMap.size === 0) ? EMPTY_BUFFER : cbor.encode(signerPMap);
 
     const SigStructure = [
       'Signature',
@@ -100,15 +77,9 @@ export function create(headers, payload, signers, options?: CreateOptions) {
       externalAAD,
       payload
     ];
-    return doSign(SigStructure, signer, alg).then((sig) => {
-      if (p.size === 0 && options.encodep === 'empty') {
-        p = EMPTY_BUFFER;
-      } else {
-        p = cbor.encode(p);
-      }
-      const signed = [p, u, payload, [[signerP, signerU, sig]]];
-      return cbor.encode(options.excludetag ? signed : new Tagged(SignTag, signed));
-    });
+    const sig = await doSign(SigStructure, signer, alg);
+    const signed = [p_buffer, u, payload, [[signerP, signerU, sig]]];
+    return cbor.encode(options.excludetag ? signed : new Tagged(SignTag, signed));
   } else {
     const signer = signers;
     const externalAAD = signer.externalAAD || EMPTY_BUFFER;
@@ -119,57 +90,45 @@ export function create(headers, payload, signers, options?: CreateOptions) {
       externalAAD,
       payload
     ];
-    return doSign(SigStructure, signer, alg).then((sig) => {
-      if (p.size === 0 && options.encodep === 'empty') {
-        p = EMPTY_BUFFER;
-      } else {
-        p = cbor.encode(p);
-      }
-      const signed = [p, u, payload, sig];
-      return cbor.encodeCanonical(options.excludetag ? signed : new Tagged(Sign1Tag, signed));
-    });
+    const sig = await doSign(SigStructure, signer, alg);
+    const signed = [p_buffer, u, payload, sig];
+    return cbor.encodeCanonical(options.excludetag ? signed : new Tagged(Sign1Tag, signed));
   }
 };
 
-async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig): Promise<undefined> {
+
+function getAlgorithmParams(alg: number): { sign: string, digest?: string } {
   if (!AlgFromTags[alg]) {
     throw new Error('Unknown algorithm, ' + alg);
   }
-  if (!COSEAlgToNodeAlg[AlgFromTags[alg].sign]) {
+  const algname = COSEAlgToWebCryptoAlg[AlgFromTags[alg].sign];
+  if (!algname) {
     throw new Error('Unsupported algorithm, ' + AlgFromTags[alg].sign);
   }
+  return algname;
+}
+
+async function getKey(verifier: Verifier, alg: number): Promise<CryptoKey> {
+  if (verifier.key.key) return verifier.key.key;
+  const namedCurve = getAlgorithmParams(alg).sign;
+  const body = [new Uint8Array([4]), verifier.key.x, verifier.key.y];
+  const keyBuffer = Buffer.concat(body);
+  return await webcrypto.subtle.importKey("raw", keyBuffer, { name: "ECDSA", namedCurve }, false, ["verify", "sign"]);
+}
+
+async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig) {
+  const { digest: hash } = getAlgorithmParams(alg);
+  const key = await getKey(verifier, alg);
   const ToBeSigned = cbor.encode(SigStructure);
-
-  if (AlgFromTags[alg].sign.startsWith('ES')) {
-    const hash = node_crypto.createHash(COSEAlgToNodeAlg[AlgFromTags[alg].sign].digest);
-    hash.update(ToBeSigned);
-    const msgHash = hash.digest();
-
-    const pub = { 'x': verifier.key.x, 'y': verifier.key.y };
-    const ec = new EC(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
-    const key = ec.keyFromPublic(pub);
-    sig = { 'r': sig.slice(0, sig.length / 2), 's': sig.slice(sig.length / 2) };
-    if (key.verify(msgHash, sig)) {
-      return;
-    } else {
-      throw new Error('Signature mismatch');
-    }
-  } else {
-    const verifierKey = verifier.key.key;
-    if (!verifierKey) throw new Error("Missing verifier.key.key");
-    const verify = node_crypto.createVerify(COSEAlgToNodeAlg[AlgFromTags[alg].sign].sign);
-    verify.update(ToBeSigned);
-    if (verify.verify({ key: verifierKey, type: verifier.key.type }, sig)) {
-      return;
-    } else {
-      throw new Error('Signature mismatch');
-    }
+  const verified = await webcrypto.subtle.verify({ name: "ECDSA", hash }, key, sig, ToBeSigned);
+  if (!verified) {
+    throw new Error('Signature mismatch');
   }
 }
 
-export type Signer = [any, Map<any, any>]
+type EncodedSigner = [any, Map<any, any>]
 
-function getSigner(signers: Signer[], verifier: Verifier): Signer {
+function getSigner(signers: EncodedSigner[], verifier: Verifier): EncodedSigner {
   for (let i = 0; i < signers.length; i++) {
     const kid = signers[i][1].get(common.HeaderParameters.kid); // TODO create constant for header locations
     if (kid.equals(Buffer.from(verifier.key.kid, 'utf8'))) {
@@ -196,7 +155,7 @@ interface Verifier {
     x?: Buffer,
     y?: Buffer,
     kid?: string,
-    key?: string | Buffer;
+    key?: CryptoKey;
     type?: 'pkcs1' | 'spki';
   },
 }

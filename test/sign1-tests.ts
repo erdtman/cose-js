@@ -2,89 +2,43 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
-import { deepEqual } from './util';
+import webcrypto from "isomorphic-webcrypto";
 
-test('create sign-pass-01', (t) => {
+test('create sign-pass-01', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
-
-  const signer = {
-    key: {
-      d: base64url.toBuffer(example.input.sign0.key.d)
-    }
-  };
-
-  return cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signer
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const signer = example.input.sign0;
+  const key = await webcrypto.subtle.importKey("jwk", signer.key, { name: "ECDSA", namedCurve: signer.key.crv }, false, ["sign", "verify"]);
+  const buf = await cose.sign.create({ p, u }, plaintext, { key });
+  const decoded = await cose.sign.verify(buf, { key: { key } });
+  t.deepEqual(decoded, plaintext);
 });
 
-test('create sign-pass-02', (t) => {
+test('create sign-pass-02', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-02.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
-
-  const signer = {
-    key: {
-      d: base64url.toBuffer(example.input.sign0.key.d)
-    },
-    externalAAD: Buffer.from(example.input.sign0.external, 'hex')
-  };
-
-  return cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signer
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const signer = example.input.sign0;
+  const key = await webcrypto.subtle.importKey("jwk", signer.key, { name: "ECDSA", namedCurve: signer.key.crv }, false, ["sign", "verify"]);
+  const externalAAD = Buffer.from(example.input.sign0.external, 'hex');
+  const buf = await cose.sign.create({ p, u }, plaintext, { key, externalAAD });
+  const decoded = await cose.sign.verify(buf, { key: { key }, externalAAD });
+  t.deepEqual(decoded, plaintext);
 });
 
-test('create sign-pass-03', (t) => {
+test('create sign-pass-03', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-03.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
-
-  const signer = {
-    key: {
-      d: base64url.toBuffer(example.input.sign0.key.d)
-    }
-  };
-
-  return cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signer,
-    {
-      excludetag: true
-    }
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const signer = example.input.sign0;
+  const key = await webcrypto.subtle.importKey("jwk", signer.key, { name: "ECDSA", namedCurve: signer.key.crv }, true, ["sign", "verify"]);
+  const buf = await cose.sign.create({ p, u }, plaintext, { key });
+  const decoded = await cose.sign.verify(buf, { key: { key } });
+  t.deepEqual(decoded, plaintext);
 });
 
 test('verify sign-pass-01', (t) => {
@@ -111,7 +65,6 @@ test('verify sign-pass-01', (t) => {
 
 test('verify sign-pass-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-02.json');
-
   const verifier = {
     key: {
       x: base64url.toBuffer(example.input.sign0.key.x),
