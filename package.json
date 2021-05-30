@@ -51,7 +51,7 @@
   "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
     "aes-cbc-mac": "^1.0.0",
-    "cbor": "^3.0.3",
+    "cbor": "^7.0.5",
     "elliptic": "^6.4.0",
     "node-hkdf-sync": "^1.0.0"
   },
