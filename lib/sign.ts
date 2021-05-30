@@ -162,7 +162,7 @@ async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig): Prom
     if (verify.verify({ key: verifierKey, type: verifier.key.type }, sig)) {
       return;
     } else {
-      throw new Error('Signature missmatch');
+      throw new Error('Signature mismatch');
     }
   }
 }
@@ -240,34 +240,33 @@ export async function verify(payload: Buffer, verifier: Verifier, options?: Veri
     throw new Error('Failed to find signer with kid' + verifier.key.kid);
   }
 
+
   if (type === SignTag) {
     const externalAAD = verifier.externalAAD || EMPTY_BUFFER;
-    let [signerP, , sig] = signer;
+    var [signerP, , sig] = signer;
     signerP = (!signerP.length) ? EMPTY_BUFFER : signerP;
     p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
     const signerPMap = cbor.decode(signerP);
-    const alg = signerPMap.get(common.HeaderParameters.alg);
-    const SigStructure = [
+    var alg = signerPMap.get(common.HeaderParameters.alg);
+    var SigStructure = [
       'Signature',
       p,
       signerP,
       externalAAD,
       plaintext
     ];
-    await doVerify(SigStructure, verifier, alg, sig);
-    return plaintext;
   } else {
     const externalAAD = verifier.externalAAD || EMPTY_BUFFER;
-
-    const alg = getCommonParameter(p, u, common.HeaderParameters.alg);
+    var alg = getCommonParameter(p, u, common.HeaderParameters.alg);
     p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
-    const SigStructure = [
+    var SigStructure = [
       'Signature1',
       p,
       externalAAD,
       plaintext
     ];
-    await doVerify(SigStructure, verifier, alg, signer);
-    return plaintext;
+    var sig = signer;
   }
+  await doVerify(SigStructure, verifier, alg, sig);
+  return plaintext;
 };
