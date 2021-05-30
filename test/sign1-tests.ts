@@ -197,7 +197,7 @@ test('verify sign-fail-02', (t) => {
     .then((buf) => {
       t.true(false);
     }).catch((error) => {
-      t.is(error.message, 'Signature missmatch');
+      t.is(error.message, 'Signature mismatch');
     });
 });
 
@@ -263,7 +263,7 @@ test('verify sign-fail-06', (t) => {
     .then((buf) => {
       t.true(false);
     }).catch((error) => {
-      t.is(error.message, 'Signature missmatch');
+      t.is(error.message, 'Signature mismatch');
     });
 });
 
@@ -285,6 +285,6 @@ test('verify sign-fail-07', (t) => {
     .then((buf) => {
       t.true(false);
     }).catch((error) => {
-      t.is(error.message, 'Signature missmatch');
+      t.is(error.message, 'Signature mismatch');
     });
 });
