@@ -1,13 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cose = require('../');
-const test = require('ava');
-const jsonfile = require('jsonfile');
-const jwkToPem = require('jwk-to-pem');
-const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+import * as cose from '../lib/index';
+import test from 'ava';
+import jsonfile from 'jsonfile';
+import cbor from 'cbor';
+import { deepEqual } from './util';
+import jwkToPem from 'jwk-to-pem';
 
 function hexToB64 (hex) {
   return Buffer.from(hex, 'hex').toString('base64');

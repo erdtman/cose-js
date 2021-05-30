@@ -4,10 +4,11 @@
         "allowJs": true,
         "removeComments": false,
         "sourceMap": true,
-        "module": "commonjs",    
+        "module": "CommonJS",
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "target": "es6"
+        "target": "es6",
     },
     "include": [
         "./lib/**/*"

@@ -1,14 +1,10 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
+import test from 'ava';
 
-const test = require('ava');
-
-function isObject (item) {
+function isObject(item) {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
 
-function mapDeepEqual (actual, expected, depth) {
+function mapDeepEqual(actual, expected, depth) {
   const sortedActualKeys = [...actual.keys()].sort();
   const sortedExpectedKeys = [...expected.keys()].sort();
   if (sortedActualKeys.length !== sortedExpectedKeys.length) {
@@ -27,7 +23,7 @@ function mapDeepEqual (actual, expected, depth) {
   return true;
 }
 
-function objectDeepEqual (actual, expected, depth) {
+function objectDeepEqual(actual, expected, depth) {
   const sortedActualKeys = Object.keys(actual).sort();
   const sortedExpectedKeys = Object.keys(expected).sort();
   if (sortedActualKeys.length !== sortedExpectedKeys.length) {
@@ -46,7 +42,7 @@ function objectDeepEqual (actual, expected, depth) {
   return true;
 }
 
-function arrayDeepEqual (actual, expected, depth) {
+function arrayDeepEqual(actual, expected, depth) {
   if (actual.length !== expected.length) {
     return false;
   }
@@ -58,7 +54,7 @@ function arrayDeepEqual (actual, expected, depth) {
   return true;
 }
 
-function deepEqual (actual, expected, depth) {
+export function deepEqual(actual, expected, depth?) {
   const currentDepth = (depth !== undefined ? depth : 0);
   if (currentDepth === 50) {
     throw new Error('Structure is to deeply nested.');
@@ -77,8 +73,6 @@ function deepEqual (actual, expected, depth) {
   }
 }
 
-exports.deepEqual = deepEqual;
-
 test('deep equal array', (t) => {
   const actual = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
   const expected = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
@@ -94,7 +88,7 @@ test('deep equal deep array', (t) => {
 });
 
 test('deep equal objects', (t) => {
-  const actual = {
+  const actual: any = {
     world: 'hello',
     hello: 'world',
     complex: {
@@ -102,7 +96,7 @@ test('deep equal objects', (t) => {
       hello: 'world'
     }
   };
-  const expected = {
+  const expected: any = {
     hello: 'world',
     world: 'hello',
     complex: {

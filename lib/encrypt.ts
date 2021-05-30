@@ -1,11 +1,7 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cbor = require('cbor');
-const node_crypto = require('crypto');
+import cbor from 'cbor';
+import node_crypto from 'crypto';
 import * as common from './common';
-const HKDF = require('node-hkdf-sync');
+import HKDF from 'node-hkdf-sync';
 
 const Tagged = cbor.Tagged;
 
@@ -164,20 +160,18 @@ function createContext(rp, alg: string | number, partyUNonce?) {
   ]);
 }
 
-export function create(headers, payload, recipients, options) {
+export function create(headers: common.HeaderPU, payload, recipients, options): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     options = options || {};
     const externalAAD = options.externalAAD || EMPTY_BUFFER;
     const randomSource = options.randomSource || _randomSource;
-    let u = headers.u || {};
-    let p = headers.p || {};
 
-    p = common.TranslateHeaders(p);
-    u = common.TranslateHeaders(u);
+    const p = common.TranslateHeaders(headers.p || {});
+    const u = common.TranslateHeaders(headers.u || {});
 
     const alg = p.get(common.HeaderParameters.alg) || u.get(common.HeaderParameters.alg);
 
-    if (!alg) {
+    if (typeof alg !== "number") {
       throw new Error('Missing mandatory parameter \'alg\'');
     }
 
@@ -273,13 +267,11 @@ export function create(headers, payload, recipients, options) {
         throw new Error('No implementation for algorithm, ' + alg);
       }
 
-      if (p.size === 0 && options.encodep === 'empty') {
-        p = EMPTY_BUFFER;
-      } else {
-        p = cbor.encode(p);
-      }
+      const p_buffer = (p.size === 0 && options.encodep === 'empty')
+        ? EMPTY_BUFFER
+        : cbor.encode(p);
 
-      const encrypted = [p, u, ciphertext, recipientStruct];
+      const encrypted = [p_buffer, u, ciphertext, recipientStruct];
       resolve(cbor.encode(options.excludetag ? encrypted : new Tagged(EncryptTag, encrypted)));
     } else {
       let iv;
@@ -323,12 +315,11 @@ export function create(headers, payload, recipients, options) {
         throw new Error('No implementation for algorithm, ' + alg);
       }
 
-      if (p.size === 0 && options.encodep === 'empty') {
-        p = EMPTY_BUFFER;
-      } else {
-        p = cbor.encode(p);
-      }
-      const encrypted = [p, u, ciphertext];
+      const p_buffer = (p.size === 0 && options.encodep === 'empty') ?
+        EMPTY_BUFFER
+        : cbor.encode(p);
+
+      const encrypted = [p_buffer, u, ciphertext];
       resolve(cbor.encode(options.excludetag ? encrypted : new Tagged(Encrypt0Tag, encrypted)));
     }
   });
@@ -344,7 +335,13 @@ function nodeDecrypt(ciphertext, key, alg, iv, tag, aad, ccm = false) {
   return Buffer.concat([decipher.update(ciphertext), decipher.final()]);
 }
 
-export function read(data, key, options) {
+export interface ReadOptions {
+  externalAAD?: Buffer;
+  defaultType?: number;
+  contextIv?: Buffer;
+}
+
+export function read(data, key, options?: ReadOptions) {
   options = options || {};
   const externalAAD = options.externalAAD || EMPTY_BUFFER;
   return cbor.decodeFirst(data)

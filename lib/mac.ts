@@ -1,11 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cbor = require('cbor');
-const aesCbcMac = require('aes-cbc-mac');
-const node_crypto = require('crypto');
+import cbor from 'cbor';
+import aesCbcMac from 'aes-cbc-mac';
+import node_crypto from 'crypto';
 import * as common from './common';
+import { CreateOptions } from './sign';
+import { ReadOptions } from './encrypt';
 const Tagged = cbor.Tagged;
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 
@@ -76,7 +74,7 @@ async function doMac(context: string, p: any, externalAAD: any, payload: any, al
   }
 }
 
-export function create(headers: { u: {}; p: {}; }, payload: any, recipents: any, externalAAD: any, options: { encodep?: any; excludetag?: any; }) {
+export function create(headers: any, payload: any, recipents: any, externalAAD?: Buffer, options?: CreateOptions) {
   options = options || {};
   externalAAD = externalAAD || EMPTY_BUFFER;
   const original_u = headers.u || {};
@@ -87,7 +85,7 @@ export function create(headers: { u: {}; p: {}; }, payload: any, recipents: any,
 
   const alg = p.get(common.HeaderParameters.alg) || u.get(common.HeaderParameters.alg);
 
-  if (!alg) {
+  if (typeof alg !== "number") {
     throw new Error('Missing mandatory parameter \'alg\'');
   }
 
@@ -135,7 +133,7 @@ export function create(headers: { u: {}; p: {}; }, payload: any, recipents: any,
   }
 };
 
-export function read(data: any, key: any, externalAAD: any, options: { defaultType?: any; }) {
+export function read(data: any, key: any, externalAAD?: Buffer, options?: ReadOptions) {
   options = options || {};
   externalAAD = externalAAD || EMPTY_BUFFER;
 

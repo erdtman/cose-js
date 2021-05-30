@@ -1,13 +1,10 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cbor = require('cbor');
-const EC = require('elliptic').ec;
-const node_crypto = require('crypto');
-const common = require('./common');
+import cbor from 'cbor';
+import elliptic from 'elliptic';
+import node_crypto from 'crypto';
+import * as common from './common';
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 const Tagged = cbor.Tagged;
+const EC = elliptic.ec;
 
 export const SignTag = 98;
 export const Sign1Tag = 18;
@@ -61,7 +58,12 @@ function doSign(SigStructure, signer, alg) {
   });
 }
 
-export function create(headers, payload, signers, options) {
+export interface CreateOptions {
+  encodep?: string,
+  excludetag?: boolean,
+}
+
+export function create(headers, payload, signers, options?: CreateOptions) {
   options = options || {};
   let u = headers.u || {};
   let p = headers.p || {};
@@ -182,7 +184,20 @@ function getCommonParameter(first, second, parameter) {
   return result;
 }
 
-export function verify(payload, verifier, options) {
+
+interface Verifier {
+  externalAAD?: Buffer,
+  key: {
+    x: Buffer,
+    y: Buffer,
+    kid?: number,
+  },
+}
+interface VerifyOptions {
+  defaultType?: number,
+}
+
+export function verify(payload: Buffer, verifier: Verifier, options?: VerifyOptions) {
   options = options || {};
   return cbor.decodeFirst(payload)
     .then((obj) => {

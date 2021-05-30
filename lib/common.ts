@@ -1,7 +1,3 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
 const AlgToTags = {
   RS512: -259,
   RS384: -258,
@@ -74,9 +70,13 @@ export const HeaderParameters = {
   counter_signature: 7
 };
 
+export type HeaderValue = string | Buffer | number;
+export type HeaderType = { [T in keyof typeof HeaderParameters]?: HeaderValue }
+export interface HeaderPU { p: HeaderType, u: HeaderType };
+
 export const EMPTY_BUFFER = Buffer.alloc(0);
 
-export function TranslateHeaders(header) {
+export function TranslateHeaders(header: HeaderType): Map<number, HeaderValue> {
   const result = new Map();
   for (const param in header) {
     if (!HeaderParameters[param]) {
