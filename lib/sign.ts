@@ -9,28 +9,18 @@ export const Sign1Tag = 18;
 
 export type CoseAlgorithmName = 'ES256' | 'ES384' | 'ES512' | 'RS256' | 'RS384' | 'RS512';
 
-const AlgFromTags: { [n: number]: { sign: CoseAlgorithmName; digest: string } } = {
-  "-7": { 'sign': 'ES256', 'digest': 'SHA-256' },
-  "-35": { 'sign': 'ES384', 'digest': 'SHA-384' },
-  "-36": { 'sign': 'ES512', 'digest': 'SHA-512' },
-  "-257": { 'sign': 'RS256', 'digest': 'SHA-256' },
-  "-258": { 'sign': 'RS384', 'digest': 'SHA-384' },
-  "-259": { 'sign': 'RS512', 'digest': 'SHA-512' },
-};
 
-const COSEAlgToWebCryptoAlg: { [alg in CoseAlgorithmName]: { sign: string, digest?: string } } = {
-  'ES256': { 'sign': 'P-256', 'digest': 'SHA-256' },
-  'ES384': { 'sign': 'P-384', 'digest': 'SHA-384' },
-  'ES512': { 'sign': 'P-521', 'digest': 'SHA-512' },
-  'RS256': { 'sign': 'RSA-SHA256' },
-  'RS384': { 'sign': 'RSA-SHA384' },
-  'RS512': { 'sign': 'RSA-SHA512' }
-};
+const AlgFromTags: CoseAlgorithmName[] = [];
+AlgFromTags[7] = 'ES256'
+AlgFromTags[35] = 'ES384'
+AlgFromTags[36] = 'ES512'
+AlgFromTags[257] = 'RS256'
+AlgFromTags[258] = 'RS384'
+AlgFromTags[259] = 'RS512'
 
 async function doSign(SigStructure: any[], signer: Signer, alg): Promise<ArrayBuffer> {
-  const { digest: hash } = getAlgorithmParams(alg);
   let ToBeSigned = cbor.encode(SigStructure);
-  return await webcrypto.subtle.sign({ name: "ECDSA", hash }, signer.key, ToBeSigned);
+  return await webcrypto.subtle.sign(getAlgorithmParams(alg), signer.key, ToBeSigned);
 }
 
 export interface CreateOptions {
@@ -97,24 +87,18 @@ export async function create(headers: common.HeaderPU, payload, signers: Signers
 };
 
 
-function getAlgorithmParams(alg: number): { sign: string, digest?: string } {
-  if (!AlgFromTags[alg]) {
-    throw new Error('Unknown algorithm, ' + alg);
-  }
-  const algname = COSEAlgToWebCryptoAlg[AlgFromTags[alg].sign];
-  if (!algname) {
-    throw new Error('Unsupported algorithm, ' + AlgFromTags[alg].sign);
-  }
-  return algname;
+function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | EcdsaParams {
+  const cose_name = AlgFromTags[-alg];
+  if (!cose_name) throw new Error('Unknown algorithm, ' + alg);
+  if (cose_name.startsWith('ES')) return { 'name': 'ECDSA', 'hash': 'SHA-' + cose_name.slice(2) }
+  else if (cose_name.startsWith('RS')) return { "name": "RSASSA-PKCS1-v1_5" }
+  else throw new Error('Unsupported algorithm, ' + cose_name);
 }
 
 async function doVerify(SigStructure: any[], verifier: Verifier, alg: number, sig: ArrayBuffer) {
-  const { digest: hash } = getAlgorithmParams(alg);
   const ToBeSigned = cbor.encode(SigStructure);
-  const verified = await webcrypto.subtle.verify({ name: "ECDSA", hash }, verifier.key, sig, ToBeSigned);
-  if (!verified) {
-    throw new Error('Signature mismatch');
-  }
+  const verified = await webcrypto.subtle.verify(getAlgorithmParams(alg), verifier.key, sig, ToBeSigned);
+  if (!verified) throw new Error('Signature mismatch');
 }
 
 type EncodedSigner = [any, Map<any, any>]

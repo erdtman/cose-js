@@ -2,39 +2,39 @@ import test from 'ava';
 import jsonfile from 'jsonfile';
 import webcrypto from 'isomorphic-webcrypto';
 
-function hexToB64(hex) {
-  return Buffer.from(hex, 'hex').toString('base64');
+function hexToB64url(hex) {
+  return Buffer.from(hex, 'hex').toString('base64url');
 }
 
 async function makeKey(key: any, usage: "verify" | "sign") {
   if (key.kty === "EC") {
     const { kty, crv, x, y, d } = key;
-    var keyType = { name: "ECDSA", namedCurve: crv };
+    var keyType: EcKeyImportParams | RsaHashedImportParams = { name: "ECDSA", namedCurve: crv };
     var params: any = { kty, crv, x, y, d: usage === "sign" ? d : undefined };
   } else if (key.kty === "RSA") {
     var params: any = {
       kty: key.kty,
-      n: hexToB64(key.n_hex),
-      e: hexToB64(key.e_hex),
+      n: hexToB64url(key.n_hex),
+      e: hexToB64url(key.e_hex),
 
     };
     if (usage === "sign") params = {
       ...params,
-      d: hexToB64(key.d_hex), p: hexToB64(key.p_hex), q: hexToB64(key.q_hex),
-      dp: hexToB64(key.dP_hex), dq: hexToB64(key.dQ_hex), qi: hexToB64(key.qi_hex)
+      d: hexToB64url(key.d_hex), p: hexToB64url(key.p_hex), q: hexToB64url(key.q_hex),
+      dp: hexToB64url(key.dP_hex), dq: hexToB64url(key.dQ_hex), qi: hexToB64url(key.qi_hex)
     };
-
+    var keyType: EcKeyImportParams | RsaHashedImportParams = { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" };
   } else throw new Error("unsupported key type");
   return await webcrypto.subtle.importKey("jwk", params, keyType, true, [usage]);
 }
 
-export async function readEllipticSigningTestData(filePath: string) {
+export async function readSigningTestData(filePath: string) {
   const example = jsonfile.readFileSync(filePath);
-  const signer = example.input.sign.signers[0];
-  const { kty, crv, x, y, d } = signer.key;
-  const keyType = { name: "ECDSA", namedCurve: crv };
-  const publicKey = await webcrypto.subtle.importKey("jwk", { kty, crv, x, y }, keyType, true, ["verify"]);
-  const privateKey = await webcrypto.subtle.importKey("jwk", { kty, crv, x, y, d }, keyType, true, ["sign"]);
+  const signer = "sign0" in example.input
+    ? example.input.sign0
+    : example.input.sign.signers[0];
+  const publicKey = await makeKey(signer.key, "verify");
+  const privateKey = await makeKey(signer.key, "sign");
   const externalAAD = signer.external && Buffer.from(signer.external, 'hex');
   const verifier = { key: publicKey, kid: signer.key.kid, externalAAD };
   const headers = { u: signer.unprotected, p: signer.protected, };

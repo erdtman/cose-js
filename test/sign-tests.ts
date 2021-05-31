@@ -1,31 +1,31 @@
 import * as cose from '../lib/index';
 import test from 'ava';
-import { readEllipticSigningTestData } from './util'
+import { readSigningTestData } from './util'
 
 test('create ecdsa-01', async (t) => {
-  const { verifier, plaintext, headers, signers } = await readEllipticSigningTestData('test/Examples/sign-tests/ecdsa-01.json');
+  const { verifier, plaintext, headers, signers } = await readSigningTestData('test/Examples/sign-tests/ecdsa-01.json');
   const buf = await cose.sign.create(headers, plaintext, signers);
   const decoded = await cose.sign.verify(buf, verifier);
   t.deepEqual(decoded, plaintext);
 });
 
 test('verify ecdsa-01', async (t) => {
-  const { verifier, signature, plaintext } = await readEllipticSigningTestData('test/Examples/sign-tests/ecdsa-01.json');
+  const { verifier, signature, plaintext } = await readSigningTestData('test/Examples/sign-tests/ecdsa-01.json');
   const buf = await cose.sign.verify(signature, verifier);
   t.deepEqual(buf, plaintext);
 });
 
 
 for (const i of [1, 2, 3]) {
-  test(`verify sign-pass-0${i}`, async (t) => {
-    const { verifier, plaintext, headers, signers } = await readEllipticSigningTestData(`test/Examples/sign-tests/sign-pass-0${i}.json`);
+  test(`create sign-pass-0${i}`, async (t) => {
+    const { verifier, plaintext, headers, signers } = await readSigningTestData(`test/Examples/sign-tests/sign-pass-0${i}.json`);
     const buf = await cose.sign.create(headers, plaintext, signers);
     const decoded = await cose.sign.verify(buf, verifier);
     t.deepEqual(decoded, plaintext);
   });
 
   test(`verify sign-pass-0${i}`, async (t) => {
-    const { verifier, signature, plaintext } = await readEllipticSigningTestData(`test/Examples/sign-tests/sign-pass-0${i}.json`);
+    const { verifier, signature, plaintext } = await readSigningTestData(`test/Examples/sign-tests/sign-pass-0${i}.json`);
     const buf = await cose.sign.verify(signature, verifier);
     t.deepEqual(buf, plaintext);
   });
@@ -33,13 +33,13 @@ for (const i of [1, 2, 3]) {
 
 
 test('verify sign-fail-01', async (t) => {
-  const { verifier, signature } = await readEllipticSigningTestData('test/Examples/sign-tests/sign-fail-01.json');
+  const { verifier, signature } = await readSigningTestData('test/Examples/sign-tests/sign-fail-01.json');
   await t.throwsAsync(cose.sign.verify(signature, verifier), { message: 'Unexpected cbor tag, \'998\'' });
 });
 
 
 test('verify sign-fail-02', async (t) => {
-  const { verifier, signature } = await readEllipticSigningTestData('test/Examples/sign-tests/sign-fail-02.json');
+  const { verifier, signature } = await readSigningTestData('test/Examples/sign-tests/sign-fail-02.json');
   await t.throwsAsync(cose.sign.verify(signature, verifier), { message: 'Signature mismatch' });
 });
 
