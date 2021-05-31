@@ -108,7 +108,7 @@ function getAlgorithmParams(alg: number): { sign: string, digest?: string } {
   return algname;
 }
 
-async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig) {
+async function doVerify(SigStructure: any[], verifier: Verifier, alg: number, sig: ArrayBuffer) {
   const { digest: hash } = getAlgorithmParams(alg);
   const ToBeSigned = cbor.encode(SigStructure);
   const verified = await webcrypto.subtle.verify({ name: "ECDSA", hash }, verifier.key, sig, ToBeSigned);

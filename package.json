@@ -46,7 +46,8 @@
     },
     "require": [
       "ts-node/register"
-    ]
+    ],
+    "timeout": "2m"
   },
   "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
