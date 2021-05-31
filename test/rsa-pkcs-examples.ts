@@ -10,7 +10,8 @@ function hexToB64(hex) {
 }
 
 test('create rsa-pkcs-01', async (t) => {
-  const { verifier, plaintext, headers, signers } = await readSigningTestData('test/rsa-pkcs-examples/rsa-pkcs-01.json');
+  let { verifier, plaintext, headers, signers } = await readSigningTestData('test/rsa-pkcs-examples/rsa-pkcs-01.json');
+  if (!Array.isArray(signers)) signers = [signers];
   const buf = await cose.sign.create(headers, plaintext, signers, { excludetag: true });
   const decoded = await cose.sign.verify(buf, verifier);
   t.deepEqual(decoded, plaintext);

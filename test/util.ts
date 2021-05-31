@@ -38,7 +38,8 @@ export async function readSigningTestData(filePath: string) {
   const externalAAD = signer.external && Buffer.from(signer.external, 'hex');
   const verifier = { key: publicKey, kid: signer.key.kid, externalAAD };
   const headers = { u: signer.unprotected, p: signer.protected, };
-  const signers = [{ key: privateKey, externalAAD, ...headers }];
+  const signer0 = { key: privateKey, externalAAD, ...headers };
+  const signers = "sign0" in example.input ? signer0 : [signer0];
   const signature = Buffer.from(example.output.cbor, 'hex');
   const plaintext = Buffer.from(example.input.plaintext, "utf-8");
   return { verifier, signature, plaintext, signers, headers };

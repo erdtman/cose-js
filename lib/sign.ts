@@ -46,7 +46,7 @@ export async function create(headers: common.HeaderPU, payload, signers: Signers
     const externalAAD = signer.externalAAD || EMPTY_BUFFER;
     const signerPMap = common.TranslateHeaders(signer.p || {});
     const signerU = common.TranslateHeaders(signer.u || {});
-    const alg = signerPMap.get(common.HeaderParameters.alg);
+    const alg = signerPMap.get(common.HeaderParameters.alg) || signerU.get(common.HeaderParameters.alg);
     const signerP = (signerPMap.size === 0) ? EMPTY_BUFFER : cbor.encode(signerPMap);
 
     const SigStructure = [

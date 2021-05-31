@@ -15,7 +15,7 @@ export const AlgFromTags = new Map(ALGO_TAGS.map(([alg, tag]) => [tag, alg]));
 
 const Translators = {
   kid: value => Buffer.from(value, 'utf8'),
-  alg(value) {
+  alg: (value) => {
     if (!AlgToTags.has(value)) throw new Error('Unknown \'alg\' parameter, ' + value);
     return AlgToTags.get(value);
   }
