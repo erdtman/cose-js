@@ -7,17 +7,6 @@ const Tagged = cbor.Tagged;
 export const SignTag = 98;
 export const Sign1Tag = 18;
 
-export type CoseAlgorithmName = 'ES256' | 'ES384' | 'ES512' | 'RS256' | 'RS384' | 'RS512';
-
-
-const AlgFromTags: CoseAlgorithmName[] = [];
-AlgFromTags[7] = 'ES256'
-AlgFromTags[35] = 'ES384'
-AlgFromTags[36] = 'ES512'
-AlgFromTags[257] = 'RS256'
-AlgFromTags[258] = 'RS384'
-AlgFromTags[259] = 'RS512'
-
 async function doSign(SigStructure: any[], signer: Signer, alg): Promise<ArrayBuffer> {
   let ToBeSigned = cbor.encode(SigStructure);
   return await webcrypto.subtle.sign(getAlgorithmParams(alg), signer.key, ToBeSigned);
@@ -88,7 +77,7 @@ export async function create(headers: common.HeaderPU, payload, signers: Signers
 
 
 function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | EcdsaParams {
-  const cose_name = AlgFromTags[-alg];
+  const cose_name = common.AlgFromTags.get(alg);
   if (!cose_name) throw new Error('Unknown algorithm, ' + alg);
   if (cose_name.startsWith('ES')) return { 'name': 'ECDSA', 'hash': 'SHA-' + cose_name.slice(2) }
   else if (cose_name.startsWith('RS')) return { "name": "RSASSA-PKCS1-v1_5" }
