@@ -1,8 +1,9 @@
 {
   "name": "cosette",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "isomorphic Typescript COSE implementation",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "clean": "rm -rf coverage/ .nyc_output/ build/*",
     "pretest": "semistandard --fix",
@@ -16,13 +17,13 @@
     "dev": "npm-run-all -p --silent watch live",
     "build": "tsc"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/erdtman/COSE-JS.git"
-  },
+  "repository": "https://github.com/lovasoa/cosette",
   "keywords": [
     "COSE",
     "Signing",
+    "isomorphic",
+    "webcrypto",
+    "small",
     "MAC",
     "Encrypt",
     "IoT"
@@ -32,11 +33,15 @@
     {
       "name": "Joe Hildebrand",
       "email": "joe-github@cursive.net"
+    },
+    {
+      "name": "Ophir LOJKINE",
+      "email": "contact@ophir.dev"
     }
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/erdtman/cose-js/issues"
+    "url": "https://github.com/lovasoa/cosette/issues"
   },
   "ava": {
     "typescript": {
@@ -49,7 +54,7 @@
     ],
     "timeout": "2m"
   },
-  "homepage": "https://github.com/erdtman/cose-js#readme",
+  "homepage": "https://github.com/lovasoa/cosette#readme",
   "dependencies": {
     "aes-cbc-mac": "^1.0.0",
     "cbor": "^7.0.5",
@@ -73,7 +78,7 @@
     "watch": "*"
   },
   "engines": {
-    "node": ">=8.0"
+    "node": ">=14.0"
   },
   "semistandard": {
     "ignore": "tmp/**"
