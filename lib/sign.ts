@@ -108,19 +108,10 @@ function getAlgorithmParams(alg: number): { sign: string, digest?: string } {
   return algname;
 }
 
-async function getKey(verifier: Verifier, alg: number): Promise<CryptoKey> {
-  if (verifier.key.key) return verifier.key.key;
-  const namedCurve = getAlgorithmParams(alg).sign;
-  const body = [new Uint8Array([4]), verifier.key.x, verifier.key.y];
-  const keyBuffer = Buffer.concat(body);
-  return await webcrypto.subtle.importKey("raw", keyBuffer, { name: "ECDSA", namedCurve }, false, ["verify", "sign"]);
-}
-
 async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig) {
   const { digest: hash } = getAlgorithmParams(alg);
-  const key = await getKey(verifier, alg);
   const ToBeSigned = cbor.encode(SigStructure);
-  const verified = await webcrypto.subtle.verify({ name: "ECDSA", hash }, key, sig, ToBeSigned);
+  const verified = await webcrypto.subtle.verify({ name: "ECDSA", hash }, verifier.key, sig, ToBeSigned);
   if (!verified) {
     throw new Error('Signature mismatch');
   }
@@ -129,9 +120,11 @@ async function doVerify(SigStructure: any[], verifier: Verifier, alg, sig) {
 type EncodedSigner = [any, Map<any, any>]
 
 function getSigner(signers: EncodedSigner[], verifier: Verifier): EncodedSigner {
+  if (verifier.kid == null) throw new Error("Missing kid");
+  const kid_buf = Buffer.from(verifier.kid, 'utf8');
   for (let i = 0; i < signers.length; i++) {
     const kid = signers[i][1].get(common.HeaderParameters.kid); // TODO create constant for header locations
-    if (kid.equals(Buffer.from(verifier.key.kid, 'utf8'))) {
+    if (kid.equals(kid_buf)) {
       return signers[i];
     }
   }
@@ -151,13 +144,8 @@ function getCommonParameter(first, second, parameter) {
 
 interface Verifier {
   externalAAD?: Buffer,
-  key: {
-    x?: Buffer,
-    y?: Buffer,
-    kid?: string,
-    key?: CryptoKey;
-    type?: 'pkcs1' | 'spki';
-  },
+  key: CryptoKey,
+  kid?: string, // key identifier
 }
 
 interface VerifyOptions {
@@ -196,7 +184,7 @@ export async function verify(payload: Buffer, verifier: Verifier, options?: Veri
   let signer = (type === SignTag ? getSigner(signers, verifier) : signers);
 
   if (!signer) {
-    throw new Error('Failed to find signer with kid' + verifier.key.kid);
+    throw new Error('Failed to find signer with kid' + verifier.kid);
   }
 
 
