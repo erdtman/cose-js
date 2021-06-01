@@ -1,7 +1,5 @@
 import cbor from 'cbor';
-import aesCbcMac from 'aes-cbc-mac';
-import webcrypto from 'isomorphic-webcrypto';
-
+import crypto from 'isomorphic-webcrypto';
 import * as common from './common';
 import { CreateOptions } from './sign';
 import { ReadOptions } from './encrypt';
@@ -33,8 +31,23 @@ async function importKey(algname: string, key: ArrayBuffer | Buffer) {
   let hash_match = algname.match(/^(?:HS|SHA-)(\d+)/);
   if (!hash_match) throw new Error("Unsupported algorithm, " + algname);
   const hash = 'SHA-' + hash_match[1];
-  return await webcrypto.subtle.importKey("raw", key, { name: "HMAC", hash }, false, ["sign"]);
+  return await crypto.subtle.importKey("raw", key, { name: "HMAC", hash }, false, ["sign"]);
 }
+
+const iv = new Uint8Array(16);
+export async function aesCbcMac(key: Uint8Array, msg: Uint8Array, len: number): Promise<Buffer> {
+  const padLen = msg.length % 16 ? 16 - (msg.length % 16) : 0;
+  const paddedMsg = new Uint8Array(msg.length + padLen);
+  paddedMsg.set(msg, 0);
+
+  const crypto_key = await crypto.subtle.importKey("raw", key, { name: "AES-CBC" }, false, ["encrypt"]);
+  const enc = await crypto.subtle.encrypt({ name: "AES-CBC", iv }, crypto_key, paddedMsg);
+
+  const tagStart = enc.byteLength - 16 - 16; // webcrypto always does pkcs7 padding
+  const tag = enc.slice(tagStart, tagStart + len);
+  return Buffer.from(tag);
+};
+
 
 async function doMac(context: string, p: any, externalAAD: ArrayBuffer, payload: any, algTag: number, key: ArrayBuffer | Buffer): Promise<Buffer> {
   const MACstructure = [
@@ -48,10 +61,10 @@ async function doMac(context: string, p: any, externalAAD: ArrayBuffer, payload:
   const algname = common.AlgFromTags(algTag);
   const aesMacNum = algname.match(/^AES-MAC-\d+\/(\d+)/)
   if (aesMacNum) {
-    return aesCbcMac.create(key, toBeMACed, +aesMacNum[1] / 8);
+    return await aesCbcMac(Buffer.from(key), Buffer.from(toBeMACed), +aesMacNum[1] / 8);
   } else {
     const crypto_key = await importKey(algname, key);
-    const buffer = await webcrypto.subtle.sign("HMAC", crypto_key, toBeMACed);
+    const buffer = await crypto.subtle.sign("HMAC", crypto_key, toBeMACed);
     return Buffer.from(buffer);
   }
 }

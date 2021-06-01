@@ -13,11 +13,10 @@ It depends on isomorphic-webcrypto, so on the browser, it uses the fast and secu
 
 Working with isomorphic-webcrypto :
  - Create and verify ECDSA signatures
- - Create and verify MAC signatures
+ - Create and verify MAC and AES-CCM signatures
  
 Still not ported to isomorphic-webcrypto :
  - Encryption and Decryption
- - Create and verify AES-CCM signatures
 
 ## Sign
 

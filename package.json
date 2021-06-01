@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
     "clean": "rm -rf coverage/ .nyc_output/ build/*",
     "pretest": "semistandard --fix",
     "test": "npm run build && pwd && ava",
@@ -56,7 +57,6 @@
   },
   "homepage": "https://github.com/lovasoa/cosette#readme",
   "dependencies": {
-    "aes-cbc-mac": "^1.0.0",
     "cbor": "^7.0.5",
     "isomorphic-webcrypto": "^2.3.8",
     "node-hkdf-sync": "^1.0.0"
