@@ -1,8 +1,5 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-const test = require('ava');
-const cose = require('../');
+import * as cose from '../lib/index';
+import test from 'ava';
 
 test('translate headers', (t) => {
   let h = cose.common.TranslateHeaders({});
@@ -27,7 +24,8 @@ test('translate headers', (t) => {
 
 test('invalid', (t) => {
   t.throws(() => {
-    cose.common.TranslateHeaders({ 'fizzle stomp': 12 });
+    const invalid = { 'fizzle stomp': 12 } as cose.common.HeaderType;
+    cose.common.TranslateHeaders(invalid);
   });
 });
 

@@ -1,13 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cose = require('../');
-const test = require('ava');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
-const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+import * as cose from '../lib/index';
+import test from 'ava';
+import jsonfile from 'jsonfile';
+import base64url from 'base64url';
+import cbor from 'cbor';
+import { deepEqual } from './util';
 
 test('create HMac-enc-01', t => {
   const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-01.json');
@@ -17,9 +13,9 @@ test('create HMac-enc-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -37,9 +33,9 @@ test('create HMac-enc-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -57,9 +53,9 @@ test('create HMac-enc-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -79,9 +75,9 @@ test('create HMac-enc-05', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
-    { 'key': key })
+    { key: key })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -164,11 +160,12 @@ test('create HMac-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -186,11 +183,12 @@ test('create HMac-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -208,11 +206,12 @@ test('create HMac-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
@@ -232,11 +231,12 @@ test('create HMac-05', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   return cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }])
+    [{
+      key: key,
+      u: u
+    }])
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);

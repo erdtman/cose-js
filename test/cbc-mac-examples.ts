@@ -1,13 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cose = require('../');
-const test = require('ava');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
-const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+import * as cose from '../lib/index';
+import test from 'ava';
+import jsonfile from 'jsonfile';
+import base64url from 'base64url';
+import cbor from 'cbor';
+import { deepEqual } from './util';
 
 test('create cbc-mac-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/cbc-mac-examples/cbc-mac-01.json');
@@ -17,11 +13,12 @@ test('create cbc-mac-01', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }]);
+    [{
+      key: key,
+      u: u
+    }]);
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -38,11 +35,12 @@ test('create cbc-mac-02', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }]);
+    [{
+      key: key,
+      u: u
+    }]);
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -60,11 +58,12 @@ test('create cbc-mac-03', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }]);
+    [{
+      key: key,
+      u: u
+    }]);
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -82,11 +81,12 @@ test('create cbc-mac-04', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    [{ 'key': key,
-      'p': undefined,
-      'u': u }]);
+    [{
+      key: key,
+      u: u
+    }]);
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -103,9 +103,9 @@ test('create cbc-mac-enc-01', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    { 'key': key });
+    { key: key });
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -123,9 +123,9 @@ test('create cbc-mac-enc-02', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    { 'key': key });
+    { key: key });
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -143,9 +143,9 @@ test('create cbc-mac-enc-03', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    { 'key': key });
+    { key: key });
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
@@ -163,9 +163,9 @@ test('create cbc-mac-enc-04', async t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const buf = await cose.mac.create(
-    { 'p': p, 'u': undefined },
+    { p: p, u: undefined },
     plaintext,
-    { 'key': key });
+    { key: key });
 
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);

@@ -1,13 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cose = require('../');
-const test = require('ava');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
-const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+import * as cose from '../lib/index';
+import test from 'ava';
+import jsonfile from 'jsonfile';
+import base64url from 'base64url';
+import cbor from 'cbor';
+import { deepEqual } from './util';
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -28,12 +24,12 @@ test('create aes-ccm-enc-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -57,12 +53,12 @@ test('create aes-ccm-enc-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -86,12 +82,12 @@ test('create aes-ccm-enc-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -115,12 +111,12 @@ test('create aes-ccm-enc-04', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -144,12 +140,12 @@ test('create aes-ccm-enc-05', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -173,12 +169,12 @@ test('create aes-ccm-enc-06', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -202,12 +198,12 @@ test('create aes-ccm-enc-07', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -231,12 +227,12 @@ test('create aes-ccm-enc-08', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    'key': base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
-    'u': example.input.encrypted.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    u: example.input.encrypted.recipients[0].unprotected
   };
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -372,12 +368,12 @@ test('create aes-ccm-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -399,12 +395,12 @@ test('create aes-ccm-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -428,12 +424,12 @@ test('create aes-ccm-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -457,12 +453,12 @@ test('create aes-ccm-04', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -486,12 +482,12 @@ test('create aes-ccm-05', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -515,12 +511,12 @@ test('create aes-ccm-06', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -544,12 +540,12 @@ test('create aes-ccm-07', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -573,12 +569,12 @@ test('create aes-ccm-08', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(

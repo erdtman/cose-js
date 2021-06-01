@@ -1,18 +1,13 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cbor = require('cbor');
-const crypto = require('crypto');
-const Promise = require('any-promise');
-const common = require('./common');
-const HKDF = require('node-hkdf-sync');
+import cbor from 'cbor';
+import node_crypto from 'crypto';
+import * as common from './common';
+import HKDF from 'node-hkdf-sync';
 
 const Tagged = cbor.Tagged;
 
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
-const EncryptTag = exports.EncryptTag = 96;
-const Encrypt0Tag = exports.Encrypt0Tag = 16;
+export const EncryptTag = 96;
+export const Encrypt0Tag = 16;
 
 const runningInNode = common.runningInNode;
 
@@ -31,9 +26,9 @@ const TagToAlg = {
 };
 
 const COSEAlgToNodeAlg = {
-  'A128GCM': 'aes-128-gcm',
-  'A192GCM': 'aes-192-gcm',
-  'A256GCM': 'aes-256-gcm',
+  A128GCM: 'aes-128-gcm',
+  A192GCM: 'aes-192-gcm',
+  A256GCM: 'aes-256-gcm',
 
   'AES-CCM-16-64-128': 'aes-128-ccm',
   'AES-CCM-16-64-256': 'aes-256-ccm',
@@ -118,7 +113,7 @@ const nodeCRV = {
   'P-256': 'prime256v1'
 };
 
-function createAAD (p, context, externalAAD) {
+function createAAD(p, context, externalAAD) {
   p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
   const encStructure = [
     context,
@@ -128,15 +123,15 @@ function createAAD (p, context, externalAAD) {
   return cbor.encode(encStructure);
 }
 
-function _randomSource (bytes) {
-  return crypto.randomBytes(bytes);
+function _randomSource(bytes) {
+  return node_crypto.randomBytes(bytes);
 }
 
-function nodeEncrypt (payload, key, alg, iv, aad, ccm = false) {
+function nodeEncrypt(payload, key, alg, iv, aad, ccm = false) {
   const nodeAlg = COSEAlgToNodeAlg[TagToAlg[alg]];
   const chiperOptions = ccm ? { authTagLength: authTagLength[alg] } : null;
   const aadOptions = ccm ? { plaintextLength: Buffer.byteLength(payload) } : null;
-  const cipher = crypto.createCipheriv(nodeAlg, key, iv, chiperOptions);
+  const cipher = node_crypto.createCipheriv(nodeAlg, key, iv, chiperOptions);
   cipher.setAAD(aad, aadOptions);
   return Buffer.concat([
     cipher.update(payload),
@@ -145,7 +140,7 @@ function nodeEncrypt (payload, key, alg, iv, aad, ccm = false) {
   ]);
 }
 
-function createContext (rp, alg, partyUNonce) {
+function createContext(rp, alg: string | number, partyUNonce?) {
   return cbor.encode([
     alg, // AlgorithmID
     [ // PartyUInfo
@@ -165,20 +160,18 @@ function createContext (rp, alg, partyUNonce) {
   ]);
 }
 
-exports.create = function (headers, payload, recipients, options) {
+export function create(headers: common.HeaderPU, payload, recipients, options): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     options = options || {};
     const externalAAD = options.externalAAD || EMPTY_BUFFER;
     const randomSource = options.randomSource || _randomSource;
-    let u = headers.u || {};
-    let p = headers.p || {};
 
-    p = common.TranslateHeaders(p);
-    u = common.TranslateHeaders(u);
+    const p = common.TranslateHeaders(headers.p || {});
+    const u = common.TranslateHeaders(headers.u || {});
 
     const alg = p.get(common.HeaderParameters.alg) || u.get(common.HeaderParameters.alg);
 
-    if (!alg) {
+    if (typeof alg !== "number") {
       throw new Error('Missing mandatory parameter \'alg\'');
     }
 
@@ -192,7 +185,7 @@ exports.create = function (headers, payload, recipients, options) {
 
       let iv;
       if (options.contextIv) {
-        let partialIv = randomSource(2);
+        const partialIv = randomSource(2);
         iv = common.xor(partialIv, options.contextIv);
         u.set(common.HeaderParameters.Partial_IV, partialIv);
       } else {
@@ -210,8 +203,8 @@ exports.create = function (headers, payload, recipients, options) {
           recipients[0].p.alg === 'ECDH-ES-512' ||
           recipients[0].p.alg === 'ECDH-SS' ||
           recipients[0].p.alg === 'ECDH-SS-512')) {
-        const recipient = crypto.createECDH(nodeCRV[recipients[0].key.crv]);
-        const generated = crypto.createECDH(nodeCRV[recipients[0].key.crv]);
+        const recipient = node_crypto.createECDH(nodeCRV[recipients[0].key.crv]);
+        const generated = node_crypto.createECDH(nodeCRV[recipients[0].key.crv]);
         recipient.setPrivateKey(recipients[0].key.d);
         let pk = randomSource(keyLength[recipients[0].key.crv]);
         if (recipients[0].p.alg === 'ECDH-ES' ||
@@ -231,10 +224,10 @@ exports.create = function (headers, payload, recipients, options) {
         ]);
 
         const generatedKey = common.TranslateKey({
-          'crv': recipients[0].key.crv,
-          'x': senderPublicKey.slice(1, keyLength[recipients[0].key.crv] + 1), // TODO slice based on key length
-          'y': senderPublicKey.slice(keyLength[recipients[0].key.crv] + 1),
-          'kty': 'EC2' // TODO use real value
+          crv: recipients[0].key.crv,
+          x: senderPublicKey.slice(1, keyLength[recipients[0].key.crv] + 1), // TODO slice based on key length
+          y: senderPublicKey.slice(keyLength[recipients[0].key.crv] + 1),
+          kty: 'EC2' // TODO use real value
         });
         const rp = cbor.encode(common.TranslateHeaders(recipients[0].p));
         const ikm = generated.computeSecret(recipientPublicKey);
@@ -274,18 +267,16 @@ exports.create = function (headers, payload, recipients, options) {
         throw new Error('No implementation for algorithm, ' + alg);
       }
 
-      if (p.size === 0 && options.encodep === 'empty') {
-        p = EMPTY_BUFFER;
-      } else {
-        p = cbor.encode(p);
-      }
+      const p_buffer = (p.size === 0 && options.encodep === 'empty')
+        ? EMPTY_BUFFER
+        : cbor.encode(p);
 
-      const encrypted = [p, u, ciphertext, recipientStruct];
+      const encrypted = [p_buffer, u, ciphertext, recipientStruct];
       resolve(cbor.encode(options.excludetag ? encrypted : new Tagged(EncryptTag, encrypted)));
     } else {
       let iv;
       if (options.contextIv) {
-        let partialIv = randomSource(2);
+        const partialIv = randomSource(2);
         iv = common.xor(partialIv, options.contextIv);
         u.set(common.HeaderParameters.Partial_IV, partialIv);
       } else {
@@ -296,8 +287,8 @@ exports.create = function (headers, payload, recipients, options) {
       let key;
       if (recipients && recipients.p && recipients.p.alg === 'ECDH-ES') {
         // TODO use curve from parameters
-        const recipient = crypto.createECDH('prime256v1');
-        const generated = crypto.createECDH('prime256v1');
+        const recipient = node_crypto.createECDH('prime256v1');
+        const generated = node_crypto.createECDH('prime256v1');
         recipient.setPrivateKey(recipients.key.d);
         generated.setPrivateKey(randomSource(32)); // TODO use real alg value
         const recipientPublicKey = Buffer.concat([
@@ -306,7 +297,7 @@ exports.create = function (headers, payload, recipients, options) {
           recipients.key.y
         ]);
         const ikm = generated.computeSecret(recipientPublicKey);
-        const context = createContext(p);
+        const context = createContext(p, 'undefined'); // TODO: provide a value for 'alg'
         const nrBytes = 16; // TODO use real number based on alg
         const hkdf = new HKDF('sha256', undefined, ikm); // TODO use real alg
         key = hkdf.derive(context, nrBytes);
@@ -324,28 +315,33 @@ exports.create = function (headers, payload, recipients, options) {
         throw new Error('No implementation for algorithm, ' + alg);
       }
 
-      if (p.size === 0 && options.encodep === 'empty') {
-        p = EMPTY_BUFFER;
-      } else {
-        p = cbor.encode(p);
-      }
-      const encrypted = [p, u, ciphertext];
+      const p_buffer = (p.size === 0 && options.encodep === 'empty') ?
+        EMPTY_BUFFER
+        : cbor.encode(p);
+
+      const encrypted = [p_buffer, u, ciphertext];
       resolve(cbor.encode(options.excludetag ? encrypted : new Tagged(Encrypt0Tag, encrypted)));
     }
   });
 };
 
-function nodeDecrypt (ciphertext, key, alg, iv, tag, aad, ccm = false) {
+function nodeDecrypt(ciphertext, key, alg, iv, tag, aad, ccm = false) {
   const nodeAlg = COSEAlgToNodeAlg[TagToAlg[alg]];
   const chiperOptions = ccm ? { authTagLength: authTagLength[alg] } : null;
   const aadOptions = ccm ? { plaintextLength: Buffer.byteLength(ciphertext) } : null;
-  const decipher = crypto.createDecipheriv(nodeAlg, key, iv, chiperOptions);
+  const decipher = node_crypto.createDecipheriv(nodeAlg, key, iv, chiperOptions);
   decipher.setAuthTag(tag);
   decipher.setAAD(aad, aadOptions);
   return Buffer.concat([decipher.update(ciphertext), decipher.final()]);
 }
 
-exports.read = function (data, key, options) {
+export interface ReadOptions {
+  externalAAD?: Buffer;
+  defaultType?: number;
+  contextIv?: Buffer;
+}
+
+export function read(data, key, options?: ReadOptions) {
   options = options || {};
   const externalAAD = options.externalAAD || EMPTY_BUFFER;
   return cbor.decodeFirst(data)

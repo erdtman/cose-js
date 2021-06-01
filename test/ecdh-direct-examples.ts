@@ -1,13 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cose = require('../');
-const test = require('ava');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
-const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+import * as cose from '../lib/index';
+import test from 'ava';
+import jsonfile from 'jsonfile';
+import base64url from 'base64url';
+import cbor from 'cbor';
+import { deepEqual } from './util';
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -24,20 +20,20 @@ test('create p256-hkdf-256-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -61,20 +57,20 @@ test('create p256-hkdf-256-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -100,20 +96,20 @@ test('create p256-hkdf-512-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -137,20 +133,20 @@ test('create p256-hkdf-512-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': (bytes) => {
+    randomSource: (bytes) => {
       if (bytes === 12) {
         return Buffer.from('C9CF4DF2FE6C632BF7886413', 'hex');
       } else {
@@ -182,27 +178,27 @@ test('create p256-ss-hkdf-256-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'sender': {
-      'kty': example.input.enveloped.recipients[0].sender_key.kty,
-      'crv': example.input.enveloped.recipients[0].sender_key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.d)
+    sender: {
+      kty: example.input.enveloped.recipients[0].sender_key.kty,
+      crv: example.input.enveloped.recipients[0].sender_key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': (bytes) => {
+    randomSource: (bytes) => {
       if (bytes === 12) {
         return Buffer.from('D7923E677B71A3F40A179643', 'hex');
       } else {
@@ -242,20 +238,20 @@ test('create p521-hkdf-256-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': (bytes) => {
+    randomSource: (bytes) => {
       if (bytes === 12) {
         return Buffer.from('3082660901A9B9CD87AACB71', 'hex');
       } else {
@@ -285,20 +281,20 @@ test('create p521-hkdf-256-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': (bytes) => {
+    randomSource: (bytes) => {
       if (bytes === 12) {
         return Buffer.from('512C9CC879517ADCF0FA768E', 'hex');
       } else {
@@ -330,20 +326,20 @@ test('create p521-hkdf-512-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': (bytes) => {
+    randomSource: (bytes) => {
       if (bytes === 12) {
         return Buffer.from('CFDC1CA6D690CF1964458D42', 'hex');
       } else {
@@ -373,20 +369,20 @@ test('create p521-hkdf-512-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = [{
-    'key': {
-      'kty': example.input.enveloped.recipients[0].key.kty,
-      'kid': example.input.enveloped.recipients[0].key.kid,
-      'crv': example.input.enveloped.recipients[0].key.crv,
-      'x': base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      'y': base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      'd': base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+    key: {
+      kty: example.input.enveloped.recipients[0].key.kty,
+      kid: example.input.enveloped.recipients[0].key.kid,
+      crv: example.input.enveloped.recipients[0].key.crv,
+      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
+      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
+      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
     },
-    'p': example.input.enveloped.recipients[0].protected,
-    'u': example.input.enveloped.recipients[0].unprotected
+    p: example.input.enveloped.recipients[0].protected,
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': (bytes) => {
+    randomSource: (bytes) => {
       if (bytes === 12) {
         return Buffer.from('E89FD3534E1ABAF69C65CFE0', 'hex');
       } else {

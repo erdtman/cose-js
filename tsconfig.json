@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "./build",
+        "declaration": true,
+        "allowJs": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "target": "es6",
+    },
+    "include": [
+        "./lib/**/*"
+    ]
+}

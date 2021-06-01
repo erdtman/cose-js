@@ -1,13 +1,9 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
-'use strict';
-
-const cose = require('../');
-const test = require('ava');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
-const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+import * as cose from '../lib/index';
+import test from 'ava';
+import jsonfile from 'jsonfile';
+import base64url from 'base64url';
+import cbor from 'cbor';
+import { deepEqual } from './util';
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -24,12 +20,12 @@ test('create aes-gcm-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -53,12 +49,12 @@ test('create env-pass-01', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource
+    randomSource: randomSource
   };
 
   return cose.encrypt.create(
@@ -82,13 +78,13 @@ test('create env-pass-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource,
-    'externalAAD': Buffer.from(example.input.enveloped.external, 'hex')
+    randomSource: randomSource,
+    externalAAD: Buffer.from(example.input.enveloped.external, 'hex')
   };
 
   return cose.encrypt.create(
@@ -112,14 +108,14 @@ test('create env-pass-03', t => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    'key': base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
-    'u': example.input.enveloped.recipients[0].unprotected
+    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    u: example.input.enveloped.recipients[0].unprotected
   }];
 
   const options = {
-    'randomSource': randomSource,
-    'excludetag': true,
-    'encodep': 'empty'
+    randomSource: randomSource,
+    excludetag: true,
+    encodep: 'empty'
   };
 
   return cose.encrypt.create(
@@ -169,7 +165,7 @@ test('decrypt enc-pass-02', t => {
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
   const options = {
-    'externalAAD': Buffer.from(example.input.enveloped.external, 'hex')
+    externalAAD: Buffer.from(example.input.enveloped.external, 'hex')
   };
   return cose.encrypt.read(example.output.cbor,
     key,
