@@ -1,6 +1,6 @@
 {
   "name": "cosette",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "isomorphic Typescript COSE implementation",
   "main": "build/index.js",
   "types": "build/index.d.ts",
