@@ -18,7 +18,7 @@ export interface CreateOptions {
 }
 
 export interface Signer {
-  externalAAD?: Buffer;
+  externalAAD?: Buffer | ArrayBuffer;
   key: CryptoKey;
   u?: {
     kid: number | string
@@ -77,8 +77,7 @@ export async function create(headers: common.HeaderPU, payload, signers: Signers
 
 
 function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | EcdsaParams {
-  const cose_name = common.AlgFromTags.get(alg);
-  if (!cose_name) throw new Error('Unknown algorithm, ' + alg);
+  const cose_name = common.AlgFromTags(alg);
   if (cose_name.startsWith('ES')) return { 'name': 'ECDSA', 'hash': 'SHA-' + cose_name.slice(2) }
   else if (cose_name.startsWith('RS')) return { "name": "RSASSA-PKCS1-v1_5" }
   else throw new Error('Unsupported algorithm, ' + cose_name);
@@ -116,7 +115,7 @@ function getCommonParameter(first, second, parameter) {
 
 
 interface Verifier {
-  externalAAD?: Buffer,
+  externalAAD?: ArrayBuffer | Buffer,
   key: CryptoKey,
   kid?: string, // key identifier
 }

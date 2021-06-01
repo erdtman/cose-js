@@ -41,28 +41,20 @@ test('verify HMac-01', t => {
     });
 });
 
-test('create mac-pass-01', t => {
+test('create mac-pass-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-pass-01.json');
   const p = example.input.mac.protected;
   const u = example.input.mac.unprotected;
   const ru = example.input.mac.recipients[0].unprotected;
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
-  return cose.mac.create(
-    { p: p, u: u },
-    plaintext,
-    [{
-      key: key,
-      u: ru
-    }])
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const buf = await cose.mac.create({ p, u }, plaintext, [{ key, u: ru }]);
+  const read_back = await cose.mac.read(buf, key);
+  t.deepEqual(read_back, plaintext);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.deepEqual(actual, expected);
+  t.deepEqual(buf, Buffer.from(example.output.cbor, "hex"));
 });
 
 test('create mac-pass-02', t => {

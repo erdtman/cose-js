@@ -16,7 +16,6 @@ async function makeKey(key: any, usage: "verify" | "sign") {
       kty: key.kty,
       n: hexToB64url(key.n_hex),
       e: hexToB64url(key.e_hex),
-
     };
     if (usage === "sign") params = {
       ...params,
@@ -35,7 +34,7 @@ export async function readSigningTestData(filePath: string) {
     : example.input.sign.signers[0];
   const publicKey = await makeKey(signer.key, "verify");
   const privateKey = await makeKey(signer.key, "sign");
-  const externalAAD = signer.external && Buffer.from(signer.external, 'hex');
+  const externalAAD = signer.external && new Uint8Array(Buffer.from(signer.external, 'hex')).buffer;
   const verifier = { key: publicKey, kid: signer.key.kid, externalAAD };
   const headers = { u: signer.unprotected, p: signer.protected, };
   const signer0 = { key: privateKey, externalAAD, ...headers };

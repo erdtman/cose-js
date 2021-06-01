@@ -17,7 +17,6 @@ test('create cbc-mac-01', async t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }]);
 
@@ -40,7 +39,6 @@ test('create cbc-mac-02', async t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }]);
 
@@ -64,7 +62,6 @@ test('create cbc-mac-03', async t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }]);
 
@@ -88,7 +85,6 @@ test('create cbc-mac-04', async t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }]);
 

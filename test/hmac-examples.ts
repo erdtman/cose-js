@@ -164,7 +164,6 @@ test('create HMac-01', t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }])
     .then((buf) => {
@@ -188,7 +187,6 @@ test('create HMac-02', t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }])
     .then((buf) => {
@@ -212,7 +210,6 @@ test('create HMac-03', t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }])
     .then((buf) => {
@@ -238,7 +235,6 @@ test('create HMac-05', t => {
     plaintext,
     [{
       key: key,
-      p: undefined,
       u: u
     }])
     .then((buf) => {
