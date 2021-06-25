@@ -40,7 +40,7 @@ export function AlgFromTags(tag: number): string {
 }
 
 const Translators = {
-  kid: value => Buffer.from(value, 'utf8'),
+  kid: value => new TextEncoder().encode(value).buffer,
   alg: (value) => {
     if (!AlgToTags.has(value)) throw new Error('Unknown \'alg\' parameter, ' + value);
     return AlgToTags.get(value);
@@ -141,8 +141,8 @@ export function TranslateKey(key) {
   return result;
 };
 
-export function xor(a, b) {
-  const buffer = Buffer.alloc(Math.max(a.length, b.length));
+export function xor(a: Uint8Array, b: Uint8Array): Uint8Array {
+  const buffer = new Uint8Array(Math.max(a.length, b.length));
   for (let i = 1; i <= buffer.length; ++i) {
     const av = (a.length - i) < 0 ? 0 : a[a.length - i];
     const bv = (b.length - i) < 0 ? 0 : b[b.length - i];
@@ -155,3 +155,8 @@ export function xor(a, b) {
 export function runningInNode() {
   return Object.prototype.toString.call(global.process) === '[object process]';
 };
+
+
+export function uint8ArrayEquals(a: Uint8Array, b: Uint8Array): boolean {
+  return a.length === b.length && a.every((v, i) => b[i] === v);
+}

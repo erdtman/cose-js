@@ -1,9 +1,13 @@
-import test from 'ava';
+import test, { ExecutionContext } from 'ava';
 import jsonfile from 'jsonfile';
 import webcrypto from 'isomorphic-webcrypto';
 
-function hexToB64url(hex) {
+function hexToB64url(hex: string) {
   return Buffer.from(hex, 'hex').toString('base64url');
+}
+
+function hexToArray(hex: string) {
+  return new Uint8Array(Buffer.from(hex, 'hex'));
 }
 
 async function makeKey(key: any, usage: "verify" | "sign") {
@@ -34,14 +38,23 @@ export async function readSigningTestData(filePath: string) {
     : example.input.sign.signers[0];
   const publicKey = await makeKey(signer.key, "verify");
   const privateKey = await makeKey(signer.key, "sign");
-  const externalAAD = signer.external && new Uint8Array(Buffer.from(signer.external, 'hex')).buffer;
+  const externalAAD = signer.external && hexToArray(signer.external).buffer;
   const verifier = { key: publicKey, kid: signer.key.kid, externalAAD };
   const headers = { u: signer.unprotected, p: signer.protected, };
   const signer0 = { key: privateKey, externalAAD, ...headers };
   const signers = "sign0" in example.input ? signer0 : [signer0];
-  const signature = Buffer.from(example.output.cbor, 'hex');
-  const plaintext = Buffer.from(example.input.plaintext, "utf-8");
+  const signature = hexToArray(example.output.cbor);
+  const plaintext = new TextEncoder().encode(example.input.plaintext);
   return { verifier, signature, plaintext, signers, headers };
+}
+
+export function bufferEqual(t: ExecutionContext, b1: Uint8Array, b2: Uint8Array) {
+  if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array))
+    throw new Error(`cannot compare as buffers ${b1} and ${b2}`);
+  t.deepEqual(
+    Buffer.from(Array.from(b1)).toString('hex'),
+    Buffer.from(Array.from(b2)).toString('hex'),
+  )
 }
 
 function isObject(item) {

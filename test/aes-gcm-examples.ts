@@ -2,7 +2,7 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import { deepEqual } from './util';
 
 function randomSource (bytes) {
@@ -34,7 +34,6 @@ test('create aes-gcm-01', t => {
     recipients,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -63,7 +62,6 @@ test('create aes-gcm-02', t => {
     recipients,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -92,7 +90,6 @@ test('create aes-gcm-03', t => {
     recipients,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -131,7 +128,6 @@ test('create aes-gcm-05', t => {
     recipients,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -147,7 +143,6 @@ test('decrypt aes-gcm-01', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -161,7 +156,6 @@ test('decrypt aes-gcm-02', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -175,7 +169,6 @@ test('decrypt aes-gcm-03', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -207,7 +200,6 @@ test('decrypt aes-gcm-05', t => {
     key,
     { contextIv: contextIv })
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -234,7 +226,6 @@ test('create aes-gcm-enc-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -263,7 +254,6 @@ test('create aes-gcm-enc-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -292,7 +282,6 @@ test('create aes-gcm-enc-03', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -310,7 +299,6 @@ test('decrypt aes-gcm-enc-01', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -324,7 +312,6 @@ test('decrypt aes-gcm-enc-02', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -338,7 +325,6 @@ test('decrypt aes-gcm-enc-03', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });

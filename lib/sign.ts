@@ -1,4 +1,4 @@
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import webcrypto from 'isomorphic-webcrypto';
 import * as common from './common';
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
@@ -93,10 +93,10 @@ type EncodedSigner = [any, Map<any, any>]
 
 function getSigner(signers: EncodedSigner[], verifier: Verifier): EncodedSigner {
   if (verifier.kid == null) throw new Error("Missing kid");
-  const kid_buf = Buffer.from(verifier.kid, 'utf8');
+  const kid_buf = new TextEncoder().encode(verifier.kid);
   for (let i = 0; i < signers.length; i++) {
     const kid = signers[i][1].get(common.HeaderParameters.kid); // TODO create constant for header locations
-    if (kid.equals(kid_buf)) {
+    if (common.uint8ArrayEquals(kid_buf, kid)) {
       return signers[i];
     }
   }
@@ -124,7 +124,7 @@ interface VerifyOptions {
   defaultType?: number,
 }
 
-export async function verify(payload: Buffer, verifier: Verifier, options?: VerifyOptions) {
+export async function verify(payload: Uint8Array, verifier: Verifier, options?: VerifyOptions) {
   options = options || {};
   let obj = await cbor.decodeFirst(payload);
   let type = options.defaultType ? options.defaultType : SignTag;

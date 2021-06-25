@@ -1,4 +1,4 @@
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import crypto from 'isomorphic-webcrypto';
 import * as common from './common';
 import { CreateOptions } from './sign';
@@ -158,13 +158,9 @@ export async function read(data: ArrayBuffer | Uint8Array, key: Buffer | ArrayBu
   let calcTag = await doMac(context[type], p, externalAAD, payload, alg, key)
   calcTag = calcTag.slice(0, CutTo[alg]);
 
-  if (!uint8ArrayEquals(tag, calcTag)) {
+  if (!common.uint8ArrayEquals(tag, calcTag)) {
     throw new Error('Tag mismatch');
   }
 
   return payload;
 };
-
-function uint8ArrayEquals(a: Uint8Array, b: Uint8Array): boolean {
-  return a.length === b.length && a.every((v, i) => b[i] === v);
-}

@@ -1,4 +1,4 @@
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import node_crypto from 'crypto';
 import * as common from './common';
 import HKDF from 'node-hkdf-sync';

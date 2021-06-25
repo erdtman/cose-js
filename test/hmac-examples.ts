@@ -2,7 +2,7 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import { deepEqual } from './util';
 
 test('create HMac-enc-01', t => {
@@ -17,7 +17,6 @@ test('create HMac-enc-01', t => {
     plaintext,
     { key: key })
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -37,7 +36,6 @@ test('create HMac-enc-02', t => {
     plaintext,
     { key: key })
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -57,7 +55,6 @@ test('create HMac-enc-03', t => {
     plaintext,
     { key: key })
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -79,7 +76,6 @@ test('create HMac-enc-05', t => {
     plaintext,
     { key: key })
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -94,7 +90,6 @@ test('verify HMac-enc-01', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -107,7 +102,6 @@ test('verify HMac-enc-02', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -120,7 +114,6 @@ test('verify HMac-enc-03', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -146,7 +139,6 @@ test('verify HMac-enc-05', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -167,7 +159,6 @@ test('create HMac-01', t => {
       u: u
     }])
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -190,7 +181,6 @@ test('create HMac-02', t => {
       u: u
     }])
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -213,7 +203,6 @@ test('create HMac-03', t => {
       u: u
     }])
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -238,7 +227,6 @@ test('create HMac-05', t => {
       u: u
     }])
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -253,7 +241,6 @@ test('verify HMac-01', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -266,7 +253,6 @@ test('verify HMac-02', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -279,7 +265,6 @@ test('verify HMac-03', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -305,7 +290,6 @@ test('verify HMac-05', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });

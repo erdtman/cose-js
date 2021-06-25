@@ -1,6 +1,6 @@
 {
   "name": "cosette",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "isomorphic Typescript COSE implementation",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -57,7 +57,7 @@
   },
   "homepage": "https://github.com/lovasoa/cosette#readme",
   "dependencies": {
-    "cbor": "^7.0.5",
+    "cbor-web": "^7.0.5",
     "isomorphic-webcrypto": "^2.3.8",
     "node-hkdf-sync": "^1.0.0"
   },

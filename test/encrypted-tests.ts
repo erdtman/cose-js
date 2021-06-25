@@ -2,7 +2,7 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import { deepEqual } from './util';
 
 function randomSource (bytes) {
@@ -34,7 +34,6 @@ test('create aes-gcm-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -63,7 +62,6 @@ test('create enc-pass-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -95,7 +93,6 @@ test('create enc-pass-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -126,7 +123,6 @@ test('create enc-pass-03', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -142,7 +138,6 @@ test('decrypt aes-gcm-01', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -156,7 +151,6 @@ test('decrypt enc-pass-01', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -173,7 +167,6 @@ test('decrypt enc-pass-02', t => {
     key,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -190,7 +183,6 @@ test('decrypt enc-pass-03', t => {
     key,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });

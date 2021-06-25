@@ -1,6 +1,6 @@
 import * as cose from '../lib/index';
 import test from 'ava';
-import { readSigningTestData } from './util'
+import { bufferEqual, readSigningTestData } from './util'
 
 const TEST_NAMES = [
   { name: 'sign-tests/ecdsa-01' },
@@ -22,7 +22,7 @@ for (const { name, verifyOptions } of TEST_NAMES) {
   test(`verify ${name}`, async (t) => {
     const { verifier, signature, plaintext } = await readSigningTestData(`test/Examples/${name}.json`);
     const buf = await cose.sign.verify(signature, verifier, verifyOptions);
-    t.deepEqual(buf, plaintext);
+    bufferEqual(t, buf, plaintext);
   });
 }
 

@@ -1,6 +1,6 @@
 import * as cose from '../lib/index';
 import test from 'ava';
-import { readSigningTestData } from './util';
+import { bufferEqual, readSigningTestData } from './util';
 
 test('create rsa-pkcs-01', async (t) => {
   let { verifier, plaintext, headers, signers } = await readSigningTestData('test/rsa-pkcs-examples/rsa-pkcs-01.json');
@@ -14,5 +14,5 @@ test('create rsa-pkcs-01', async (t) => {
 test('verify rsa-pkcs-01', async (t) => {
   const { verifier, plaintext, signature } = await readSigningTestData('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const decoded = await cose.sign.verify(signature, verifier, { defaultType: cose.sign.Sign1Tag });
-  t.deepEqual(decoded, plaintext);
+  bufferEqual(t, decoded, plaintext);
 });

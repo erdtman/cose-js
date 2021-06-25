@@ -2,7 +2,7 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import { deepEqual } from './util';
 
 function randomSource (bytes) {
@@ -42,7 +42,6 @@ test('create p256-hkdf-256-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -79,7 +78,6 @@ test('create p256-hkdf-256-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -118,7 +116,6 @@ test('create p256-hkdf-512-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -161,7 +158,6 @@ test('create p256-hkdf-512-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -213,7 +209,6 @@ test('create p256-ss-hkdf-256-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -266,7 +261,6 @@ test('create p521-hkdf-256-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -309,7 +303,6 @@ test('create p521-hkdf-256-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -354,7 +347,6 @@ test('create p521-hkdf-512-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -397,7 +389,6 @@ test('create p521-hkdf-512-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);

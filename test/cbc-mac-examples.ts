@@ -2,7 +2,7 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import { deepEqual } from './util';
 
 test('create cbc-mac-01', async t => {
@@ -19,8 +19,6 @@ test('create cbc-mac-01', async t => {
       key: key,
       u: u
     }]);
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -41,8 +39,6 @@ test('create cbc-mac-02', async t => {
       key: key,
       u: u
     }]);
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -64,8 +60,6 @@ test('create cbc-mac-03', async t => {
       key: key,
       u: u
     }]);
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -87,8 +81,6 @@ test('create cbc-mac-04', async t => {
       key: key,
       u: u
     }]);
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -106,8 +98,6 @@ test('create cbc-mac-enc-01', async t => {
     { p: p, u: undefined },
     plaintext,
     { key: key });
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
   const actual = cbor.decodeFirstSync(buf);
@@ -126,8 +116,6 @@ test('create cbc-mac-enc-02', async t => {
     { p: p, u: undefined },
     plaintext,
     { key: key });
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
   const actual = cbor.decodeFirstSync(buf);
@@ -146,8 +134,6 @@ test('create cbc-mac-enc-03', async t => {
     { p: p, u: undefined },
     plaintext,
     { key: key });
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
   const actual = cbor.decodeFirstSync(buf);
@@ -166,8 +152,6 @@ test('create cbc-mac-enc-04', async t => {
     { p: p, u: undefined },
     plaintext,
     { key: key });
-
-  t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
   const actual = cbor.decodeFirstSync(buf);
@@ -182,7 +166,6 @@ test('verify cbc-mac-01', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -194,7 +177,6 @@ test('verify cbc-mac-02', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -206,7 +188,6 @@ test('verify cbc-mac-03', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -218,7 +199,6 @@ test('verify cbc-mac-04', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -230,7 +210,6 @@ test('verify cbc-mac-enc-01', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -242,7 +221,6 @@ test('verify cbc-mac-enc-02', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -254,7 +232,6 @@ test('verify cbc-mac-enc-03', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -266,7 +243,6 @@ test('verify cbc-mac-enc-04', t => {
 
   return cose.mac.read(example.output.cbor, key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });

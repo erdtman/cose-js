@@ -2,7 +2,7 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
+import * as cbor from 'cbor-web';
 import { deepEqual } from './util';
 
 function randomSource (bytes) {
@@ -38,7 +38,6 @@ test('create aes-ccm-enc-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -67,7 +66,6 @@ test('create aes-ccm-enc-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -96,7 +94,6 @@ test('create aes-ccm-enc-03', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -125,7 +122,6 @@ test('create aes-ccm-enc-04', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -154,7 +150,6 @@ test('create aes-ccm-enc-05', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -183,7 +178,6 @@ test('create aes-ccm-enc-06', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -212,7 +206,6 @@ test('create aes-ccm-enc-07', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -241,7 +234,6 @@ test('create aes-ccm-enc-08', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -257,7 +249,6 @@ test('decrypt aes-ccm-enc-01', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -271,7 +262,6 @@ test('decrypt aes-ccm-enc-02', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -285,7 +275,6 @@ test('decrypt aes-ccm-enc-03', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -299,7 +288,6 @@ test('decrypt aes-ccm-enc-04', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -313,7 +301,6 @@ test('decrypt aes-ccm-enc-05', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -327,7 +314,6 @@ test('decrypt aes-ccm-enc-06', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -341,7 +327,6 @@ test('decrypt aes-ccm-enc-07', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -355,7 +340,6 @@ test('decrypt aes-ccm-enc-08', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -382,7 +366,6 @@ test('create aes-ccm-01', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('hex'), example.output.cbor.toLowerCase());
     });
@@ -409,7 +392,6 @@ test('create aes-ccm-02', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -438,7 +420,6 @@ test('create aes-ccm-03', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -467,7 +448,6 @@ test('create aes-ccm-04', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -496,7 +476,6 @@ test('create aes-ccm-05', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -525,7 +504,6 @@ test('create aes-ccm-06', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -554,7 +532,6 @@ test('create aes-ccm-07', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -583,7 +560,6 @@ test('create aes-ccm-08', t => {
     recipient,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -599,7 +575,6 @@ test('decrypt aes-ccm-01', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -613,7 +588,6 @@ test('decrypt aes-ccm-02', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -627,7 +601,6 @@ test('decrypt aes-ccm-03', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -641,7 +614,7 @@ test('decrypt aes-ccm-04', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
+      console.log(buf);
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -655,7 +628,6 @@ test('decrypt aes-ccm-05', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -669,7 +641,6 @@ test('decrypt aes-ccm-06', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -683,7 +654,6 @@ test('decrypt aes-ccm-07', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });
@@ -697,7 +667,6 @@ test('decrypt aes-ccm-08', t => {
   return cose.encrypt.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), plaintext);
     });

@@ -2,8 +2,8 @@ import * as cose from '../lib/index';
 import test from 'ava';
 import jsonfile from 'jsonfile';
 import base64url from 'base64url';
-import cbor from 'cbor';
-import { deepEqual } from './util';
+import * as cbor from 'cbor-web';
+import { bufferEqual, deepEqual } from './util';
 
 test('create HMac-01', t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/HMac-01.json');
@@ -20,7 +20,6 @@ test('create HMac-01', t => {
       u: u
     }])
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -35,7 +34,6 @@ test('verify HMac-01', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -47,14 +45,13 @@ test('create mac-pass-01', async t => {
   const u = example.input.mac.unprotected;
   const ru = example.input.mac.recipients[0].unprotected;
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
-  const plaintext = Buffer.from(example.input.plaintext);
+  const plaintext = new TextEncoder().encode(example.input.plaintext);
   const buf = await cose.mac.create({ p, u }, plaintext, [{ key, u: ru }]);
   const read_back = await cose.mac.read(buf, key);
-  t.deepEqual(read_back, plaintext);
+  bufferEqual(t, read_back, plaintext);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.deepEqual(actual, expected);
-  t.deepEqual(buf, Buffer.from(example.output.cbor, "hex"));
+  bufferEqual(t, actual.value[2], expected.value[2]);
 });
 
 test('create mac-pass-02', t => {
@@ -77,7 +74,6 @@ test('create mac-pass-02', t => {
     }],
     external, options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -104,7 +100,6 @@ test('create mac-pass-03', t => {
       u: ru
     }], null, options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       const actual = cbor.decodeFirstSync(buf);
       const expected = cbor.decodeFirstSync(example.output.cbor);
@@ -119,7 +114,6 @@ test('verify mac-pass-01', t => {
   return cose.mac.read(example.output.cbor,
     key)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -134,7 +128,6 @@ test('verify mac-pass-02', t => {
     key,
     external)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
@@ -150,7 +143,6 @@ test('verify mac-pass-03', t => {
     undefined,
     options)
     .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
       t.true(buf.length > 0);
       t.is(buf.toString('utf8'), example.input.plaintext);
     });
