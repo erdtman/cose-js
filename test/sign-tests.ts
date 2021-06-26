@@ -28,18 +28,18 @@ for (const { name, verifyOptions } of TEST_NAMES) {
 
 
 [
-  { name: 'sign-tests/sign-fail-01', message: 'Unexpected cbor tag, \'998\'', },
-  { name: 'sign-tests/sign-fail-02', message: 'Signature mismatch', },
-  { name: 'sign-tests/sign-fail-03', message: 'Unknown algorithm, -999', },
-  { name: 'sign-tests/sign-fail-04', message: 'Unknown algorithm, unknown', },
-  { name: 'sign-tests/sign-fail-06', message: 'Signature mismatch', },
-  { name: 'sign-tests/sign-fail-07', message: 'Signature mismatch', },
-  { name: 'sign1-tests/sign-fail-01', message: 'Unexpected cbor tag, \'998\'', },
-  { name: 'sign1-tests/sign-fail-02', message: 'Signature mismatch', },
-  { name: 'sign1-tests/sign-fail-03', message: 'Unknown algorithm, -999', },
-  { name: 'sign1-tests/sign-fail-04', message: 'Unknown algorithm, unknown', },
-  { name: 'sign1-tests/sign-fail-06', message: 'Signature mismatch', },
-  { name: 'sign1-tests/sign-fail-07', message: 'Signature mismatch', },
+  { name: 'sign-tests/sign-fail-01', message: /Unexpected cbor tag, '998'/, },
+  { name: 'sign-tests/sign-fail-02', message: /Signature mismatch/, },
+  { name: 'sign-tests/sign-fail-03', message: /Unknown algorithm, -999/, },
+  { name: 'sign-tests/sign-fail-04', message: /Unknown algorithm, unknown/, },
+  { name: 'sign-tests/sign-fail-06', message: /Signature mismatch/, },
+  { name: 'sign-tests/sign-fail-07', message: /Signature mismatch/, },
+  { name: 'sign1-tests/sign-fail-01', message: /Unexpected cbor tag, '998'/, },
+  { name: 'sign1-tests/sign-fail-02', message: /Signature mismatch/, },
+  { name: 'sign1-tests/sign-fail-03', message: /Unknown algorithm, -999/, },
+  { name: 'sign1-tests/sign-fail-04', message: /Unknown algorithm, unknown/, },
+  { name: 'sign1-tests/sign-fail-06', message: /Signature mismatch/, },
+  { name: 'sign1-tests/sign-fail-07', message: /Signature mismatch/, },
 ].forEach(({ name, message }, i) => {
   test('verify ' + name, async (t) => {
     const { verifier, signature } = await readSigningTestData(`test/Examples/${name}.json`);

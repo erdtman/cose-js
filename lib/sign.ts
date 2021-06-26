@@ -83,10 +83,9 @@ function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | E
   else throw new Error('Unsupported algorithm, ' + cose_name);
 }
 
-async function doVerify(SigStructure: any[], verifier: Verifier, alg: number, sig: ArrayBuffer) {
+async function isSignatureCorrect(SigStructure: any[], verifier: Verifier, alg: number, sig: ArrayBuffer): Promise<boolean> {
   const ToBeSigned = cbor.encode(SigStructure);
-  const verified = await webcrypto.subtle.verify(getAlgorithmParams(alg), verifier.key, sig, ToBeSigned);
-  if (!verified) throw new Error('Signature mismatch');
+  return webcrypto.subtle.verify(getAlgorithmParams(alg), verifier.key, sig, ToBeSigned);
 }
 
 type EncodedSigner = [any, Map<any, any>]
@@ -124,6 +123,30 @@ interface VerifyOptions {
   defaultType?: number,
 }
 
+/**
+ * Error thrown where a message signature could not be verified.
+ * This may mean that the message was forged.
+ * 
+ * @member plaintext The decoded message, for which the signature is incorrect.
+ */
+export class SignatureMismatchError extends Error {
+  /** The decoded CBOR message with an invalid signature.  */
+  plaintext: any;
+  constructor(plaintext: any) {
+    super(`Signature mismatch: The CBOR message ${JSON.stringify(plaintext)} has an invalid signature.`);
+    this.name = "SignatureMismatchError";
+    this.plaintext = plaintext;
+  }
+}
+
+/**
+ * Verify the COSE signature of a CBOR message.
+ * 
+ * @throws {SignatureMismatchError} Will throw an exception if the signature is invalid.
+ * @param payload A CBOR-encoded signed message
+ * @param verifier The key used to check the signature
+ * @returns The decoded message, if the signature was correct.
+ */
 export async function verify(payload: Uint8Array, verifier: Verifier, options?: VerifyOptions) {
   options = options || {};
   let obj = await cbor.decodeFirst(payload);
@@ -186,6 +209,9 @@ export async function verify(payload: Uint8Array, verifier: Verifier, options?: 
     ];
     var sig = signer;
   }
-  await doVerify(SigStructure, verifier, alg, sig);
-  return plaintext;
+  if (await isSignatureCorrect(SigStructure, verifier, alg, sig)) {
+    return plaintext
+  } else {
+    throw new SignatureMismatchError(plaintext)
+  }
 };
