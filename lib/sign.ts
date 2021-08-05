@@ -135,13 +135,13 @@ function getCommonParameter(first, second, parameter) {
 }
 
 
-interface Verifier {
+export interface Verifier {
   externalAAD?: ArrayBuffer | Buffer,
   key: CryptoKey,
   kid?: string, // key identifier
 }
 
-interface VerifyOptions {
+export interface VerifyOptions {
   defaultType?: number,
 }
 
