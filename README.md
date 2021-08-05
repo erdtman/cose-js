@@ -22,7 +22,7 @@ Still not ported to isomorphic-webcrypto :
 
 ```js
 const cose = require('cosette');
-const crypto = rquire("isomorphic-webcrypto");
+const crypto = cose.sign.webcrypto;
 
 async function sign() {
   const plaintext = 'Important message!';

@@ -24,6 +24,16 @@ for (const { name, verifyOptions } of TEST_NAMES) {
     const buf = await cose.sign.verify(signature, verifier, verifyOptions);
     bufferEqual(t, buf, plaintext);
   });
+
+  test(`verify ${name} with async verifier function`, async (t) => {
+    const { verifier, signature, plaintext } = await readSigningTestData(`test/Examples/${name}.json`);
+    async function verifierFn(kid:Uint8Array) {
+      if (!new TextDecoder().decode(kid) === verifier.kid) throw new Error("called with invalid kid");
+      return verifier;
+    }
+    const buf = await cose.sign.verify(signature, verifierFn, verifyOptions);
+    bufferEqual(t, buf, plaintext);
+  });
 }
 
 

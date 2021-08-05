@@ -1,6 +1,6 @@
 import test, { ExecutionContext } from 'ava';
 import jsonfile from 'jsonfile';
-import webcrypto from 'isomorphic-webcrypto';
+import {webcrypto} from '../lib/sign';
 
 function hexToB64url(hex: string) {
   return Buffer.from(hex, 'hex').toString('base64url');
