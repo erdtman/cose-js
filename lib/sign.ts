@@ -4,7 +4,7 @@ import * as common from './common';
 const EMPTY_BUFFER = common.EMPTY_BUFFER;
 const Tagged = cbor.Tagged;
 
-export {webcrypto}; // Re-export webcrypto to let users create their keys
+export {webcrypto, cbor}; // Re-export webcrypto to let users create their keys
 
 export const SignTag = 98;
 export const Sign1Tag = 18;
