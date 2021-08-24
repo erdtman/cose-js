@@ -82,6 +82,7 @@ function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | E
   const cose_name = common.AlgFromTags(alg);
   if (cose_name.startsWith('ES')) return { 'name': 'ECDSA', 'hash': 'SHA-' + cose_name.slice(2) }
   else if (cose_name.startsWith('RS')) return { "name": "RSASSA-PKCS1-v1_5" }
+  else if (cose_name.startsWith('PS')) return { name: "RSA-PSS", saltLength: +cose_name.slice(2)/8 };
   else throw new Error('Unsupported algorithm, ' + cose_name);
 }
 

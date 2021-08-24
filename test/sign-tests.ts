@@ -10,6 +10,7 @@ const TEST_NAMES = [
   { name: 'sign1-tests/sign-pass-01' },
   { name: 'sign1-tests/sign-pass-02' },
   { name: 'sign1-tests/sign-pass-03', verifyOptions: { defaultType: cose.sign.Sign1Tag } },
+  { name: 'RFC8152/Appendix_C_1_1' },
 ];
 for (const { name, verifyOptions } of TEST_NAMES) {
   test(`create ${name}`, async (t) => {
