@@ -78,7 +78,7 @@ export async function create(headers: common.HeaderPU, payload, signers: Signers
 };
 
 
-function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | EcdsaParams {
+function getAlgorithmParams(alg: number): AlgorithmParams {
   const cose_name = common.AlgFromTags(alg);
   if (cose_name.startsWith('ES')) return { 'name': 'ECDSA', 'hash': 'SHA-' + cose_name.slice(2) }
   else if (cose_name.startsWith('RS')) return { "name": "RSASSA-PKCS1-v1_5" }
@@ -86,19 +86,24 @@ function getAlgorithmParams(alg: number): AlgorithmIdentifier | RsaPssParams | E
   else throw new Error('Unsupported algorithm, ' + cose_name);
 }
 
-async function isSignatureCorrect(SigStructure: any[], verifier: Verifier, alg: number, sig: ArrayBuffer): Promise<boolean> {
+async function isSignatureCorrect(SigStructure: any[], verifier: Verifier, algorithmParams: AlgorithmParams, sig: ArrayBuffer): Promise<boolean> {
   const ToBeSigned = cbor.encode(SigStructure);
-  return webcrypto.subtle.verify(getAlgorithmParams(alg), verifier.key, sig, ToBeSigned);
+  return webcrypto.subtle.verify(algorithmParams, verifier.key, sig, ToBeSigned);
 }
 
 type EncodedSigner = [any, Map<any, any>, any]
 
-/// An async function that, given a kid, returns a verifier with a public key for it.
+export type AlgorithmParams = Algorithm | RsaPssParams | EcdsaParams;
+
+/// An async function that, given a kid and a signature algorithm,
+/// returns a verifier with a public key for it.
 /// If no verifier for the key is found, it should throw an error
-export type VerifierFunction = (kid:Uint8Array) => Promise<Verifier>;
+export type VerifierFunction = (kid:Uint8Array, algorithm: AlgorithmParams) => Promise<Verifier>;
 
 interface SignerAndVerifier {
-  signer: EncodedSigner;
+  algorithmParams: AlgorithmParams;
+  signerP: any;
+  signature: any;
   verifier: Verifier;
 }
 
@@ -106,8 +111,13 @@ async function getSignerAndVerifier(signers: EncodedSigner[], verifierFn: Verifi
   let error = new Error("No signer");
   for (const signer of signers) {
     const kid = signer[1].get(common.HeaderParameters.kid) as Uint8Array; // TODO create constant for header locations
+    let [signerP, , signature] = signer;
+    signerP = !signerP.length ? EMPTY_BUFFER : signerP;
+    const signerPMap = cbor.decode(signerP);
+    var alg = signerPMap.get(common.HeaderParameters.alg);
+    const algorithmParams = getAlgorithmParams(alg);
     try {
-      return {signer, verifier: await verifierFn(kid)};
+      return {algorithmParams, signerP, signature, verifier: await verifierFn(kid, algorithmParams)};
     } catch(e) {
       error = e;
     }
@@ -191,7 +201,7 @@ export async function verify(payload: Uint8Array, verifierParam: Verifier | Veri
     throw new Error('Expecting Array of lenght 4');
   }
 
-  let [p, u, plaintext, signature] = obj;
+  var [p, u, plaintext, signature] = obj;
 
   if (type === SignTag && !Array.isArray(signature)) {
     throw new Error('Expecting signature Array');
@@ -202,13 +212,10 @@ export async function verify(payload: Uint8Array, verifierParam: Verifier | Veri
 
 
   if (type === SignTag) {
-    var {signer, verifier} = await getSignerAndVerifier(signature, verifierFn);
+    var { algorithmParams, signerP, signature, verifier } =
+      await getSignerAndVerifier(signature, verifierFn);
     const externalAAD = verifier.externalAAD || EMPTY_BUFFER;
-    var [signerP, , sig] = signer;
-    signerP = (!signerP.length) ? EMPTY_BUFFER : signerP;
     p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
-    const signerPMap = cbor.decode(signerP);
-    var alg = signerPMap.get(common.HeaderParameters.alg);
     var SigStructure = [
       'Signature',
       p,
@@ -219,7 +226,8 @@ export async function verify(payload: Uint8Array, verifierParam: Verifier | Veri
   } else {
     var alg = getCommonParameter(p, u, common.HeaderParameters.alg);
     const kid = getCommonParameter(p, u, common.HeaderParameters.kid);
-    var verifier = await verifierFn(kid);
+    var algorithmParams = getAlgorithmParams(alg);
+    var verifier = await verifierFn(kid, algorithmParams);
     const externalAAD = verifier.externalAAD || EMPTY_BUFFER;
     p = (!p.size) ? EMPTY_BUFFER : cbor.encode(p);
     var SigStructure = [
@@ -228,11 +236,10 @@ export async function verify(payload: Uint8Array, verifierParam: Verifier | Veri
       externalAAD,
       plaintext
     ];
-    var sig = signature;
   }
-  if (await isSignatureCorrect(SigStructure, verifier, alg, sig)) {
-    return plaintext
+  if (await isSignatureCorrect(SigStructure, verifier, algorithmParams, signature)) {
+    return plaintext;
   } else {
-    throw new SignatureMismatchError(plaintext)
+    throw new SignatureMismatchError(plaintext);
   }
 };

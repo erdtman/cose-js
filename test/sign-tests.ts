@@ -1,6 +1,7 @@
 import * as cose from '../lib/index';
 import test from 'ava';
 import { bufferEqual, readSigningTestData } from './util'
+import type { AlgorithmParams } from '../lib/sign';
 
 const TEST_NAMES = [
   { name: 'sign-tests/ecdsa-01' },
@@ -28,7 +29,9 @@ for (const { name, verifyOptions } of TEST_NAMES) {
 
   test(`verify ${name} with async verifier function`, async (t) => {
     const { verifier, signature, plaintext } = await readSigningTestData(`test/Examples/${name}.json`);
-    async function verifierFn(kid:Uint8Array) {
+    async function verifierFn(kid:Uint8Array, algorithmParams: AlgorithmParams) {
+      const allowedAlgs = ["ECDSA", "RSASSA-PKCS1-v1_5", "RSA-PSS"];
+      if (!allowedAlgs.includes(algorithmParams.name)) throw new Error("bad algorithm");
       if (!new TextDecoder().decode(kid) === verifier.kid) throw new Error("called with invalid kid");
       return verifier;
     }
