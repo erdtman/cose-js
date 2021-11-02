@@ -257,7 +257,7 @@ test('create sign-pass-01', (t) => {
     });
 });
 
-test('create sign-pass-01 Sync', (t) => {
+test('create sign-pass-01 Sync', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-pass-01.json');
   const p = example.input.sign.protected;
   const u = example.input.sign.unprotected;
@@ -271,7 +271,7 @@ test('create sign-pass-01 Sync', (t) => {
     p: example.input.sign.signers[0].protected
   }];
 
-  const buf = cose.sign.createSync(
+  const buf = await cose.sign.create(
     { p: p, u: u },
     plaintext,
     signers

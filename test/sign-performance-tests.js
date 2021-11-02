@@ -20,7 +20,7 @@ test('create and verify really huge payload', (t) => {
     u: example.input.sign.signers[0].unprotected,
     p: example.input.sign.signers[0].protected
   }];
-  const plaintext = Buffer.from('a'.repeat(100 * 160));
+  const plaintext = Buffer.from('a'.repeat(100 * 1000));
 
   const verifier = {
     key: {
@@ -40,7 +40,7 @@ test('create and verify really huge payload', (t) => {
       t.true(buf.length > 0);
       return cbor.decodeFirst(buf)
         .then(actual => {
-          t.is(actual.value[2].length, 100 * 160);
+          t.is(actual.value[2].length, 100 * 1000);
         })
         .then(() => buf);
     })

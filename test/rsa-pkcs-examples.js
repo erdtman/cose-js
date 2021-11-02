@@ -51,7 +51,7 @@ test('create rsa-pkcs-01', (t) => {
     });
 });
 
-test('create rsa-pkcs-01 Sync', (t) => {
+test('create rsa-pkcs-01 Sync', async (t) => {
   const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
@@ -72,7 +72,7 @@ test('create rsa-pkcs-01 Sync', (t) => {
     }, { private: true })
   };
 
-  const buf = cose.sign.createSync(
+  const buf = await cose.sign.create(
     { p: p, u: u },
     plaintext,
     signer,
