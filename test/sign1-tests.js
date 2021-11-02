@@ -11,7 +11,6 @@ const deepEqual = require('./util.js').deepEqual;
 
 test('create sign-pass-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-01.json');
-  const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
@@ -22,7 +21,7 @@ test('create sign-pass-01', (t) => {
   };
 
   return cose.sign.create(
-    { p: p, u: u },
+    { u: u },
     plaintext,
     signer
   )
