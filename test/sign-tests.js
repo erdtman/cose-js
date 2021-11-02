@@ -60,7 +60,8 @@ test('create ecdsa-01', async (t) => {
     p: example.input.sign.signers[0].protected
   }];
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -91,7 +92,8 @@ test('sign+verify rsa-pss-01', async (t) => {
   }];
   signers[0].p.alg = 'PS256';
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
@@ -124,7 +126,8 @@ test('sign+verify rsa-pss-02', async (t) => {
   }];
   signers[0].p.alg = 'PS384';
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
@@ -156,7 +159,8 @@ test('sign+verify rsa-pss-03', async (t) => {
   }];
   signers[0].p.alg = 'PS512';
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
@@ -199,7 +203,8 @@ test('create sign-pass-01', async (t) => {
     p: example.input.sign.signers[0].protected
   }];
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -221,7 +226,8 @@ test('create sign-pass-01 Sync', async (t) => {
     p: example.input.sign.signers[0].protected
   }];
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -236,15 +242,15 @@ test('create sign-pass-02', async (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signers = [{
-    key: {
-      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
-    },
+    key: { d: base64url.toBuffer(example.input.sign.signers[0].key.d) },
     u: example.input.sign.signers[0].unprotected,
     p: example.input.sign.signers[0].protected,
     externalAAD: Buffer.from(example.input.sign.signers[0].external, 'hex')
   }];
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers, { encodep: 'empty' });
+  const header = { p: p, u: u };
+  const options = { encodep: 'empty' };
+  const buf = await cose.sign.create(header, plaintext, signers, options);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -266,7 +272,9 @@ test('create sign-pass-03', async (t) => {
     p: example.input.sign.signers[0].protected
   }];
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signers, { encodep: 'empty', excludetag: true });
+  const header = { p: p, u: u };
+  const options = { encodep: 'empty', excludetag: true };
+  const buf = await cose.sign.create(header, plaintext, signers, options);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);

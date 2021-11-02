@@ -20,7 +20,8 @@ test('create sign-pass-01', async (t) => {
     }
   };
 
-  const buf = await cose.sign.create({ u: u }, plaintext, signer);
+  const header = { u: u };
+  const buf = await cose.sign.create(header, plaintext, signer);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -41,7 +42,8 @@ test('create sign-pass-02', async (t) => {
     externalAAD: Buffer.from(example.input.sign0.external, 'hex')
   };
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signer);
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signer);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -61,7 +63,9 @@ test('create sign-pass-03', async (t) => {
     }
   };
 
-  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signer, { excludetag: true });
+  const header = { p: p, u: u };
+  const options = { excludetag: true };
+  const buf = await cose.sign.create(header, plaintext, signer, options);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
@@ -118,7 +122,8 @@ test('verify sign-pass-03', async (t) => {
 
   const signature = Buffer.from(example.output.cbor, 'hex');
 
-  const buf = await cose.sign.verify(signature, verifier, { defaultType: cose.sign.Sign1Tag });
+  const options = { defaultType: cose.sign.Sign1Tag };
+  const buf = await cose.sign.verify(signature, verifier, options);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
   t.is(buf.toString('utf8'), example.input.plaintext);
