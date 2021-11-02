@@ -9,6 +9,7 @@ const cbor = require('cbor');
 const jsonfile = require('jsonfile');
 
 test('create and verify really huge payload', (t) => {
+  // uses the keys from here but it has nothing to do with the test
   const example = jsonfile.readFileSync('test/Examples/sign-tests/ecdsa-01.json');
 
   const p = example.input.sign.protected;
