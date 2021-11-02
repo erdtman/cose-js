@@ -16,13 +16,13 @@ test('create sign-pass-01', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signer = {
-    'key': {
-      'd': base64url.toBuffer(example.input.sign0.key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign0.key.d)
     }
   };
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signer
   )
@@ -42,14 +42,14 @@ test('create sign-pass-02', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signer = {
-    'key': {
-      'd': base64url.toBuffer(example.input.sign0.key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign0.key.d)
     },
-    'externalAAD': Buffer.from(example.input.sign0.external, 'hex')
+    externalAAD: Buffer.from(example.input.sign0.external, 'hex')
   };
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signer
   )
@@ -69,17 +69,17 @@ test('create sign-pass-03', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signer = {
-    'key': {
-      'd': base64url.toBuffer(example.input.sign0.key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign0.key.d)
     }
   };
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signer,
     {
-      'excludetag': true
+      excludetag: true
     }
   )
     .then((buf) => {
@@ -95,9 +95,9 @@ test('verify sign-pass-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -117,11 +117,11 @@ test('verify sign-pass-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-02.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     },
-    'externalAAD': Buffer.from(example.input.sign0.external, 'hex')
+    externalAAD: Buffer.from(example.input.sign0.external, 'hex')
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
@@ -140,9 +140,9 @@ test('verify sign-pass-03', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-03.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -152,7 +152,7 @@ test('verify sign-pass-03', (t) => {
     signature,
     verifier,
     {
-      'defaultType': cose.sign.Sign1Tag
+      defaultType: cose.sign.Sign1Tag
     })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
@@ -165,9 +165,9 @@ test('verify sign-fail-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -187,9 +187,9 @@ test('verify sign-fail-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-02.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -209,9 +209,9 @@ test('verify sign-fail-03', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-03.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -231,9 +231,9 @@ test('verify sign-fail-04', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-04.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -253,9 +253,9 @@ test('verify sign-fail-06', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-06.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 
@@ -275,9 +275,9 @@ test('verify sign-fail-07', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-07.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign0.key.x),
-      'y': base64url.toBuffer(example.input.sign0.key.y)
+    key: {
+      x: base64url.toBuffer(example.input.sign0.key.x),
+      y: base64url.toBuffer(example.input.sign0.key.y)
     }
   };
 

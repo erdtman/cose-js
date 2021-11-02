@@ -21,25 +21,25 @@ test('create rsa-pkcs-01', (t) => {
 
   const testKey = example.input.sign0.key;
   const signer = {
-    'key': jwkToPem({
-      'kty': testKey.kty,
-      'n': hexToB64(testKey.n_hex),
-      'e': hexToB64(testKey.e_hex),
-      'd': hexToB64(testKey.d_hex),
-      'p': hexToB64(testKey.p_hex),
-      'q': hexToB64(testKey.q_hex),
-      'dp': hexToB64(testKey.dP_hex),
-      'dq': hexToB64(testKey.dQ_hex),
-      'qi': hexToB64(testKey.qi_hex)
+    key: jwkToPem({
+      kty: testKey.kty,
+      n: hexToB64(testKey.n_hex),
+      e: hexToB64(testKey.e_hex),
+      d: hexToB64(testKey.d_hex),
+      p: hexToB64(testKey.p_hex),
+      q: hexToB64(testKey.q_hex),
+      dp: hexToB64(testKey.dP_hex),
+      dq: hexToB64(testKey.dQ_hex),
+      qi: hexToB64(testKey.qi_hex)
     }, { private: true })
   };
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signer,
     {
-      'excludetag': true
+      excludetag: true
     }
   )
     .then((buf) => {
@@ -59,25 +59,25 @@ test('create rsa-pkcs-01 Sync', (t) => {
 
   const testKey = example.input.sign0.key;
   const signer = {
-    'key': jwkToPem({
-      'kty': testKey.kty,
-      'n': hexToB64(testKey.n_hex),
-      'e': hexToB64(testKey.e_hex),
-      'd': hexToB64(testKey.d_hex),
-      'p': hexToB64(testKey.p_hex),
-      'q': hexToB64(testKey.q_hex),
-      'dp': hexToB64(testKey.dP_hex),
-      'dq': hexToB64(testKey.dQ_hex),
-      'qi': hexToB64(testKey.qi_hex)
+    key: jwkToPem({
+      kty: testKey.kty,
+      n: hexToB64(testKey.n_hex),
+      e: hexToB64(testKey.e_hex),
+      d: hexToB64(testKey.d_hex),
+      p: hexToB64(testKey.p_hex),
+      q: hexToB64(testKey.q_hex),
+      dp: hexToB64(testKey.dP_hex),
+      dq: hexToB64(testKey.dQ_hex),
+      qi: hexToB64(testKey.qi_hex)
     }, { private: true })
   };
 
   const buf = cose.sign.createSync(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signer,
     {
-      'excludetag': true
+      excludetag: true
     }
   );
   t.true(Buffer.isBuffer(buf));
@@ -93,10 +93,10 @@ test('verify rsa-pkcs-01', (t) => {
   const testKey = example.input.sign0.key;
 
   const verifier = {
-    'key': jwkToPem({
-      'kty': testKey.kty,
-      'n': hexToB64(testKey.n_hex),
-      'e': hexToB64(testKey.e_hex)
+    key: jwkToPem({
+      kty: testKey.kty,
+      n: hexToB64(testKey.n_hex),
+      e: hexToB64(testKey.e_hex)
     })
   };
 
@@ -106,7 +106,7 @@ test('verify rsa-pkcs-01', (t) => {
     signature,
     verifier,
     {
-      'defaultType': cose.sign.Sign1Tag
+      defaultType: cose.sign.Sign1Tag
     })
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
@@ -121,10 +121,10 @@ test('verify rsa-pkcs-01 Sync', (t) => {
   const testKey = example.input.sign0.key;
 
   const verifier = {
-    'key': jwkToPem({
-      'kty': testKey.kty,
-      'n': hexToB64(testKey.n_hex),
-      'e': hexToB64(testKey.e_hex)
+    key: jwkToPem({
+      kty: testKey.kty,
+      n: hexToB64(testKey.n_hex),
+      e: hexToB64(testKey.e_hex)
     })
   };
 
@@ -134,7 +134,7 @@ test('verify rsa-pkcs-01 Sync', (t) => {
     signature,
     verifier,
     {
-      'defaultType': cose.sign.Sign1Tag
+      defaultType: cose.sign.Sign1Tag
     });
 
   t.true(Buffer.isBuffer(buf));

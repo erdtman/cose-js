@@ -80,34 +80,34 @@ function deepEqual (actual, expected, depth) {
 exports.deepEqual = deepEqual;
 
 test('deep equal array', (t) => {
-  let actual = [1, 2, 3, '4', [1, 2, 3], { 'hello': 'world', 'world': 'hello' }];
-  let expected = [1, 2, 3, '4', [1, 2, 3], { 'hello': 'world', 'world': 'hello' }];
+  const actual = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
+  const expected = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
   t.true(deepEqual(actual, expected));
   expected.push(4);
   t.false(deepEqual(actual, expected));
 });
 
 test('deep equal deep array', (t) => {
-  let actual = [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, 1]]]]]]]]]]]]];
-  let expected = [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, 1]]]]]]]]]]]]];
+  const actual = [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, 1]]]]]]]]]]]]];
+  const expected = [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, 1]]]]]]]]]]]]];
   t.true(deepEqual(actual, expected));
 });
 
 test('deep equal objects', (t) => {
-  let actual = {
-    'world': 'hello',
-    'hello': 'world',
-    'complex': {
-      'world': 'hello',
-      'hello': 'world'
+  const actual = {
+    world: 'hello',
+    hello: 'world',
+    complex: {
+      world: 'hello',
+      hello: 'world'
     }
   };
-  let expected = {
-    'hello': 'world',
-    'world': 'hello',
-    'complex': {
-      'hello': 'world',
-      'world': 'hello'
+  const expected = {
+    hello: 'world',
+    world: 'hello',
+    complex: {
+      hello: 'world',
+      world: 'hello'
     }
   };
   t.true(deepEqual(actual, expected));
@@ -116,14 +116,14 @@ test('deep equal objects', (t) => {
 });
 
 test('deep equal Map', (t) => {
-  let actual = new Map();
+  const actual = new Map();
   actual.set(1, 1);
   actual.set('hello', 'world');
-  actual.set('object', { 'hello': 'world', 'world': 'hello' });
-  let expected = new Map();
+  actual.set('object', { hello: 'world', world: 'hello' });
+  const expected = new Map();
   expected.set(1, 1);
   expected.set('hello', 'world');
-  expected.set('object', { 'hello': 'world', 'world': 'hello' });
+  expected.set('object', { hello: 'world', world: 'hello' });
   t.true(deepEqual(actual, expected));
   expected.set(2, 2);
   t.false(deepEqual(actual, expected));

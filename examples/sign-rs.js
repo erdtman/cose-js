@@ -4,8 +4,8 @@ const cose = require('../lib');
 async function sample () {
   const plaintext = 'Important message!';
   const headers = {
-    'p': { 'alg': 'RS256' },
-    'u': { 'kid': '11' }
+    p: { alg: 'RS256' },
+    u: { kid: '11' }
   };
   const keys = crypto.generateKeyPairSync('rsa', {
     modulusLength: 2048,
@@ -19,14 +19,14 @@ async function sample () {
     }
   });
   const signer = {
-    'key': keys.privateKey
+    key: keys.privateKey
   };
 
   const msg = await cose.sign.create(headers, plaintext, signer);
   console.log('Signed message: ' + msg.toString('hex'));
 
   const verifier = {
-    'key': keys.publicKey
+    key: keys.publicKey
   };
 
   const plaintext2 = await cose.sign.verify(msg, verifier);

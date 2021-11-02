@@ -13,10 +13,10 @@ test('ecdsa-examples verify ecdsa-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/ecdsa-examples/ecdsa-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -36,10 +36,10 @@ test('ecdsa-examples verify ecdsa-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/ecdsa-examples/ecdsa-02.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -61,15 +61,15 @@ test('create ecdsa-01', (t) => {
   const u = example.input.sign.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
   const signers = [{
-    'key': {
-      'd': base64url.toBuffer(example.input.sign.signers[0].key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers
   )
@@ -89,24 +89,24 @@ test('sign+verify rsa-pss-01', (t) => {
   const u = example.input.sign.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
   const signers = [{
-    'key': {
-      'n': Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
-      'd': Buffer.from(example.input.sign.signers[0].key.d_hex, 'hex'),
-      'p': Buffer.from(example.input.sign.signers[0].key.p_hex, 'hex'),
-      'q': Buffer.from(example.input.sign.signers[0].key.q_hex, 'hex'),
-      'dp': Buffer.from(example.input.sign.signers[0].key.dP_hex, 'hex'),
-      'dq': Buffer.from(example.input.sign.signers[0].key.dQ_hex, 'hex'),
-      'qi': Buffer.from(example.input.sign.signers[0].key.qi_hex, 'hex'),
-      'e': Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      n: Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
+      d: Buffer.from(example.input.sign.signers[0].key.d_hex, 'hex'),
+      p: Buffer.from(example.input.sign.signers[0].key.p_hex, 'hex'),
+      q: Buffer.from(example.input.sign.signers[0].key.q_hex, 'hex'),
+      dp: Buffer.from(example.input.sign.signers[0].key.dP_hex, 'hex'),
+      dq: Buffer.from(example.input.sign.signers[0].key.dQ_hex, 'hex'),
+      qi: Buffer.from(example.input.sign.signers[0].key.qi_hex, 'hex'),
+      e: Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
+      kid: example.input.sign.signers[0].key.kid
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
   signers[0].p.alg = 'PS256';
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers
   )
@@ -130,24 +130,24 @@ test('sign+verify rsa-pss-02', (t) => {
   const u = example.input.sign.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
   const signers = [{
-    'key': {
-      'n': Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
-      'd': Buffer.from(example.input.sign.signers[0].key.d_hex, 'hex'),
-      'p': Buffer.from(example.input.sign.signers[0].key.p_hex, 'hex'),
-      'q': Buffer.from(example.input.sign.signers[0].key.q_hex, 'hex'),
-      'dp': Buffer.from(example.input.sign.signers[0].key.dP_hex, 'hex'),
-      'dq': Buffer.from(example.input.sign.signers[0].key.dQ_hex, 'hex'),
-      'qi': Buffer.from(example.input.sign.signers[0].key.qi_hex, 'hex'),
-      'e': Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      n: Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
+      d: Buffer.from(example.input.sign.signers[0].key.d_hex, 'hex'),
+      p: Buffer.from(example.input.sign.signers[0].key.p_hex, 'hex'),
+      q: Buffer.from(example.input.sign.signers[0].key.q_hex, 'hex'),
+      dp: Buffer.from(example.input.sign.signers[0].key.dP_hex, 'hex'),
+      dq: Buffer.from(example.input.sign.signers[0].key.dQ_hex, 'hex'),
+      qi: Buffer.from(example.input.sign.signers[0].key.qi_hex, 'hex'),
+      e: Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
+      kid: example.input.sign.signers[0].key.kid
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
   signers[0].p.alg = 'PS384';
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers
   )
@@ -171,24 +171,24 @@ test('sign+verify rsa-pss-03', (t) => {
   const u = example.input.sign.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
   const signers = [{
-    'key': {
-      'n': Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
-      'd': Buffer.from(example.input.sign.signers[0].key.d_hex, 'hex'),
-      'p': Buffer.from(example.input.sign.signers[0].key.p_hex, 'hex'),
-      'q': Buffer.from(example.input.sign.signers[0].key.q_hex, 'hex'),
-      'dp': Buffer.from(example.input.sign.signers[0].key.dP_hex, 'hex'),
-      'dq': Buffer.from(example.input.sign.signers[0].key.dQ_hex, 'hex'),
-      'qi': Buffer.from(example.input.sign.signers[0].key.qi_hex, 'hex'),
-      'e': Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      n: Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
+      d: Buffer.from(example.input.sign.signers[0].key.d_hex, 'hex'),
+      p: Buffer.from(example.input.sign.signers[0].key.p_hex, 'hex'),
+      q: Buffer.from(example.input.sign.signers[0].key.q_hex, 'hex'),
+      dp: Buffer.from(example.input.sign.signers[0].key.dP_hex, 'hex'),
+      dq: Buffer.from(example.input.sign.signers[0].key.dQ_hex, 'hex'),
+      qi: Buffer.from(example.input.sign.signers[0].key.qi_hex, 'hex'),
+      e: Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
+      kid: example.input.sign.signers[0].key.kid
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
   signers[0].p.alg = 'PS512';
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers
   )
@@ -210,10 +210,10 @@ test('verify ecdsa-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/ecdsa-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -236,15 +236,15 @@ test('create sign-pass-01', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signers = [{
-    'key': {
-      'd': base64url.toBuffer(example.input.sign.signers[0].key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers
   )
@@ -264,15 +264,15 @@ test('create sign-pass-01 Sync', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signers = [{
-    'key': {
-      'd': base64url.toBuffer(example.input.sign.signers[0].key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
 
   const buf = cose.sign.createSync(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers
   );
@@ -290,19 +290,19 @@ test('create sign-pass-02', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signers = [{
-    'key': {
-      'd': base64url.toBuffer(example.input.sign.signers[0].key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected,
-    'externalAAD': Buffer.from(example.input.sign.signers[0].external, 'hex')
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected,
+    externalAAD: Buffer.from(example.input.sign.signers[0].external, 'hex')
   }];
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers,
-    { 'encodep': 'empty' }
+    { encodep: 'empty' }
   )
     .then((buf) => {
       t.true(Buffer.isBuffer(buf));
@@ -320,20 +320,20 @@ test('create sign-pass-03', (t) => {
   const plaintext = Buffer.from(example.input.plaintext);
 
   const signers = [{
-    'key': {
-      'd': base64url.toBuffer(example.input.sign.signers[0].key.d)
+    key: {
+      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
     },
-    'u': example.input.sign.signers[0].unprotected,
-    'p': example.input.sign.signers[0].protected
+    u: example.input.sign.signers[0].unprotected,
+    p: example.input.sign.signers[0].protected
   }];
 
   return cose.sign.create(
-    { 'p': p, 'u': u },
+    { p: p, u: u },
     plaintext,
     signers,
     {
-      'encodep': 'empty',
-      'excludetag': true
+      encodep: 'empty',
+      excludetag: true
     }
   )
     .then((buf) => {
@@ -349,10 +349,10 @@ test('verify sign-pass-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-pass-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -372,10 +372,10 @@ test('verify sign-pass-01 Sync', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-pass-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -393,12 +393,12 @@ test('verify sign-pass-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-pass-02.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     },
-    'externalAAD': Buffer.from(example.input.sign.signers[0].external, 'hex')
+    externalAAD: Buffer.from(example.input.sign.signers[0].external, 'hex')
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
@@ -417,10 +417,10 @@ test('verify sign-pass-03', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-pass-03.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -440,10 +440,10 @@ test('verify sign-fail-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-fail-01.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -463,10 +463,10 @@ test('verify sign-fail-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-fail-02.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -486,10 +486,10 @@ test('verify sign-fail-03', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-fail-03.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -509,10 +509,10 @@ test('verify sign-fail-04', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-fail-04.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -532,10 +532,10 @@ test('verify sign-fail-06', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-fail-06.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -555,10 +555,10 @@ test('verify sign-fail-07', (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign-tests/sign-fail-07.json');
 
   const verifier = {
-    'key': {
-      'x': base64url.toBuffer(example.input.sign.signers[0].key.x),
-      'y': base64url.toBuffer(example.input.sign.signers[0].key.y),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
+      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -578,10 +578,10 @@ test('verify rsa-pss-01', (t) => {
   const example = jsonfile.readFileSync('test/Examples/rsa-pss-examples/rsa-pss-01.json');
 
   const verifier = {
-    'key': {
-      'n': Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
-      'e': Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      n: Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
+      e: Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -601,10 +601,10 @@ test('verify rsa-pss-02', (t) => {
   const example = jsonfile.readFileSync('test/Examples/rsa-pss-examples/rsa-pss-02.json');
 
   const verifier = {
-    'key': {
-      'n': Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
-      'e': Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      n: Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
+      e: Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
@@ -624,10 +624,10 @@ test('verify rsa-pss-03', (t) => {
   const example = jsonfile.readFileSync('test/Examples/rsa-pss-examples/rsa-pss-03.json');
 
   const verifier = {
-    'key': {
-      'n': Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
-      'e': Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
-      'kid': example.input.sign.signers[0].key.kid
+    key: {
+      n: Buffer.from(example.input.sign.signers[0].key.n_hex, 'hex'),
+      e: Buffer.from(example.input.sign.signers[0].key.e_hex, 'hex'),
+      kid: example.input.sign.signers[0].key.kid
     }
   };
 
