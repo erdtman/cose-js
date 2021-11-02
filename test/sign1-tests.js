@@ -7,9 +7,9 @@ const test = require('ava');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
 const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+const { deepEqual } = require('./util.js');
 
-test('create sign-pass-01', (t) => {
+test('create sign-pass-01', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-01.json');
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -20,21 +20,15 @@ test('create sign-pass-01', (t) => {
     }
   };
 
-  return cose.sign.create(
-    { u: u },
-    plaintext,
-    signer
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const buf = await cose.sign.create({ u: u }, plaintext, signer);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create sign-pass-02', (t) => {
+test('create sign-pass-02', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-02.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
@@ -47,21 +41,15 @@ test('create sign-pass-02', (t) => {
     externalAAD: Buffer.from(example.input.sign0.external, 'hex')
   };
 
-  return cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signer
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signer);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create sign-pass-03', (t) => {
+test('create sign-pass-03', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-03.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
@@ -73,24 +61,15 @@ test('create sign-pass-03', (t) => {
     }
   };
 
-  return cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signer,
-    {
-      excludetag: true
-    }
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const buf = await cose.sign.create({ p: p, u: u }, plaintext, signer, { excludetag: true });
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('verify sign-pass-01', (t) => {
+test('verify sign-pass-01', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-01.json');
 
   const verifier = {
@@ -102,17 +81,13 @@ test('verify sign-pass-01', (t) => {
 
   const signature = Buffer.from(example.output.cbor, 'hex');
 
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const buf = await cose.sign.verify(signature, verifier);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify sign-pass-02', (t) => {
+test('verify sign-pass-02', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-02.json');
 
   const verifier = {
@@ -125,17 +100,13 @@ test('verify sign-pass-02', (t) => {
 
   const signature = Buffer.from(example.output.cbor, 'hex');
 
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const buf = await cose.sign.verify(signature, verifier);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify sign-pass-03', (t) => {
+test('verify sign-pass-03', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-pass-03.json');
 
   const verifier = {
@@ -147,20 +118,13 @@ test('verify sign-pass-03', (t) => {
 
   const signature = Buffer.from(example.output.cbor, 'hex');
 
-  return cose.sign.verify(
-    signature,
-    verifier,
-    {
-      defaultType: cose.sign.Sign1Tag
-    })
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const buf = await cose.sign.verify(signature, verifier, { defaultType: cose.sign.Sign1Tag });
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify sign-fail-01', (t) => {
+test('verify sign-fail-01', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-01.json');
 
   const verifier = {
@@ -171,18 +135,15 @@ test('verify sign-fail-01', (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Unexpected cbor tag, \'998\'');
-    });
+  try {
+    await cose.sign.verify(signature, verifier);
+    t.fail('Unexpected cbor tag, \'998\'');
+  } catch (error) {
+    t.is(error.message, 'Unexpected cbor tag, \'998\'');
+  }
 });
 
-test('verify sign-fail-02', (t) => {
+test('verify sign-fail-02', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-02.json');
 
   const verifier = {
@@ -193,18 +154,15 @@ test('verify sign-fail-02', (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Signature missmatch');
-    });
+  try {
+    await cose.sign.verify(signature, verifier);
+    t.fail('Signature missmatch');
+  } catch (error) {
+    t.is(error.message, 'Signature missmatch');
+  }
 });
 
-test('verify sign-fail-03', (t) => {
+test('verify sign-fail-03', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-03.json');
 
   const verifier = {
@@ -215,18 +173,15 @@ test('verify sign-fail-03', (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Unknown algorithm, -999');
-    });
+  try {
+    await cose.sign.verify(signature, verifier);
+    t.fail('Unknown algorithm, -999');
+  } catch (error) {
+    t.is(error.message, 'Unknown algorithm, -999');
+  }
 });
 
-test('verify sign-fail-04', (t) => {
+test('verify sign-fail-04', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-04.json');
 
   const verifier = {
@@ -237,18 +192,15 @@ test('verify sign-fail-04', (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Unknown algorithm, unknown');
-    });
+  try {
+    await cose.sign.verify(signature, verifier);
+    t.fail('Unknown algorithm, unknown');
+  } catch (error) {
+    t.is(error.message, 'Unknown algorithm, unknown');
+  }
 });
 
-test('verify sign-fail-06', (t) => {
+test('verify sign-fail-06', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-06.json');
 
   const verifier = {
@@ -259,18 +211,15 @@ test('verify sign-fail-06', (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Signature missmatch');
-    });
+  try {
+    await cose.sign.verify(signature, verifier);
+    t.fail('Signature missmatch');
+  } catch (error) {
+    t.is(error.message, 'Signature missmatch');
+  }
 });
 
-test('verify sign-fail-07', (t) => {
+test('verify sign-fail-07', async (t) => {
   const example = jsonfile.readFileSync('test/Examples/sign1-tests/sign-fail-07.json');
 
   const verifier = {
@@ -281,13 +230,10 @@ test('verify sign-fail-07', (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-
-  return cose.sign.verify(
-    signature,
-    verifier)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Signature missmatch');
-    });
+  try {
+    await cose.sign.verify(signature, verifier);
+    t.fail('Signature missmatch');
+  } catch (error) {
+    t.is(error.message, 'Signature missmatch');
+  }
 });
