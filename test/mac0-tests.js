@@ -9,59 +9,51 @@ const base64url = require('base64url');
 const cbor = require('cbor');
 const deepEqual = require('./util.js').deepEqual;
 
-test('create HMac-01', t => {
+test('create HMac-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/HMac-01.json');
   const p = example.input.mac0.protected;
   const u = example.input.mac0.unprotected;
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
 
-  return cose.mac.create(
-    { p: p, u: u },
-    plaintext,
-    { key: key })
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const recipents = { key: key };
+  const buf = await cose.mac.create(header, plaintext, recipents);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('verify HMac-01', t => {
+test('verify HMac-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/HMac-01.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.mac.read(data, key);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('create mac-pass-01', t => {
+test('create mac-pass-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-01.json');
-  const p = undefined;
+
   const u = example.input.mac0.unprotected;
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
-  return cose.mac.create(
-    { p: p, u: u },
-    plaintext,
-    { key: key })
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { u: u };
+  const recipents = { key: key };
+  const buf = await cose.mac.create(header, plaintext, recipents);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create mac-pass-02', t => {
+test('create mac-pass-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-02.json');
   const p = undefined;
   const u = example.input.mac0.unprotected;
@@ -70,162 +62,146 @@ test('create mac-pass-02', t => {
   const plaintext = Buffer.from(example.input.plaintext);
   const options = { encodep: 'empty' };
 
-  return cose.mac.create(
-    { p: p, u: u },
-    plaintext,
-    { key: key },
-    external,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const recipents = { key: key };
+  const buf = await cose.mac.create(header, plaintext, recipents, external, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create mac-pass-03', t => {
+test('create mac-pass-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-03.json');
   const p = undefined;
   const u = example.input.mac0.unprotected;
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const plaintext = Buffer.from(example.input.plaintext);
-  const options = {
-    encodep: 'empty',
-    excludetag: true
-  };
+  const options = { encodep: 'empty', excludetag: true };
 
-  return cose.mac.create(
-    { p: p, u: u },
-    plaintext,
-    { key: key },
-    null,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const recipents = { key: key };
+  const header = { p: p, u: u };
+  const external = null;
+  const buf = await cose.mac.create(header, plaintext, recipents, external, options);
+
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('verify mac-pass-01', t => {
+test('verify mac-pass-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-01.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.mac.read(data, key);
+
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify mac-pass-02', t => {
+test('verify mac-pass-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-02.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const external = Buffer.from(example.input.mac0.external, 'hex');
 
-  return cose.mac.read(example.output.cbor,
-    key,
-    external)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.mac.read(data, key, external);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify mac-pass-03', t => {
+test('verify mac-pass-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-pass-03.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), example.input.plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.mac.read(data, key);
+
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify mac-fail-01', t => {
+test('verify mac-fail-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-01.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const data = example.output.cbor;
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Unexpected cbor tag, \'992\'');
-    });
+  try {
+    await cose.mac.read(data, key);
+    t.fail('Unexpected cbor tag, \'992\'');
+  } catch (error) {
+    t.is(error.message, 'Unexpected cbor tag, \'992\'');
+  }
 });
 
-test('verify mac-fail-02', t => {
+test('verify mac-fail-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-02.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const data = example.output.cbor;
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Tag mismatch');
-    });
+  try {
+    await cose.mac.read(data, key);
+    t.fail('Tag mismatch');
+  } catch (error) {
+    t.is(error.message, 'Tag mismatch');
+  }
 });
 
-test('verify mac-fail-03', t => {
+test('verify mac-fail-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-03.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const data = example.output.cbor;
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Unknown algorithm, -999');
-    });
+  try {
+    await cose.mac.read(data, key);
+    t.fail('Unknown algorithm, -999');
+  } catch (error) {
+    t.is(error.message, 'Unknown algorithm, -999');
+  }
 });
 
-test('verify mac-fail-04', t => {
+test('verify mac-fail-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-04.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const data = example.output.cbor;
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Unknown algorithm, Unknown');
-    });
+  try {
+    await cose.mac.read(data, key);
+    t.fail('Unknown algorithm, Unknown');
+  } catch (error) {
+    t.is(error.message, 'Unknown algorithm, Unknown');
+  }
 });
 
-test('verify mac-fail-06', t => {
+test('verify mac-fail-06', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-06.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const data = example.output.cbor;
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Tag mismatch');
-    });
+  try {
+    await cose.mac.read(data, key);
+    t.fail('Tag mismatch');
+  } catch (error) {
+    t.is(error.message, 'Tag mismatch');
+  }
 });
 
-test('verify mac-fail-07', t => {
+test('verify mac-fail-07', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac0-tests/mac-fail-07.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
+  const data = example.output.cbor;
 
-  return cose.mac.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(false);
-    }).catch((error) => {
-      t.is(error.message, 'Tag mismatch');
-    });
+  try {
+    await cose.mac.read(data, key);
+    t.fail('Tag mismatch');
+  } catch (error) {
+    t.is(error.message, 'Tag mismatch');
+  }
 });

@@ -374,7 +374,7 @@ test('verify sign-fail-01', async (t) => {
 
   try {
     await cose.sign.verify(signature, verifier);
-    t.fail('Must fail signature with Wrong CBOR Tag');
+    t.fail('Unexpected cbor tag, \'998\'');
   } catch (error) {
     t.is(error.message, 'Unexpected cbor tag, \'998\'');
   }

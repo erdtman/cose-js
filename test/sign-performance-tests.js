@@ -31,12 +31,8 @@ test('create and verify really huge payload', async (t) => {
     }
   };
 
-  const buf = await cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signers
-  );
-
+  const header = { p: p, u: u };
+  const buf = await cose.sign.create(header, plaintext, signers);
   t.true(Buffer.isBuffer(buf));
   t.true(buf.length > 0);
 
@@ -44,7 +40,6 @@ test('create and verify really huge payload', async (t) => {
   t.is(actual.value[2].length, BIG_LENGHT);
 
   const verifiedBuf = await cose.sign.verify(buf, verifier);
-
   t.true(Buffer.isBuffer(verifiedBuf));
   t.true(verifiedBuf.length > 0);
   t.is(verifiedBuf.toString('utf8'), plaintext.toString('utf8'));

@@ -13,7 +13,7 @@ function hexToB64 (hex) {
   return Buffer.from(hex, 'hex').toString('base64');
 }
 
-test('create rsa-pkcs-01', (t) => {
+test('create rsa-pkcs-01', async (t) => {
   const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
@@ -33,22 +33,14 @@ test('create rsa-pkcs-01', (t) => {
       qi: hexToB64(testKey.qi_hex)
     }, { private: true })
   };
-
-  return cose.sign.create(
-    { p: p, u: u },
-    plaintext,
-    signer,
-    {
-      excludetag: true
-    }
-  )
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const options = { excludetag: true };
+  const buf = await cose.sign.create(header, plaintext, signer, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
 test('create rsa-pkcs-01 Sync', async (t) => {
