@@ -17,7 +17,7 @@ function randomSource (bytes) {
   }
 }
 
-test('create aes-gcm-01', t => {
+test('create aes-gcm-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/aes-gcm-01.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
@@ -32,21 +32,16 @@ test('create aes-gcm-01', t => {
     randomSource: randomSource
   };
 
-  return cose.encrypt.create(
-    { p: p, u: u },
-    plaintext,
-    recipient,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const buf = await cose.encrypt.create(header, plaintext, recipient, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create enc-pass-01', t => {
+test('create enc-pass-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-pass-01.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
@@ -60,22 +55,16 @@ test('create enc-pass-01', t => {
   const options = {
     randomSource: randomSource
   };
-
-  return cose.encrypt.create(
-    { p: p, u: u },
-    plaintext,
-    recipient,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const buf = await cose.encrypt.create(header, plaintext, recipient, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create enc-pass-02', t => {
+test('create enc-pass-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-pass-02.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
@@ -93,21 +82,16 @@ test('create enc-pass-02', t => {
     encodep: 'empty'
   };
 
-  return cose.encrypt.create(
-    { p: p, u: u },
-    plaintext,
-    recipient,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const buf = await cose.encrypt.create(header, plaintext, recipient, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('create enc-pass-03', t => {
+test('create enc-pass-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-pass-03.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
@@ -124,156 +108,136 @@ test('create enc-pass-03', t => {
     encodep: 'empty'
   };
 
-  return cose.encrypt.create(
-    { p: p, u: u },
-    plaintext,
-    recipient,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      const actual = cbor.decodeFirstSync(buf);
-      const expected = cbor.decodeFirstSync(example.output.cbor);
-      t.true(deepEqual(actual, expected));
-    });
+  const header = { p: p, u: u };
+  const buf = await cose.encrypt.create(header, plaintext, recipient, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  const actual = cbor.decodeFirstSync(buf);
+  const expected = cbor.decodeFirstSync(example.output.cbor);
+  t.true(deepEqual(actual, expected));
 });
 
-test('decrypt aes-gcm-01', t => {
+test('decrypt aes-gcm-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/aes-gcm-01.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
 
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.encrypt.read(data, key);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), plaintext);
 });
 
-test('decrypt enc-pass-01', t => {
+test('decrypt enc-pass-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-pass-01.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
 
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.encrypt.read(data, key);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), plaintext);
 });
 
-test('decrypt enc-pass-02', t => {
+test('decrypt enc-pass-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-pass-02.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const options = {
     externalAAD: Buffer.from(example.input.encrypted.external, 'hex')
   };
-  return cose.encrypt.read(example.output.cbor,
-    key,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), plaintext);
-    });
+
+  const data = example.output.cbor;
+  const buf = await cose.encrypt.read(data, key, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), plaintext);
 });
 
-test('decrypt enc-pass-03', t => {
+test('decrypt enc-pass-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-pass-03.json');
   const plaintext = example.input.plaintext;
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const options = {
     defaultType: cose.encrypt.Encrypt0Tag
   };
-  return cose.encrypt.read(example.output.cbor,
-    key,
-    options)
-    .then((buf) => {
-      t.true(Buffer.isBuffer(buf));
-      t.true(buf.length > 0);
-      t.is(buf.toString('utf8'), plaintext);
-    });
+  const data = example.output.cbor;
+  const buf = await cose.encrypt.read(data, key, options);
+  t.true(Buffer.isBuffer(buf));
+  t.true(buf.length > 0);
+  t.is(buf.toString('utf8'), plaintext);
 });
 
-test('decrypt enc-fail-01', te => {
+test('decrypt enc-fail-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-01.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
-
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      te.true(false);
-    }).catch((error) => {
-      te.is(error.message, 'Unknown tag, 995');
-    });
+  const data = example.output.cbor;
+  try {
+    await cose.encrypt.read(data, key);
+    t.fail('Unknown tag, 995');
+  } catch (error) {
+    t.is(error.message, 'Unknown tag, 995');
+  }
 });
 
-test('decrypt enc-fail-02', te => {
+test('decrypt enc-fail-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-02.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
-
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      te.true(false);
-    }).catch((error) => {
-      te.is(error.message, 'Unsupported state or unable to authenticate data');
-    });
+  const data = example.output.cbor;
+  try {
+    await cose.encrypt.read(data, key);
+    t.fail('Unsupported state or unable to authenticate data');
+  } catch (error) {
+    t.is(error.message, 'Unsupported state or unable to authenticate data');
+  }
 });
 
-test('decrypt enc-fail-03', te => {
+test('decrypt enc-fail-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-03.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
-
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      te.true(false);
-    }).catch((error) => {
-      te.is(error.message, 'Unknown or unsupported algorithm -999');
-    });
+  const data = example.output.cbor;
+  try {
+    await cose.encrypt.read(data, key);
+    t.fail('Unknown or unsupported algorithm -999');
+  } catch (error) {
+    t.is(error.message, 'Unknown or unsupported algorithm -999');
+  }
 });
 
-test('decrypt enc-fail-04', te => {
+test('decrypt enc-fail-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-04.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
-
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      te.true(false);
-    }).catch((error) => {
-      te.is(error.message, 'Unknown or unsupported algorithm Unknown');
-    });
+  const data = example.output.cbor;
+  try {
+    await cose.encrypt.read(data, key);
+    t.fail('Unknown or unsupported algorithm Unknown');
+  } catch (error) {
+    t.is(error.message, 'Unknown or unsupported algorithm Unknown');
+  }
 });
 
-test('decrypt enc-fail-06', te => {
+test('decrypt enc-fail-06', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-06.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
-
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      te.true(false);
-    }).catch((error) => {
-      te.is(error.message, 'Unsupported state or unable to authenticate data');
-    });
+  const data = example.output.cbor;
+  try {
+    await cose.encrypt.read(data, key);
+    t.fail('Unsupported state or unable to authenticate data');
+  } catch (error) {
+    t.is(error.message, 'Unsupported state or unable to authenticate data');
+  }
 });
 
-test('decrypt enc-fail-07', te => {
+test('decrypt enc-fail-07', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-07.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
-
-  return cose.encrypt.read(example.output.cbor,
-    key)
-    .then((buf) => {
-      te.true(false);
-    }).catch((error) => {
-      te.is(error.message, 'Unsupported state or unable to authenticate data');
-    });
+  const data = example.output.cbor;
+  try {
+    await cose.encrypt.read(data, key);
+    t.fail('Unsupported state or unable to authenticate data');
+  } catch (error) {
+    t.is(error.message, 'Unsupported state or unable to authenticate data');
+  }
 });
