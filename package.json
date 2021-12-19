@@ -54,7 +54,7 @@
     "live-server": "*",
     "npm-run-all": "*",
     "nyc": "^15.1.0",
-    "semistandard": "^16.0.0",
+    "semistandard": "^16.0.1",
     "watch": "*"
   },
   "engines": {
