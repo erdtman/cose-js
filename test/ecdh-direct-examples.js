@@ -3,7 +3,8 @@
 'use strict';
 
 const cose = require('../');
-const test = require('ava');
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
 const jsonfile = require('jsonfile');
 const base64url = require('base64url');
 const cbor = require('cbor');
@@ -17,7 +18,7 @@ function randomSource (bytes) {
   }
 }
 
-test('create p256-hkdf-256-01', async t => {
+test('create p256-hkdf-256-01', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-256-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -42,14 +43,14 @@ test('create p256-hkdf-256-01', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('create p256-hkdf-256-02', async t => {
+test('create p256-hkdf-256-02', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-256-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -74,16 +75,16 @@ test('create p256-hkdf-256-02', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
 // create p256-hkdf-256-03
 
-test('create p256-hkdf-512-01', async t => {
+test('create p256-hkdf-512-01', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-512-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -108,14 +109,14 @@ test('create p256-hkdf-512-01', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('create p256-hkdf-512-02', async t => {
+test('create p256-hkdf-512-02', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-512-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -146,16 +147,16 @@ test('create p256-hkdf-512-02', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
 // create p256-hkdf-512-03
 
-test('create p256-ss-hkdf-256-01', async t => {
+test('create p256-ss-hkdf-256-01', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-ss-hkdf-256-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -193,11 +194,11 @@ test('create p256-ss-hkdf-256-01', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
 // create p256-ss-hkdf-256-02
@@ -210,7 +211,7 @@ test('create p256-ss-hkdf-256-01', async t => {
 
 // create p256-ss-hkdf-512-03
 
-test('create p521-hkdf-256-01', async t => {
+test('create p521-hkdf-256-01', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-256-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -241,14 +242,14 @@ test('create p521-hkdf-256-01', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('create p521-hkdf-256-02', async t => {
+test('create p521-hkdf-256-02', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-256-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -279,16 +280,16 @@ test('create p521-hkdf-256-02', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
 // create p521-hkdf-256-03
 
-test('create p521-hkdf-512-01', async t => {
+test('create p521-hkdf-512-01', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-512-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -319,14 +320,14 @@ test('create p521-hkdf-512-01', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('create p521-hkdf-512-02', async t => {
+test('create p521-hkdf-512-02', async () => {
   const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-512-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
@@ -357,11 +358,11 @@ test('create p521-hkdf-512-02', async t => {
 
   const header = { p: p, u: u };
   const buf = await cose.encrypt.create(header, plaintext, recipient, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
 // create p521-hkdf-512-03
