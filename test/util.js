@@ -2,7 +2,8 @@
 /* jslint node: true */
 'use strict';
 
-const test = require('ava');
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
 
 function isObject (item) {
   return item && typeof item === 'object' && !Array.isArray(item);
@@ -79,21 +80,21 @@ function deepEqual (actual, expected, depth) {
 
 exports.deepEqual = deepEqual;
 
-test('deep equal array', (t) => {
+test('deep equal array', () => {
   const actual = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
   const expected = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
   expected.push(4);
-  t.false(deepEqual(actual, expected));
+  assert.ok(!deepEqual(actual, expected));
 });
 
-test('deep equal deep array', (t) => {
+test('deep equal deep array', () => {
   const actual = [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, 1]]]]]]]]]]]]];
   const expected = [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, [1, 1]]]]]]]]]]]]];
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('deep equal objects', (t) => {
+test('deep equal objects', () => {
   const actual = {
     world: 'hello',
     hello: 'world',
@@ -110,12 +111,12 @@ test('deep equal objects', (t) => {
       world: 'hello'
     }
   };
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
   expected.test = 'test';
-  t.false(deepEqual(actual, expected));
+  assert.ok(!deepEqual(actual, expected));
 });
 
-test('deep equal Map', (t) => {
+test('deep equal Map', () => {
   const actual = new Map();
   actual.set(1, 1);
   actual.set('hello', 'world');
@@ -124,7 +125,7 @@ test('deep equal Map', (t) => {
   expected.set(1, 1);
   expected.set('hello', 'world');
   expected.set('object', { hello: 'world', world: 'hello' });
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
   expected.set(2, 2);
-  t.false(deepEqual(actual, expected));
+  assert.ok(!deepEqual(actual, expected));
 });

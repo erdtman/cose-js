@@ -3,12 +3,13 @@
 'use strict';
 
 const cose = require('../');
-const test = require('ava');
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
 const base64url = require('base64url');
 const cbor = require('cbor');
 const jsonfile = require('jsonfile');
 
-test('create and verify really huge payload', async (t) => {
+test('create and verify really huge payload', async () => {
   // uses the keys from here but it has nothing to do with the test
   const example = jsonfile.readFileSync('test/Examples/sign-tests/ecdsa-01.json');
   const BIG_LENGHT = 100 * 1000;
@@ -33,14 +34,14 @@ test('create and verify really huge payload', async (t) => {
 
   const header = { p: p, u: u };
   const buf = await cose.sign.create(header, plaintext, signers);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
 
   const actual = await cbor.decodeFirst(buf);
-  t.is(actual.value[2].length, BIG_LENGHT);
+  assert.strictEqual(actual.value[2].length, BIG_LENGHT);
 
   const verifiedBuf = await cose.sign.verify(buf, verifier);
-  t.true(Buffer.isBuffer(verifiedBuf));
-  t.true(verifiedBuf.length > 0);
-  t.is(verifiedBuf.toString('utf8'), plaintext.toString('utf8'));
+  assert.ok(Buffer.isBuffer(verifiedBuf));
+  assert.ok(verifiedBuf.length > 0);
+  assert.strictEqual(verifiedBuf.toString('utf8'), plaintext.toString('utf8'));
 });

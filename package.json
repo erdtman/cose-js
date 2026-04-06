@@ -6,9 +6,10 @@
   "types": "index.d.ts",
   "scripts": {
     "clean": "rm -rf coverage/ .nyc_output/",
-    "pretest": "semistandard --fix",
-    "test": "pwd & ava ./test/*.js",
-    "coverage": "nyc npm test",
+    "pretest": "semistandard",
+    "lint:fix": "semistandard --fix",
+    "test": "node --test ./test/*.js",
+    "coverage": "nyc node --test ./test/*.js",
     "coveragehtml": "nyc report -r html",
     "precoveragehtml": "npm run coverage",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
@@ -47,7 +48,6 @@
     "node-rsa": "^1.1.1"
   },
   "devDependencies": {
-    "ava": "^3.15.0",
     "base64url": "^3.0.1",
     "jsonfile": "^2.4.0",
     "jwk-to-pem": "^2.0.5",

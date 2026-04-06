@@ -3,7 +3,8 @@
 'use strict';
 
 const cose = require('../');
-const test = require('ava');
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
 const jsonfile = require('jsonfile');
 const jwkToPem = require('jwk-to-pem');
 const cbor = require('cbor');
@@ -13,7 +14,7 @@ function hexToB64 (hex) {
   return Buffer.from(hex, 'hex').toString('base64');
 }
 
-test('create rsa-pkcs-01', async (t) => {
+test('create rsa-pkcs-01', async () => {
   const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
@@ -36,14 +37,14 @@ test('create rsa-pkcs-01', async (t) => {
   const header = { p: p, u: u };
   const options = { excludetag: true };
   const buf = await cose.sign.create(header, plaintext, signer, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('create rsa-pkcs-01 Sync', async (t) => {
+test('create rsa-pkcs-01 Sync', async () => {
   const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
@@ -66,14 +67,14 @@ test('create rsa-pkcs-01 Sync', async (t) => {
   const header = { p: p, u: u };
   const options = { excludetag: true };
   const buf = await cose.sign.create(header, plaintext, signer, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
   const actual = cbor.decodeFirstSync(buf);
   const expected = cbor.decodeFirstSync(example.output.cbor);
-  t.true(deepEqual(actual, expected));
+  assert.ok(deepEqual(actual, expected));
 });
 
-test('verify rsa-pkcs-01', async (t) => {
+test('verify rsa-pkcs-01', async () => {
   const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
 
   const testKey = example.input.sign0.key;
@@ -90,12 +91,12 @@ test('verify rsa-pkcs-01', async (t) => {
 
   const options = { defaultType: cose.sign.Sign1Tag };
   const buf = await cose.sign.verify(signature, verifier, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
-  t.is(buf.toString('utf8'), example.input.plaintext);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
+  assert.strictEqual(buf.toString('utf8'), example.input.plaintext);
 });
 
-test('verify rsa-pkcs-01 Sync', async (t) => {
+test('verify rsa-pkcs-01 Sync', async () => {
   const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
 
   const testKey = example.input.sign0.key;
@@ -111,7 +112,7 @@ test('verify rsa-pkcs-01 Sync', async (t) => {
   const signature = Buffer.from(example.output.cbor, 'hex');
   const options = { defaultType: cose.sign.Sign1Tag };
   const buf = await cose.sign.verify(signature, verifier, options);
-  t.true(Buffer.isBuffer(buf));
-  t.true(buf.length > 0);
-  t.is(buf.toString('utf8'), example.input.plaintext);
+  assert.ok(Buffer.isBuffer(buf));
+  assert.ok(buf.length > 0);
+  assert.strictEqual(buf.toString('utf8'), example.input.plaintext);
 });
