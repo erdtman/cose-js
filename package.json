@@ -6,9 +6,10 @@
   "types": "index.d.ts",
   "scripts": {
     "clean": "rm -rf coverage/ .nyc_output/",
-    "pretest": "semistandard --fix",
-    "test": "pwd & ava ./test/*.js",
-    "coverage": "nyc npm test",
+    "pretest": "semistandard",
+    "lint:fix": "semistandard --fix",
+    "test": "ava ./test/*.js",
+    "coverage": "nyc ava ./test/*.js",
     "coveragehtml": "nyc report -r html",
     "precoveragehtml": "npm run coverage",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",

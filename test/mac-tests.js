@@ -130,70 +130,46 @@ test('verify mac-fail-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-01.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Expecting Array of lenght 4');
-  } catch (error) {
-    t.is(error.message, 'Expecting Array of lenght 4');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Expecting Array of lenght 4');
 });
 
 test('verify mac-fail-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-02.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Tag mismatch');
-  } catch (error) {
-    t.is(error.message, 'Tag mismatch');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Tag mismatch');
 });
 
 test('verify mac-fail-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-03.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Unknown algorithm, -999');
-  } catch (error) {
-    t.is(error.message, 'Unknown algorithm, -999');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Unknown algorithm, -999');
 });
 
 test('verify mac-fail-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-04.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Unknown algorithm, Unknown');
-  } catch (error) {
-    t.is(error.message, 'Unknown algorithm, Unknown');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Unknown algorithm, Unknown');
 });
 
 test('verify mac-fail-06', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-06.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Tag mismatch');
-  } catch (error) {
-    t.is(error.message, 'Tag mismatch');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Tag mismatch');
 });
 
 test('verify mac-fail-07', async t => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-07.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Tag mismatch');
-  } catch (error) {
-    t.is(error.message, 'Tag mismatch');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Tag mismatch');
 });

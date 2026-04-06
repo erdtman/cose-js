@@ -156,12 +156,8 @@ test('decrypt aes-gcm-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-04.json');
   const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unsupported state or unable to authenticate data');
-  } catch (error) {
-    t.is(error.message, 'Unsupported state or unable to authenticate data');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unsupported state or unable to authenticate data');
 });
 
 test('decrypt aes-gcm-05', async t => {
@@ -287,10 +283,6 @@ test('decrypt aes-gcm-enc-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-04.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unsupported state or unable to authenticate data');
-  } catch (error) {
-    t.is(error.message, 'Unsupported state or unable to authenticate data');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unsupported state or unable to authenticate data');
 });

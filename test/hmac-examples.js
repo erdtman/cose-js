@@ -110,12 +110,8 @@ test('verify HMac-enc-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-enc-04.json');
   const key = base64url.toBuffer(example.input.mac0.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Tag mismatch');
-  } catch (error) {
-    t.is(error.message, 'Tag mismatch');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Tag mismatch');
 });
 
 test('verify HMac-enc-05', async t => {
@@ -228,12 +224,8 @@ test('verify HMac-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/hmac-examples/HMac-04.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.mac.read(data, key);
-    t.fail('Tag mismatch');
-  } catch (error) {
-    t.is(error.message, 'Tag mismatch');
-  }
+  const error = await t.throwsAsync(() => cose.mac.read(data, key));
+  t.is(error.message, 'Tag mismatch');
 });
 
 test('verify HMac-05', async t => {

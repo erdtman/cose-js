@@ -140,12 +140,8 @@ test('verify sign-fail-01', async (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  try {
-    await cose.sign.verify(signature, verifier);
-    t.fail('Unexpected cbor tag, \'998\'');
-  } catch (error) {
-    t.is(error.message, 'Unexpected cbor tag, \'998\'');
-  }
+  const error = await t.throwsAsync(() => cose.sign.verify(signature, verifier));
+  t.is(error.message, 'Unexpected cbor tag, \'998\'');
 });
 
 test('verify sign-fail-02', async (t) => {
@@ -159,12 +155,8 @@ test('verify sign-fail-02', async (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  try {
-    await cose.sign.verify(signature, verifier);
-    t.fail('Signature missmatch');
-  } catch (error) {
-    t.is(error.message, 'Signature missmatch');
-  }
+  const error = await t.throwsAsync(() => cose.sign.verify(signature, verifier));
+  t.is(error.message, 'Signature missmatch');
 });
 
 test('verify sign-fail-03', async (t) => {
@@ -178,12 +170,8 @@ test('verify sign-fail-03', async (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  try {
-    await cose.sign.verify(signature, verifier);
-    t.fail('Unknown algorithm, -999');
-  } catch (error) {
-    t.is(error.message, 'Unknown algorithm, -999');
-  }
+  const error = await t.throwsAsync(() => cose.sign.verify(signature, verifier));
+  t.is(error.message, 'Unknown algorithm, -999');
 });
 
 test('verify sign-fail-04', async (t) => {
@@ -197,12 +185,8 @@ test('verify sign-fail-04', async (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  try {
-    await cose.sign.verify(signature, verifier);
-    t.fail('Unknown algorithm, unknown');
-  } catch (error) {
-    t.is(error.message, 'Unknown algorithm, unknown');
-  }
+  const error = await t.throwsAsync(() => cose.sign.verify(signature, verifier));
+  t.is(error.message, 'Unknown algorithm, unknown');
 });
 
 test('verify sign-fail-06', async (t) => {
@@ -216,12 +200,8 @@ test('verify sign-fail-06', async (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  try {
-    await cose.sign.verify(signature, verifier);
-    t.fail('Signature missmatch');
-  } catch (error) {
-    t.is(error.message, 'Signature missmatch');
-  }
+  const error = await t.throwsAsync(() => cose.sign.verify(signature, verifier));
+  t.is(error.message, 'Signature missmatch');
 });
 
 test('verify sign-fail-07', async (t) => {
@@ -235,10 +215,6 @@ test('verify sign-fail-07', async (t) => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  try {
-    await cose.sign.verify(signature, verifier);
-    t.fail('Signature missmatch');
-  } catch (error) {
-    t.is(error.message, 'Signature missmatch');
-  }
+  const error = await t.throwsAsync(() => cose.sign.verify(signature, verifier));
+  t.is(error.message, 'Signature missmatch');
 });

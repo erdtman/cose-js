@@ -174,70 +174,46 @@ test('decrypt enc-fail-01', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-01.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unknown tag, 995');
-  } catch (error) {
-    t.is(error.message, 'Unknown tag, 995');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unknown tag, 995');
 });
 
 test('decrypt enc-fail-02', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-02.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unsupported state or unable to authenticate data');
-  } catch (error) {
-    t.is(error.message, 'Unsupported state or unable to authenticate data');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unsupported state or unable to authenticate data');
 });
 
 test('decrypt enc-fail-03', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-03.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unknown or unsupported algorithm -999');
-  } catch (error) {
-    t.is(error.message, 'Unknown or unsupported algorithm -999');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unknown or unsupported algorithm -999');
 });
 
 test('decrypt enc-fail-04', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-04.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unknown or unsupported algorithm Unknown');
-  } catch (error) {
-    t.is(error.message, 'Unknown or unsupported algorithm Unknown');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unknown or unsupported algorithm Unknown');
 });
 
 test('decrypt enc-fail-06', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-06.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unsupported state or unable to authenticate data');
-  } catch (error) {
-    t.is(error.message, 'Unsupported state or unable to authenticate data');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unsupported state or unable to authenticate data');
 });
 
 test('decrypt enc-fail-07', async t => {
   const example = jsonfile.readFileSync('test/Examples/encrypted-tests/enc-fail-07.json');
   const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
-  try {
-    await cose.encrypt.read(data, key);
-    t.fail('Unsupported state or unable to authenticate data');
-  } catch (error) {
-    t.is(error.message, 'Unsupported state or unable to authenticate data');
-  }
+  const error = await t.throwsAsync(() => cose.encrypt.read(data, key));
+  t.is(error.message, 'Unsupported state or unable to authenticate data');
 });
