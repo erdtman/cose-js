@@ -131,7 +131,7 @@ test('verify mac-fail-01', async () => {
   const example = jsonfile.readFileSync('test/Examples/mac-tests/mac-fail-01.json');
   const key = base64url.toBuffer(example.input.mac.recipients[0].key.k);
   const data = example.output.cbor;
-  await assert.rejects(() => cose.mac.read(data, key), { message: 'Expecting Array of lenght 4' });
+  await assert.rejects(() => cose.mac.read(data, key), { message: 'Expecting Array of length 4' });
 });
 
 test('verify mac-fail-02', async () => {
