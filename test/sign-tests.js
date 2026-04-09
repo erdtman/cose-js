@@ -387,7 +387,7 @@ test('verify sign-fail-02', async () => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  await assert.rejects(() => cose.sign.verify(signature, verifier), { message: 'Signature missmatch' });
+  await assert.rejects(() => cose.sign.verify(signature, verifier), { message: 'Signature mismatch' });
 });
 
 test('verify sign-fail-03', async () => {
@@ -432,7 +432,7 @@ test('verify sign-fail-06', async () => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  await assert.rejects(() => cose.sign.verify(signature, verifier), { message: 'Signature missmatch' });
+  await assert.rejects(() => cose.sign.verify(signature, verifier), { message: 'Signature mismatch' });
 });
 
 test('verify sign-fail-07', async () => {
@@ -447,7 +447,7 @@ test('verify sign-fail-07', async () => {
   };
 
   const signature = Buffer.from(example.output.cbor, 'hex');
-  await assert.rejects(() => cose.sign.verify(signature, verifier), { message: 'Signature missmatch' });
+  await assert.rejects(() => cose.sign.verify(signature, verifier), { message: 'Signature mismatch' });
 });
 
 test('verify rsa-pss-01', async () => {
