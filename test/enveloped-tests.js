@@ -167,7 +167,7 @@ test('decrypt enc-fail-01', async () => {
   const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
-  await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unknown tag, 995' });
+  await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unexpected cbor tag, \'995\'' });
 });
 
 test('decrypt enc-fail-02', async () => {
