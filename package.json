@@ -42,19 +42,16 @@
   "homepage": "https://github.com/erdtman/cose-js#readme",
   "dependencies": {
     "aes-cbc-mac": "^1.0.1",
-    "cbor": "^8.1.0",
-    "elliptic": "^6.4.0",
-    "node-hkdf-sync": "^1.0.0",
+    "cbor": "^10.0.12",
+    "elliptic": "^6.6.1",
     "node-rsa": "^1.1.1"
   },
   "devDependencies": {
-    "base64url": "^3.0.1",
-    "jsonfile": "^2.4.0",
-    "jwk-to-pem": "^2.0.5",
-    "live-server": "*",
+    "jwk-to-pem": "^2.0.7",
+    "live-server": "^1.2.2",
     "npm-run-all": "*",
-    "nyc": "^15.1.0",
-    "semistandard": "^16.0.1",
+    "nyc": "^18.0.0",
+    "semistandard": "^17.0.0",
     "watch": "*"
   },
   "engines": {
