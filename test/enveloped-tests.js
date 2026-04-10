@@ -5,10 +5,8 @@
 const cose = require('../');
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
 const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+const { deepEqual, loadExample, b64url } = require('./util.js');
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -19,13 +17,13 @@ function randomSource (bytes) {
 }
 
 test('create aes-gcm-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/aes-gcm-01.json');
+  const example = loadExample('test/Examples/enveloped-tests/aes-gcm-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -42,13 +40,13 @@ test('create aes-gcm-01', async () => {
 });
 
 test('create env-pass-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-pass-01.json');
+  const example = loadExample('test/Examples/enveloped-tests/env-pass-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -66,13 +64,13 @@ test('create env-pass-01', async () => {
 });
 
 test('create env-pass-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-pass-02.json');
+  const example = loadExample('test/Examples/enveloped-tests/env-pass-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -90,13 +88,13 @@ test('create env-pass-02', async () => {
 });
 
 test('create env-pass-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-pass-03.json');
+  const example = loadExample('test/Examples/enveloped-tests/env-pass-03.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -115,9 +113,9 @@ test('create env-pass-03', async () => {
 });
 
 test('decrypt aes-gcm-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/aes-gcm-01.json');
+  const example = loadExample('test/Examples/enveloped-tests/aes-gcm-01.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
 
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
@@ -127,9 +125,9 @@ test('decrypt aes-gcm-01', async () => {
 });
 
 test('decrypt enc-pass-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-pass-01.json');
+  const example = loadExample('test/Examples/enveloped-tests/env-pass-01.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -138,9 +136,9 @@ test('decrypt enc-pass-01', async () => {
 });
 
 test('decrypt enc-pass-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-pass-02.json');
+  const example = loadExample('test/Examples/enveloped-tests/env-pass-02.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const options = {
     externalAAD: Buffer.from(example.input.enveloped.external, 'hex')
   };
@@ -152,9 +150,9 @@ test('decrypt enc-pass-02', async () => {
 });
 
 test('decrypt enc-pass-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-pass-03.json');
+  const example = loadExample('test/Examples/enveloped-tests/env-pass-03.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -163,48 +161,48 @@ test('decrypt enc-pass-03', async () => {
 });
 
 test('decrypt enc-fail-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-fail-01.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/enveloped-tests/env-fail-01.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unknown tag, 995' });
 });
 
 test('decrypt enc-fail-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-fail-02.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/enveloped-tests/env-fail-02.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unsupported state or unable to authenticate data' });
 });
 
 test('decrypt enc-fail-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-fail-03.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/enveloped-tests/env-fail-03.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unknown or unsupported algorithm -999' });
 });
 
 test('decrypt enc-fail-04', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-fail-04.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/enveloped-tests/env-fail-04.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unknown or unsupported algorithm Unknown' });
 });
 
 test('decrypt enc-fail-06', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-fail-06.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/enveloped-tests/env-fail-06.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unsupported state or unable to authenticate data' });
 });
 
 test('decrypt enc-fail-07', async () => {
-  const example = jsonfile.readFileSync('test/Examples/enveloped-tests/env-fail-07.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/enveloped-tests/env-fail-07.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
 
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unsupported state or unable to authenticate data' });

@@ -5,19 +5,18 @@
 const cose = require('../');
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const base64url = require('base64url');
 const cbor = require('cbor');
-const jsonfile = require('jsonfile');
+const { loadExample, b64url } = require('./util.js');
 
 test('create and verify really huge payload', async () => {
   // uses the keys from here but it has nothing to do with the test
-  const example = jsonfile.readFileSync('test/Examples/sign-tests/ecdsa-01.json');
+  const example = loadExample('test/Examples/sign-tests/ecdsa-01.json');
   const BIG_LENGHT = 100 * 1000;
   const p = example.input.sign.protected;
   const u = example.input.sign.unprotected;
   const signers = [{
     key: {
-      d: base64url.toBuffer(example.input.sign.signers[0].key.d)
+      d: b64url(example.input.sign.signers[0].key.d)
     },
     u: example.input.sign.signers[0].unprotected,
     p: example.input.sign.signers[0].protected
@@ -26,8 +25,8 @@ test('create and verify really huge payload', async () => {
 
   const verifier = {
     key: {
-      x: base64url.toBuffer(example.input.sign.signers[0].key.x),
-      y: base64url.toBuffer(example.input.sign.signers[0].key.y),
+      x: b64url(example.input.sign.signers[0].key.x),
+      y: b64url(example.input.sign.signers[0].key.y),
       kid: example.input.sign.signers[0].key.kid
     }
   };

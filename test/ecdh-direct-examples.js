@@ -5,10 +5,8 @@
 const cose = require('../');
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
 const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+const { deepEqual, loadExample, b64url } = require('./util.js');
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -19,7 +17,7 @@ function randomSource (bytes) {
 }
 
 test('create p256-hkdf-256-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-256-01.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p256-hkdf-256-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -29,9 +27,9 @@ test('create p256-hkdf-256-01', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -51,7 +49,7 @@ test('create p256-hkdf-256-01', async () => {
 });
 
 test('create p256-hkdf-256-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-256-02.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p256-hkdf-256-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -61,9 +59,9 @@ test('create p256-hkdf-256-02', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -85,7 +83,7 @@ test('create p256-hkdf-256-02', async () => {
 // create p256-hkdf-256-03
 
 test('create p256-hkdf-512-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-512-01.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p256-hkdf-512-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -95,9 +93,9 @@ test('create p256-hkdf-512-01', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -117,7 +115,7 @@ test('create p256-hkdf-512-01', async () => {
 });
 
 test('create p256-hkdf-512-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-hkdf-512-02.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p256-hkdf-512-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -127,9 +125,9 @@ test('create p256-hkdf-512-02', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -157,7 +155,7 @@ test('create p256-hkdf-512-02', async () => {
 // create p256-hkdf-512-03
 
 test('create p256-ss-hkdf-256-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p256-ss-hkdf-256-01.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p256-ss-hkdf-256-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -167,16 +165,16 @@ test('create p256-ss-hkdf-256-01', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     sender: {
       kty: example.input.enveloped.recipients[0].sender_key.kty,
       crv: example.input.enveloped.recipients[0].sender_key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].sender_key.d)
+      x: b64url(example.input.enveloped.recipients[0].sender_key.x),
+      y: b64url(example.input.enveloped.recipients[0].sender_key.y),
+      d: b64url(example.input.enveloped.recipients[0].sender_key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -212,7 +210,7 @@ test('create p256-ss-hkdf-256-01', async () => {
 // create p256-ss-hkdf-512-03
 
 test('create p521-hkdf-256-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-256-01.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p521-hkdf-256-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -222,9 +220,9 @@ test('create p521-hkdf-256-01', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -250,7 +248,7 @@ test('create p521-hkdf-256-01', async () => {
 });
 
 test('create p521-hkdf-256-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-256-02.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p521-hkdf-256-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -260,9 +258,9 @@ test('create p521-hkdf-256-02', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -290,7 +288,7 @@ test('create p521-hkdf-256-02', async () => {
 // create p521-hkdf-256-03
 
 test('create p521-hkdf-512-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-512-01.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p521-hkdf-512-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -300,9 +298,9 @@ test('create p521-hkdf-512-01', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected
@@ -328,7 +326,7 @@ test('create p521-hkdf-512-01', async () => {
 });
 
 test('create p521-hkdf-512-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/ecdh-direct-examples/p521-hkdf-512-02.json');
+  const example = loadExample('test/Examples/ecdh-direct-examples/p521-hkdf-512-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -338,9 +336,9 @@ test('create p521-hkdf-512-02', async () => {
       kty: example.input.enveloped.recipients[0].key.kty,
       kid: example.input.enveloped.recipients[0].key.kid,
       crv: example.input.enveloped.recipients[0].key.crv,
-      x: base64url.toBuffer(example.input.enveloped.recipients[0].key.x),
-      y: base64url.toBuffer(example.input.enveloped.recipients[0].key.y),
-      d: base64url.toBuffer(example.input.enveloped.recipients[0].key.d)
+      x: b64url(example.input.enveloped.recipients[0].key.x),
+      y: b64url(example.input.enveloped.recipients[0].key.y),
+      d: b64url(example.input.enveloped.recipients[0].key.d)
     },
     p: example.input.enveloped.recipients[0].protected,
     u: example.input.enveloped.recipients[0].unprotected

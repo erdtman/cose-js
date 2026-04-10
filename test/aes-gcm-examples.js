@@ -5,10 +5,8 @@
 const cose = require('../');
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const jsonfile = require('jsonfile');
-const base64url = require('base64url');
 const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+const { deepEqual, loadExample, b64url } = require('./util.js');
 
 function randomSource (bytes) {
   if (bytes === 12) {
@@ -19,13 +17,13 @@ function randomSource (bytes) {
 }
 
 test('create aes-gcm-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-01.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-01.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -42,13 +40,13 @@ test('create aes-gcm-01', async () => {
 });
 
 test('create aes-gcm-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-02.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-02.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -65,13 +63,13 @@ test('create aes-gcm-02', async () => {
 });
 
 test('create aes-gcm-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-03.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-03.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -90,13 +88,13 @@ test('create aes-gcm-03', async () => {
 // aes-gcm-04 is an error example and cannot be recreated
 
 test('create aes-gcm-05', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-05.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-05.json');
   const p = example.input.enveloped.protected;
   const u = example.input.enveloped.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipients = [{
-    key: base64url.toBuffer(example.input.enveloped.recipients[0].key.k),
+    key: b64url(example.input.enveloped.recipients[0].key.k),
     u: example.input.enveloped.recipients[0].unprotected
   }];
 
@@ -121,9 +119,9 @@ test('create aes-gcm-05', async () => {
 });
 
 test('decrypt aes-gcm-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-01.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-01.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -132,9 +130,9 @@ test('decrypt aes-gcm-01', async () => {
 });
 
 test('decrypt aes-gcm-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-02.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-02.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -143,9 +141,9 @@ test('decrypt aes-gcm-02', async () => {
 });
 
 test('decrypt aes-gcm-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-03.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-03.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -154,16 +152,16 @@ test('decrypt aes-gcm-03', async () => {
 });
 
 test('decrypt aes-gcm-04', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-04.json');
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-04.json');
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unsupported state or unable to authenticate data' });
 });
 
 test('decrypt aes-gcm-05', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-05.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-05.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.enveloped.recipients[0].key.k);
+  const key = b64url(example.input.enveloped.recipients[0].key.k);
   const data = example.output.cbor;
   const contextIv = Buffer.from(example.input.enveloped.unsent.IV_hex, 'hex');
   contextIv[10] = 0;
@@ -176,13 +174,13 @@ test('decrypt aes-gcm-05', async () => {
 });
 
 test('create aes-gcm-enc-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-01.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-01.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    key: b64url(example.input.encrypted.recipients[0].key.k),
     u: example.input.encrypted.recipients[0].unprotected
   };
 
@@ -199,13 +197,13 @@ test('create aes-gcm-enc-01', async () => {
 });
 
 test('create aes-gcm-enc-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-02.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-02.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    key: b64url(example.input.encrypted.recipients[0].key.k),
     u: example.input.encrypted.recipients[0].unprotected
   };
 
@@ -222,13 +220,13 @@ test('create aes-gcm-enc-02', async () => {
 });
 
 test('create aes-gcm-enc-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-03.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-03.json');
   const p = example.input.encrypted.protected;
   const u = example.input.encrypted.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
 
   const recipient = {
-    key: base64url.toBuffer(example.input.encrypted.recipients[0].key.k),
+    key: b64url(example.input.encrypted.recipients[0].key.k),
     u: example.input.encrypted.recipients[0].unprotected
   };
 
@@ -247,9 +245,9 @@ test('create aes-gcm-enc-03', async () => {
 // create aes-gcm-enc-04 is an error example and cannot be recreated
 
 test('decrypt aes-gcm-enc-01', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-01.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-01.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+  const key = b64url(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -258,9 +256,9 @@ test('decrypt aes-gcm-enc-01', async () => {
 });
 
 test('decrypt aes-gcm-enc-02', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-02.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-02.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+  const key = b64url(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -269,9 +267,9 @@ test('decrypt aes-gcm-enc-02', async () => {
 });
 
 test('decrypt aes-gcm-enc-03', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-03.json');
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-03.json');
   const plaintext = example.input.plaintext;
-  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+  const key = b64url(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
   const buf = await cose.encrypt.read(data, key);
   assert.ok(Buffer.isBuffer(buf));
@@ -280,8 +278,8 @@ test('decrypt aes-gcm-enc-03', async () => {
 });
 
 test('decrypt aes-gcm-enc-04', async () => {
-  const example = jsonfile.readFileSync('test/Examples/aes-gcm-examples/aes-gcm-enc-04.json');
-  const key = base64url.toBuffer(example.input.encrypted.recipients[0].key.k);
+  const example = loadExample('test/Examples/aes-gcm-examples/aes-gcm-enc-04.json');
+  const key = b64url(example.input.encrypted.recipients[0].key.k);
   const data = example.output.cbor;
   await assert.rejects(() => cose.encrypt.read(data, key), { message: 'Unsupported state or unable to authenticate data' });
 });

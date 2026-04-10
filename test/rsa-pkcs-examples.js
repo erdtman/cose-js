@@ -5,17 +5,16 @@
 const cose = require('../');
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const jsonfile = require('jsonfile');
 const jwkToPem = require('jwk-to-pem');
 const cbor = require('cbor');
-const deepEqual = require('./util.js').deepEqual;
+const { deepEqual, loadExample } = require('./util.js');
 
 function hexToB64 (hex) {
   return Buffer.from(hex, 'hex').toString('base64');
 }
 
 test('create rsa-pkcs-01', async () => {
-  const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
+  const example = loadExample('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -45,7 +44,7 @@ test('create rsa-pkcs-01', async () => {
 });
 
 test('create rsa-pkcs-01 Sync', async () => {
-  const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
+  const example = loadExample('test/rsa-pkcs-examples/rsa-pkcs-01.json');
   const p = example.input.sign0.protected;
   const u = example.input.sign0.unprotected;
   const plaintext = Buffer.from(example.input.plaintext);
@@ -75,7 +74,7 @@ test('create rsa-pkcs-01 Sync', async () => {
 });
 
 test('verify rsa-pkcs-01', async () => {
-  const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
+  const example = loadExample('test/rsa-pkcs-examples/rsa-pkcs-01.json');
 
   const testKey = example.input.sign0.key;
 
@@ -97,7 +96,7 @@ test('verify rsa-pkcs-01', async () => {
 });
 
 test('verify rsa-pkcs-01 Sync', async () => {
-  const example = jsonfile.readFileSync('test/rsa-pkcs-examples/rsa-pkcs-01.json');
+  const example = loadExample('test/rsa-pkcs-examples/rsa-pkcs-01.json');
 
   const testKey = example.input.sign0.key;
 

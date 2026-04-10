@@ -80,6 +80,19 @@ function deepEqual (actual, expected, depth) {
 
 exports.deepEqual = deepEqual;
 
+const { readFileSync } = require('fs');
+
+function loadExample (path) {
+  return JSON.parse(readFileSync(path, 'utf8'));
+}
+
+function b64url (str) {
+  return Buffer.from(str, 'base64url');
+}
+
+exports.loadExample = loadExample;
+exports.b64url = b64url;
+
 test('deep equal array', () => {
   const actual = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
   const expected = [1, 2, 3, '4', [1, 2, 3], { hello: 'world', world: 'hello' }];
